@@ -52,6 +52,7 @@
     "grunt-rollup": "^12.0.0",
     "leaflet": "^1.9.4",
     "leaflet.locatecontrol": "^0.79.0",
+    "lit-html": "^3.2.0",
     "path": "^0.12.7",
     "playwright": "^1.39.0",
     "proj4": "^2.6.2",

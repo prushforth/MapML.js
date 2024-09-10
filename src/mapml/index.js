@@ -95,6 +95,7 @@ import { HeightInput } from './elementSupport/inputs/heightInput';
 import { LocationInput } from './elementSupport/inputs/locationInput';
 
 import { DOMTokenList } from './utils/DOMTokenList';
+import { html, render } from '../../node_modules/lit-html/lit-html.js';
 
 /* global L, Node */
 (function (window, document, undefined) {
@@ -936,4 +937,7 @@ import { DOMTokenList } from './utils/DOMTokenList';
   M.protomapsL = protomapsL;
   M.templatedPMTilesLayer = templatedPMTilesLayer;
   M.TemplatedPMTilesLayer = TemplatedPMTilesLayer;
+  // lit-html
+  M.html = html;
+  M.render = render;
 })(window, document);

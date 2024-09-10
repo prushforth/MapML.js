@@ -1,3 +1,5 @@
+/* global M */
+
 export var LayerControl = L.Control.Layers.extend({
   /* removes 'base' layers as a concept */
   options: {
@@ -146,6 +148,8 @@ export var LayerControl = L.Control.Layers.extend({
 
   _addItem: function (obj) {
     var layercontrols = obj.layer._layerEl._layerControlHTML;
+
+    var foo = M.render(layercontrols, this._overlaysList);
     // the input is required by Leaflet...
     obj.input = layercontrols.querySelector(
       'input.leaflet-control-layers-selector'
@@ -153,9 +157,7 @@ export var LayerControl = L.Control.Layers.extend({
 
     this._layerControlInputs.push(obj.input);
     obj.input.layerId = L.stamp(obj.layer);
-
-    this._overlaysList.appendChild(layercontrols);
-    return layercontrols;
+    return foo;
   },
 
   //overrides collapse and conditionally collapses the panel
