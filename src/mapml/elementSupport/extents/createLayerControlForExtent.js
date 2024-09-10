@@ -140,8 +140,7 @@ export var createLayerControlExtentHTML = function () {
     'mapml-extent-item-name-{' + L.stamp(extentItemNameSpan) + '}';
   extent.setAttribute('aria-labelledby', extentItemNameSpan.id);
   extentItemNameSpan.extent = this;
-
-  extent.ontouchstart = extent.onmousedown = (downEvent) => {
+  const interactionBegin = (downEvent) => {
     if (
       (downEvent.target.parentElement.tagName.toLowerCase() === 'label' &&
         downEvent.target.tagName.toLowerCase() !== 'input') ||
@@ -254,6 +253,7 @@ export var createLayerControlExtentHTML = function () {
     class="mapml-layer-extent"
     aria-grabbed="false"
     aria-labelledby="mapml-extent-item-name-{${e._extentLayer._leaflet_id}}"
+    @touchstart=${interactionBegin} @mousedown=${interactionBegin}
   >
     <!-- this fieldset is repeated for each extent -->
     <div class="mapml-layer-item-properties">
@@ -261,7 +261,7 @@ export var createLayerControlExtentHTML = function () {
         class="mapml-layer-item-toggle"
         style="font-style: ${e.hasAttribute('disabled') ? 'italic' : 'normal'};"
       >
-        <input class="" type="checkbox" checked="" />
+        <input class="" type="checkbox" checked="" @change=${changeCheck.bind(this)}/>
         <span class="mapml-extent-item-name" id="mapml-extent-item-name-{92}"
           >${e.getAttribute('label')}</span
         >
@@ -297,16 +297,18 @@ export var createLayerControlExtentHTML = function () {
         style="font-style: normal;"
       >
         <summary class="" id="mapml-extent-item-opacity-91">Opacity</summary>
-        <input
+        <input @change=${changeOpacity.bind(this)}
           class=""
           type="range"
           min="0"
           max="1.0"
           step="0.1"
           aria-labelledby="mapml-extent-item-opacity-91"
-          value="1"
+          value="${this._extentLayer._container.style.opacity || '1.0'}"
         />
       </details>
+      <!-- map-selects' rendered selects, and any other non-hidden inputs, if any, go here -->
+      <!-- see mapSelects snipped above -->
     </div>
   </fieldset>`;
 
