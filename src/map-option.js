@@ -18,8 +18,11 @@ export class MapOption extends HTMLElement {
   disconnectedCallback() {
     delete this.option;
   }
-  getOption() {
+  getHTML() {
     return this.option;
+  }
+  getLit() {
+    return M.html`<option>${this.innerHTML}</option>`
   }
 }
 window.customElements.define('map-option', MapOption);

@@ -52,6 +52,12 @@ export class MapSelect extends HTMLElement {
     this._createLayerControlForSelect();
   }
   disconnectedCallback() {}
+  getHTML() {
+    return this.htmlselect;
+  }
+  getLit() {
+    return this._createLayerControlForSelect();
+  }
   _createLayerControlForSelect() {
     const selectdetails = (e) => M.html`
       <details class="mapml-layer-item-details mapml-control-layers">
