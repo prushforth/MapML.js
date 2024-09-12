@@ -6,6 +6,7 @@ import { MapFeature } from './map-feature.js';
 import { MapExtent } from './map-extent.js';
 import { MapInput } from './map-input.js';
 import { MapSelect } from './map-select.js';
+import { MapOption } from './map-option.js';
 import { MapLink } from './map-link.js';
 import { MapStyle } from './map-style.js';
 
@@ -1433,5 +1434,6 @@ window.customElements.define('map-feature', MapFeature);
 window.customElements.define('map-extent', MapExtent);
 window.customElements.define('map-input', MapInput);
 window.customElements.define('map-select', MapSelect);
+window.customElements.define('map-option', MapOption);
 window.customElements.define('map-link', MapLink);
 window.customElements.define('map-style', MapStyle);

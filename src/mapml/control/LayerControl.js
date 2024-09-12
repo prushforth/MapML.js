@@ -147,17 +147,18 @@ export var LayerControl = L.Control.Layers.extend({
   },
 
   _addItem: function (obj) {
-    var layercontrols = obj.layer._layerEl._layerControlHTML;
-
-    var foo = M.render(layercontrols, this._overlaysList);
+    const d = document.createElement('div');
+    M.render(obj.layer._layerEl.getLit(), d);
+    var layercontrols = d.firstElementChild;
     // the input is required by Leaflet...
     obj.input = layercontrols.querySelector(
       'input.leaflet-control-layers-selector'
     );
+    obj.input.layerId = L.stamp(obj.layer);
 
     this._layerControlInputs.push(obj.input);
-    obj.input.layerId = L.stamp(obj.layer);
-    return foo;
+
+    return layercontrols;
   },
 
   //overrides collapse and conditionally collapses the panel

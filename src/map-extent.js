@@ -342,6 +342,172 @@ export class MapExtent extends HTMLElement {
   getLayerControlHTML() {
     return this._layerControlHTML;
   }
+  getLit() {
+    const changeCheck = function () {
+      this.checked = !this.checked;
+    };
+    const changeOpacity = function (e) {
+      if (e && e.target && e.target.value >= 0 && e.target.value <= 1.0) {
+        this._extentLayer.changeOpacity(e.target.value);
+      }
+    }.bind(this);
+    const selects = Array.from(this.querySelectorAll('map-select')).map(
+      (select) => select.getLit()
+    );
+    const removeExtent = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.remove();
+    }.bind(this);
+    let mapEl = this.getMapEl(),
+      layerEl = this.getLayerEl();
+
+    const startDrag = (downEvent) => {
+      if (
+        (downEvent.target.parentElement.tagName.toLowerCase() === 'label' &&
+          downEvent.target.tagName.toLowerCase() !== 'input') ||
+        downEvent.target.tagName.toLowerCase() === 'label'
+      ) {
+        downEvent.stopPropagation();
+        downEvent =
+          downEvent instanceof TouchEvent ? downEvent.touches[0] : downEvent;
+
+        let control = downEvent.target.closest('fieldset'),
+          controls = control.parentNode,
+          moving = false,
+          yPos = downEvent.clientY,
+          originalPosition = Array.from(
+            control.parentElement.querySelectorAll('fieldset')
+          ).indexOf(control);
+
+        document.body.ontouchmove = document.body.onmousemove = (moveEvent) => {
+          moveEvent.preventDefault();
+          moveEvent =
+            moveEvent instanceof TouchEvent ? moveEvent.touches[0] : moveEvent;
+
+          // Fixes flickering by only moving element when there is enough space
+          let offset = moveEvent.clientY - yPos;
+          moving = Math.abs(offset) > 15 || moving;
+          if (
+            (controls && !moving) ||
+            (controls && controls.childElementCount <= 1) ||
+            controls.getBoundingClientRect().top >
+              control.getBoundingClientRect().bottom ||
+            controls.getBoundingClientRect().bottom <
+              control.getBoundingClientRect().top
+          ) {
+            return;
+          }
+
+          controls.classList.add('mapml-draggable');
+          control.style.transform = 'translateY(' + offset + 'px)';
+          control.style.pointerEvents = 'none';
+
+          let x = moveEvent.clientX,
+            y = moveEvent.clientY,
+            root =
+              mapEl.tagName === 'MAPML-VIEWER'
+                ? mapEl.shadowRoot
+                : mapEl.querySelector('.mapml-web-map').shadowRoot,
+            elementAt = root.elementFromPoint(x, y),
+            swapControl =
+              !elementAt || !elementAt.closest('fieldset')
+                ? control
+                : elementAt.closest('fieldset');
+
+          swapControl =
+            Math.abs(offset) <= swapControl.offsetHeight
+              ? control
+              : swapControl;
+
+          control.setAttribute('aria-grabbed', 'true');
+          control.setAttribute('aria-dropeffect', 'move');
+          if (swapControl && controls === swapControl.parentNode) {
+            swapControl =
+              swapControl !== control.nextSibling
+                ? swapControl
+                : swapControl.nextSibling;
+            if (control !== swapControl) {
+              yPos = moveEvent.clientY;
+              control.style.transform = null;
+            }
+            controls.insertBefore(control, swapControl);
+          }
+        };
+
+        document.body.ontouchend = document.body.onmouseup = () => {
+          let newPosition = Array.from(
+            control.parentElement.querySelectorAll('fieldset')
+          ).indexOf(control);
+          control.setAttribute('aria-grabbed', 'false');
+          control.removeAttribute('aria-dropeffect');
+          control.style.pointerEvents = null;
+          control.style.transform = null;
+          if (originalPosition !== newPosition) {
+            let controlsElems = controls.children,
+              zIndex = 0;
+            for (let c of controlsElems) {
+              let extentEl = c.querySelector('span').extent;
+
+              extentEl.setAttribute('data-moving', '');
+              const node = layerEl.src ? layerEl.shadowRoot : layerEl;
+              node.append(extentEl);
+              extentEl.removeAttribute('data-moving');
+
+              extentEl.extentZIndex = zIndex;
+              extentEl._extentLayer.setZIndex(zIndex);
+              zIndex++;
+            }
+          }
+          controls.classList.remove('mapml-draggable');
+          document.body.ontouchmove =
+            document.body.onmousemove =
+            document.body.ontouchend =
+            document.body.onmouseup =
+              null;
+        };
+      }
+    };
+    // prettier-ignore
+    return M.html`<fieldset class="mapml-layer-extent" aria-grabbed="false" 
+        aria-labelledby="mapml-extent-item-name-{${this._extentLayer?._leaflet_id}}" 
+        @touchstart="${startDrag}" @mousedown="${startDrag}">
+      <!-- this fieldset is repeated for each extent -->
+      <div class="mapml-layer-item-properties">
+        <label class="mapml-layer-item-toggle" style="font-style: ${this.hasAttribute('disabled') ? 'italic' : 'normal'};" >
+          <input type="checkbox" checked @change=${changeCheck.bind(this)}>
+          <span class="mapml-extent-item-name" id="mapml-extent-item-name-{${this._extentLayer?._leaflet_id}}">${this.getAttribute('label')}</span>
+        </label>
+        <div class="mapml-layer-item-controls">
+          <button class="mapml-layer-item-remove-control mapml-button" type="button" 
+            title="Remove Sub Layer" @click="${removeExtent}">
+            <span aria-hidden="true">&#10005;</span>
+          </button>
+          <button class="mapml-layer-item-settings-control mapml-button" 
+            type="button" title="Extent Settings" aria-expanded="false">
+            <span  aria-hidden="true">
+              <svg viewBox="0 0 24 24" height="22" width="22">
+                <path d="M0 0h24v24H0z" fill="none"></path>
+                <path
+                  d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+              </svg>
+            </span>
+          </button>
+        </div>
+      </div>
+      <div class="mapml-layer-item-settings" hidden>
+        <details class="mapml-layer-item-details mapml-control-layers" 
+          style="font-style: ${this.hasAttribute('disabled') ? 'italic' : 'normal'};">
+          <summary id="mapml-extent-item-opacity-${this._extentLayer?._leaflet_id}">Opacity</summary>
+          <input @change=${changeOpacity} type="range" min="0" max="1.0" step="0.1" 
+            aria-labelledby="mapml-extent-item-opacity-${this._extentLayer?._leaflet_id}" 
+            value="${this._extentLayer?._container.style.opacity || '1.0'}">
+        </details>
+        <!-- map-selects' rendered selects, and any other non-hidden inputs, if any, go here -->
+        ${selects}
+      </div>
+    </fieldset>`;
+  }
   _projectionMatch() {
     return (
       this.units.toUpperCase() === this._map.options.projection.toUpperCase()

@@ -140,7 +140,8 @@ export var createLayerControlExtentHTML = function () {
     'mapml-extent-item-name-{' + L.stamp(extentItemNameSpan) + '}';
   extent.setAttribute('aria-labelledby', extentItemNameSpan.id);
   extentItemNameSpan.extent = this;
-  const interactionBegin = (downEvent) => {
+
+  extent.ontouchstart = extent.onmousedown = (downEvent) => {
     if (
       (downEvent.target.parentElement.tagName.toLowerCase() === 'label' &&
         downEvent.target.tagName.toLowerCase() !== 'input') ||
@@ -248,69 +249,5 @@ export var createLayerControlExtentHTML = function () {
   this._opacitySlider = opacity;
   this._opacityControl = opacityControl;
   this._layerControlLabel = extentLabel;
-  return mapExtent(this);
-    const mapExtent = (e) => M.html`<fieldset
-    class="mapml-layer-extent"
-    aria-grabbed="false"
-    aria-labelledby="mapml-extent-item-name-{${e._extentLayer._leaflet_id}}"
-    @touchstart=${interactionBegin} @mousedown=${interactionBegin}
-  >
-    <!-- this fieldset is repeated for each extent -->
-    <div class="mapml-layer-item-properties">
-      <label
-        class="mapml-layer-item-toggle"
-        style="font-style: ${e.hasAttribute('disabled') ? 'italic' : 'normal'};"
-      >
-        <input class="" type="checkbox" checked="" @change=${changeCheck.bind(this)}/>
-        <span class="mapml-extent-item-name" id="mapml-extent-item-name-{92}"
-          >${e.getAttribute('label')}</span
-        >
-      </label>
-      <div class="mapml-layer-item-controls">
-        <button
-          class="mapml-layer-item-remove-control mapml-button"
-          type="button"
-          title="Remove Sub Layer"
-        >
-          <span aria-hidden="true">✕</span>
-        </button>
-        <button
-          class="mapml-layer-item-settings-control mapml-button"
-          type="button"
-          title="Extent Settings"
-          aria-expanded="false"
-        >
-          <span class="" aria-hidden="true">
-            <svg viewBox="0 0 24 24" height="22" width="22">
-              <path d="M0 0h24v24H0z" fill="none"></path>
-              <path
-                d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
-              ></path>
-            </svg>
-          </span>
-        </button>
-      </div>
-    </div>
-    <div class="mapml-layer-item-settings" hidden="">
-      <details
-        class="mapml-layer-item-details mapml-control-layers"
-        style="font-style: normal;"
-      >
-        <summary class="" id="mapml-extent-item-opacity-91">Opacity</summary>
-        <input @change=${changeOpacity.bind(this)}
-          class=""
-          type="range"
-          min="0"
-          max="1.0"
-          step="0.1"
-          aria-labelledby="mapml-extent-item-opacity-91"
-          value="${this._extentLayer._container.style.opacity || '1.0'}"
-        />
-      </details>
-      <!-- map-selects' rendered selects, and any other non-hidden inputs, if any, go here -->
-      <!-- see mapSelects snipped above -->
-    </div>
-  </fieldset>`;
-
-  
+  return extent;
 };

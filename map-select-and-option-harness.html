@@ -73,16 +73,28 @@
   </head>
   <body>
     
-    <mapml-viewer projection="OSMTILE" zoom="14" lat="45.406314" lon="-75.6883335" controls controlslist="geolocation">
-      <layer- data-testid="osm-layer" label="OpenStreetMap" checked >
-        <map-link rel="license" title="© OpenStreetMap contributors CC BY-SA" href="https://www.openstreetmap.org/copyright"></map-link>
-        <map-extent units="OSMTILE" checked="checked">
-          <map-input name="z" type="zoom" value="18" min="0" max="18"></map-input>
-          <map-input name="x" type="location" units="tilematrix" axis="column" min="0" max="262144"></map-input>
-          <map-input name="y" type="location" units="tilematrix" axis="row" min="0" max="262144"></map-input>
-          <map-link rel="tile" tref="https://tile.openstreetmap.org/{z}/{x}/{y}.png"></map-link>
-</map-extent>
-      </layer->
-    </mapml-viewer>
+<map-select id="tie" name="time">
+        <map-option>2000-08-15T00:00:00Z</map-option>
+        <map-option>2001-08-15T00:00:00Z</map-option>
+        <map-option>2002-08-15T00:00:00Z</map-option>
+        <map-option>2003-08-15T00:00:00Z</map-option>
+        <map-option>2004-08-15T00:00:00Z</map-option>
+        <map-option>2005-08-15T00:00:00Z</map-option>
+        <map-option>2006-08-15T00:00:00Z</map-option>
+        <map-option>2007-08-15T00:00:00Z</map-option>
+        <map-option>2008-08-15T00:00:00Z</map-option>
+        <map-option>2009-08-15T00:00:00Z</map-option>
+        <map-option>2010-08-15T00:00:00Z</map-option>
+        <map-option>2011-08-15T00:00:00Z</map-option>
+        <map-option>2012-08-15T00:00:00Z</map-option>
+        <map-option>2013-08-15T00:00:00Z</map-option>
+        <map-option>2014-08-15T00:00:00Z</map-option>
+        <map-option>2015-08-15T00:00:00Z</map-option>
+        <map-option>2016-08-15T00:00:00Z</map-option>
+        <map-option>2017-08-15T00:00:00Z</map-option>
+        <map-option>2018-08-15T00:00:00Z</map-option>
+        <map-option>2019-08-15T00:00:00Z</map-option>
+        <map-option>2020-08-15T00:00:00Z</map-option>        
+      </map-select>
   </body>
 </html>

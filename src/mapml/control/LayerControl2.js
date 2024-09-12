@@ -1,6 +1,6 @@
 /* global M */
-/** 
- * Objective is to create a layer control that manages <layer-> elements, but 
+/**
+ * Objective is to create a layer control that manages <layer-> elements, but
  * exposes an API through the <mapml-viewer> ?
  * */
 export var LayerControl2 = L.Control.extend({
@@ -19,16 +19,16 @@ export var LayerControl2 = L.Control.extend({
     if (this._map) {
       layer.on('add remove', this._onLayerChange, this);
     }
-    this._layers.push({layer,name});
-    this._layers.sort(((a, b) => this._sort(a.layer, b.layer)));
+    this._layers.push({ layer, name });
+    this._layers.sort((a, b) => this._sort(a.layer, b.layer));
     this._expandIfNotCollapsed();
   },
   _sort: function (layerA, layerB) {
-      return layerA.options.zIndex < layerB.options.zIndex
-        ? -1
-        : layerA.options.zIndex > layerB.options.zIndex
-        ? 1
-        : 0;
+    return layerA.options.zIndex < layerB.options.zIndex
+      ? -1
+      : layerA.options.zIndex > layerB.options.zIndex
+      ? 1
+      : 0;
   },
   onAdd: function () {
     this._initLayout();
@@ -82,19 +82,19 @@ export var LayerControl2 = L.Control.extend({
   },
   addLayer(layer, name) {
     this._addLayer(layer, name);
-    return (this._map) ? this._update() : this;
+    return this._map ? this._update() : this;
   },
   removeLayer: function (layer) {
     layer.off('add remove', this._onLayerChange, this);
 
     const obj = this._getLayer(Util.stamp(layer));
     if (obj) {
-        this._layers.splice(this._layers.indexOf(obj), 1);
+      this._layers.splice(this._layers.indexOf(obj), 1);
     }
     if (this._layers.length === 0) {
       this._container.setAttribute('hidden', '');
     }
-    return (this._map) ? this._update() : this;
+    return this._map ? this._update() : this;
   },
 
   _checkDisabledLayers: function () {},

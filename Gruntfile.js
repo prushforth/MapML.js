@@ -31,6 +31,7 @@ module.exports = function(grunt) {
           'dist/map-extent.js':   ['src/map-extent.js'],
           'dist/map-input.js':    ['src/map-input.js'],
           'dist/map-select.js':    ['src/map-select.js'],
+          'dist/map-option.js':    ['src/map-option.js'],
           'dist/map-link.js':    ['src/map-link.js'],
           'dist/map-style.js':    ['src/map-style.js'],
           'dist/map-area.js':     ['src/map-area.js'],

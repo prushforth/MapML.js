@@ -1,77 +1,76 @@
 export class MapSelect extends HTMLElement {
   static get observedAttributes() {
-    return ['name', 'id'];
+    return ['id', 'name'];
   }
-  get name() {
-    return this.getAttribute('name');
+
+  constructor() {
+    super();
+
+    this._id = '';
+    this._name = '';
   }
-  set name(val) {
-    this.setAttribute('name', val);
-  }
+
   get id() {
-    return this.getAttribute('id');
+    return this._id;
   }
-  set id(val) {
-    this.setAttribute('id', val);
+
+  set id(value) {
+    this._id = value;
+    this.setAttribute('id', value);
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  set name(value) {
+    this._name = value;
+    this.setAttribute('name', value);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     switch (name) {
-      case 'name':
-        if (oldValue !== newValue) {
-          // handle side effects
-        }
-        break;
       case 'id':
-        if (oldValue !== newValue) {
-          // handle side effects
-        }
+        this._id = newValue;
+        break;
+      case 'name':
+        this._name = newValue;
         break;
     }
   }
-  constructor() {
-    // Always call super first in constructor
-    super();
-  }
+
   connectedCallback() {
-    this._extentEl = this.parentElement;
-    this.htmlselect = document.createElement('select');
-    [...this.attributes].forEach(({name, value}) =>
-        this.htmlselect.setAttribute(name, value)
-    );
-    var options = this.querySelectorAll('map-option');
-    for (let i = 0; i < options.length; i++) {
-      this.htmlselect.appendChild(options.getOption());
-    }
-    const drawLayers = function () {
-      this.parentElement._extentLayer.redraw();
-    }.bind(this);
-    // this goes into the layer control, so add a listener to trigger map
-    // or layer redraw with newly selected value
-    this.htmlselect.addEventListener('change', drawLayers);
-    this._createLayerControlForSelect();
+    this._extentEl =
+      this.parentElement.nodeName === 'map-extent' ? this.parentElement : null;
   }
   disconnectedCallback() {}
-  getHTML() {
-    return this.htmlselect;
-  }
   getLit() {
-    return this._createLayerControlForSelect();
-  }
-  _createLayerControlForSelect() {
-    const selectdetails = (e) => M.html`
+    const redraw = function (event) {
+      this.parentElement._extentLayer?.redraw();
+    }.bind(this);
+
+    // Get all <map-option> children and call their getLit method
+    const options = Array.from(this.querySelectorAll('map-option')).map(
+      (option) => option.getLit()
+    );
+
+    // Ensure that id is set for both <label> and <select> elements
+    const selectId = this.id || 'default-select-id';
+
+    return M.html`
       <details class="mapml-layer-item-details mapml-control-layers">
         <summary>
-          <label for="${this.id}">${this.name}</label>
+          <label for="${selectId}">${this.name || 'Select'}</label>
         </summary>
-          ${this.htmlselect}
+        <select id="${selectId}" name="${this.name}"  @change="${redraw}">
+          ${options}
+        </select>
       </details>`;
-    this.selectdetails = selectdetails;
   }
   whenReady() {
     return new Promise((resolve, reject) => {
       let interval, failureTimer;
-      if (this.selectdetails) {
+      if (this._extentEl) {
         resolve();
       } else {
         let selectElement = this;
@@ -79,7 +78,7 @@ export class MapSelect extends HTMLElement {
         failureTimer = setTimeout(selectNotDefined, 10000);
       }
       function testForSelect(selectElement) {
-        if (selectElement.selectdetails) {
+        if (selectElement._extentEl) {
           clearInterval(interval);
           clearTimeout(failureTimer);
           resolve();
