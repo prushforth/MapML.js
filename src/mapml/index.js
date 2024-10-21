@@ -38,11 +38,6 @@
  * publicity pertaining to the work without specific, written prior permission.
  * Title to copyright in this work will at all times remain with copyright holders.
  */
-/* global L, Node */
-import '../../dist/leaflet-src.js';
-import '../../dist/proj4-src.js';
-import '../../dist/proj4leaflet.js';
-import '../../dist/L.Control.Locate.js';
 import './GlobalM.js';
 
 import { HTMLMapmlViewerElement } from '../mapml-viewer';

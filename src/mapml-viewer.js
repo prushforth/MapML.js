@@ -1,3 +1,5 @@
+import { map, LatLng, control, bounds, latLngBounds, LayerGroup } from 'leaflet/dist/leaflet-src.esm.js';
+import { Proj } from 'proj4leaflet';
 import { Util } from './mapml/utils/Util';
 import { DOMTokenList } from './mapml/utils/DOMTokenList';
 
@@ -290,8 +292,8 @@ export class HTMLMapmlViewerElement extends HTMLElement {
   }
   _createMap() {
     if (!this._map) {
-      this._map = L.map(this._container, {
-        center: new L.LatLng(this.lat, this.lon),
+      this._map = map(this._container, {
+        center: new LatLng(this.lat, this.lon),
         minZoom: 0,
         maxZoom: M[this.projection].options.resolutions.length - 1,
         projection: this.projection,
@@ -461,7 +463,7 @@ export class HTMLMapmlViewerElement extends HTMLElement {
     // Only add controls if there is enough top left vertical space
     if (!this._zoomControl && totalSize + 93 <= mapSize) {
       totalSize += 93;
-      this._zoomControl = L.control.zoom().addTo(this._map);
+      this._zoomControl = control.zoom().addTo(this._map);
     }
     if (!this._reloadButton && totalSize + 49 <= mapSize) {
       totalSize += 49;
@@ -1007,7 +1009,7 @@ export class HTMLMapmlViewerElement extends HTMLElement {
   }
   zoomTo(lat, lon, zoom) {
     zoom = Number.isInteger(+zoom) ? +zoom : this.zoom;
-    let location = new L.LatLng(+lat, +lon);
+    let location = new LatLng(+lat, +lon);
     this._map.setView(location, zoom);
     this.zoom = zoom;
     this.lat = location.lat;
@@ -1209,10 +1211,10 @@ export class HTMLMapmlViewerElement extends HTMLElement {
       ? t.tilesize
       : M.TILE_SIZE;
 
-    M[t.projection] = new L.Proj.CRS(t.projection, t.proj4string, {
+    M[t.projection] = new Proj.CRS(t.projection, t.proj4string, {
       origin: t.origin,
       resolutions: t.resolutions,
-      bounds: L.bounds(t.bounds),
+      bounds: bounds(t.bounds),
       crs: {
         tcrs: {
           horizontal: {
@@ -1234,7 +1236,7 @@ export class HTMLMapmlViewerElement extends HTMLElement {
               )
           },
           bounds: (zoom) =>
-            L.bounds(
+            bounds(
               [
                 M[t.projection].options.crs.tcrs.horizontal.min,
                 M[t.projection].options.crs.tcrs.vertical.min
@@ -1294,7 +1296,7 @@ export class HTMLMapmlViewerElement extends HTMLElement {
             }
           },
           get bounds() {
-            return L.latLngBounds(
+            return latLngBounds(
               [
                 M[t.projection].options.crs.gcrs.vertical.min,
                 M[t.projection].options.crs.gcrs.horizontal.min
@@ -1317,7 +1319,7 @@ export class HTMLMapmlViewerElement extends HTMLElement {
             min: 0,
             max: (map) => map.getSize().y
           },
-          bounds: (map) => L.bounds(L.point([0, 0]), map.getSize())
+          bounds: (map) => bounds([0, 0], map.getSize())
         },
         tile: {
           horizontal: {
@@ -1331,7 +1333,7 @@ export class HTMLMapmlViewerElement extends HTMLElement {
             max: tileSize
           },
           get bounds() {
-            return L.bounds(
+            return bounds(
               [
                 M[t.projection].options.crs.tile.horizontal.min,
                 M[t.projection].options.crs.tile.vertical.min
@@ -1363,7 +1365,7 @@ export class HTMLMapmlViewerElement extends HTMLElement {
               )
           },
           bounds: (zoom) =>
-            L.bounds(
+            bounds(
               [
                 M[t.projection].options.crs.tilematrix.horizontal.min,
                 M[t.projection].options.crs.tilematrix.vertical.min

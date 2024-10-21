@@ -5,6 +5,7 @@ import { AnnounceMovement } from './handlers/AnnounceMovement';
 import { FeatureIndex } from './handlers/FeatureIndex';
 import { Options } from './DefaultMapOptions';
 import './handlers/keyboard';
+import { Proj } from '../proj4leaflet/proj4leaflet';
 
 (function (window, document, undefined) {
   let M = {};
@@ -21,7 +22,7 @@ import './handlers/keyboard';
   // to (L.CRS.anything) with the include function
   // so we'll use the options property as a way to integrate needed
   // properties and methods...
-  M.WGS84 = new L.Proj.CRS(
+  M.WGS84 = new Proj.CRS(
     'EPSG:4326',
     '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ',
     {
@@ -191,7 +192,7 @@ import './handlers/keyboard';
       }
     }
   );
-  M.CBMTILE = new L.Proj.CRS(
+  M.CBMTILE = new Proj.CRS(
     'EPSG:3978',
     '+proj=lcc +lat_1=49 +lat_2=77 +lat_0=49 +lon_0=-95 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
     {
@@ -360,7 +361,7 @@ import './handlers/keyboard';
       }
     }
   );
-  M.APSTILE = new L.Proj.CRS(
+  M.APSTILE = new Proj.CRS(
     'EPSG:5936',
     '+proj=stere +lat_0=90 +lat_ts=50 +lon_0=-150 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m +no_defs',
     {
