@@ -1,4 +1,8 @@
-export var GeolocationButton = L.Control.extend({
+import { Control, DomUtil } from 'leaflet/dist/leaflet-src.esm.js';
+// Import the non-ESM Locate Control
+import 'leaflet.locatecontrol'; // Assumes Rollup plugin handles this
+
+export var GeolocationButton = Control.extend({
   options: {
     position: 'bottomright'
   },
@@ -6,7 +10,7 @@ export var GeolocationButton = L.Control.extend({
   onAdd: function (map) {
     // customize locate control to focus map after start/stop, so that
     // featureIndexOverlay is correctly displayed
-    L.Control.CustomLocate = L.Control.Locate.extend({
+    Control.CustomLocate = L.Control.Locate.extend({
       start: function () {
         L.Control.Locate.prototype.start.call(this);
         map.getContainer().focus();
@@ -16,7 +20,8 @@ export var GeolocationButton = L.Control.extend({
         map.getContainer().focus();
       }
     });
-    this.locateControl = new L.Control.CustomLocate({
+
+    this.locateControl = new Control.CustomLocate({
       showPopup: false,
       strings: {
         title: M.options.locale.btnLocTrackOff

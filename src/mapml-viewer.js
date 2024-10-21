@@ -1,5 +1,5 @@
 import { map, LatLng, control, bounds, latLngBounds, LayerGroup } from 'leaflet/dist/leaflet-src.esm.js';
-import { Proj } from 'proj4leaflet';
+import { Proj } from 'proj4leaflet/proj4leaflet.js';
 import { Util } from './mapml/utils/Util';
 import { DOMTokenList } from './mapml/utils/DOMTokenList';
 

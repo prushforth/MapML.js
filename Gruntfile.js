@@ -191,17 +191,22 @@ module.exports = function(grunt) {
       }
     },
     rollup: {
-      options: {
-        format: 'es',
-        plugins: [nodeResolve()],
-        external: './pmtilesRules.js'
-      },
-      main: {
-        dest: 'dist/mapmlviewer.js',
-        src: 'src/mapml/index.js' // Only one source file is permitted
-      }
-    },
-    prettier: {
+       options: {
+         format: 'es',
+         plugins: [
+           nodeResolve(),
+           legacy({
+             'node_modules/leaflet.locatecontrol/src/L.Control.Locate.js': 'L.Control.Locate' // Treat LocateControl as global
+           })
+         ],
+         external: './pmtilesRules.js'
+       },
+       main: {
+         dest: 'dist/mapmlviewer.js',
+         src: 'src/mapml/index.js' // Only one source file is permitted
+       }
+     },
+     prettier: {
       options: {
         // https://prettier.io/docs/en/options.html
         progress: true

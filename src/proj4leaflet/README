@@ -16,3 +16,13 @@ patch.diff contains these two fixes, and is applied to the proj4leaflet.js file
 as it is copied from node_modules.
 
 PR 2023-01-27
+
+UPDATE 2024-10-21
+
+Migrating to ES6 Modules, we need to re-structure the proj4leaflet source to 
+allow it to be imported correctly.  These changes are based on proj4leaflet.js
+1.0.2 and is stored in the proj4leaflet.js file adjacent to this readme.  That
+update also discards some classes unused by this project, specifically L.Proj.GeoJSON
+and L.Proj.ImageOverlay.
+
+
