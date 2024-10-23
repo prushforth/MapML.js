@@ -1,4 +1,4 @@
-import { Control, DomUtil } from 'leaflet/dist/leaflet-src.esm.js';
+import { Control, DomUtil } from 'leaflet';
 
 export var ScaleBar = Control.Scale.extend({
   options: {

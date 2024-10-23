@@ -1,3 +1,4 @@
+import { Map, CRS, bounds, latLngBounds, point, setOptions } from 'leaflet';
 import { QueryHandler } from './handlers/QueryHandler';
 import { ContextMenu } from './handlers/ContextMenu';
 import { Util } from './utils/Util';
@@ -5,7 +6,7 @@ import { AnnounceMovement } from './handlers/AnnounceMovement';
 import { FeatureIndex } from './handlers/FeatureIndex';
 import { Options } from './DefaultMapOptions';
 import './handlers/keyboard';
-import { Proj } from '../proj4leaflet/proj4leaflet';
+import Proj from '../proj4leaflet/proj4leaflet';
 
 (function (window, document, undefined) {
   let M = {};
@@ -18,8 +19,8 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
     M.options = Object.assign(M.options, JSON.parse(mapOptions.innerHTML));
 
   // see https://leafletjs.com/reference-1.5.0.html#crs-l-crs-base
-  // "new classes can't inherit from (L.CRS), and methods can't be added
-  // to (L.CRS.anything) with the include function
+  // "new classes can't inherit from (CRS), and methods can't be added
+  // to (CRS.anything) with the include function
   // so we'll use the options property as a way to integrate needed
   // properties and methods...
   M.WGS84 = new Proj.CRS(
@@ -27,7 +28,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
     '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ',
     {
       origin: [-180, +90],
-      bounds: L.bounds([
+      bounds: bounds([
         [-180, -90],
         [180, 90]
       ]),
@@ -61,7 +62,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
               )
           },
           bounds: (zoom) =>
-            L.bounds(
+            bounds(
               [
                 M.WGS84.options.crs.tcrs.horizontal.min,
                 M.WGS84.options.crs.tcrs.vertical.min
@@ -109,7 +110,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
             max: 90.0
           },
           get bounds() {
-            return L.latLngBounds(
+            return latLngBounds(
               [
                 M.WGS84.options.crs.gcrs.vertical.min,
                 M.WGS84.options.crs.gcrs.horizontal.min
@@ -132,7 +133,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
             min: 0,
             max: (map) => map.getSize().y
           },
-          bounds: (map) => L.bounds(L.point([0, 0]), map.getSize())
+          bounds: (map) => bounds(point([0, 0]), map.getSize())
         },
         tile: {
           horizontal: {
@@ -146,7 +147,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
             max: 256
           },
           get bounds() {
-            return L.bounds(
+            return bounds(
               [
                 M.WGS84.options.crs.tile.horizontal.min,
                 M.WGS84.options.crs.tile.vertical.min
@@ -178,7 +179,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
               )
           },
           bounds: (zoom) =>
-            L.bounds(
+            bounds(
               [
                 M.WGS84.options.crs.tilematrix.horizontal.min,
                 M.WGS84.options.crs.tilematrix.vertical.min
@@ -197,7 +198,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
     '+proj=lcc +lat_1=49 +lat_2=77 +lat_0=49 +lon_0=-95 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
     {
       origin: [-34655800, 39310000],
-      bounds: L.bounds([
+      bounds: bounds([
         [-34655800, -39000000],
         [10000000, 39310000]
       ]),
@@ -233,7 +234,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
               )
           },
           bounds: (zoom) =>
-            L.bounds(
+            bounds(
               [
                 M.CBMTILE.options.crs.tcrs.horizontal.min,
                 M.CBMTILE.options.crs.tcrs.vertical.min
@@ -281,7 +282,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
             max: 86.46
           },
           get bounds() {
-            return L.latLngBounds(
+            return latLngBounds(
               [
                 M.CBMTILE.options.crs.gcrs.vertical.min,
                 M.CBMTILE.options.crs.gcrs.horizontal.min
@@ -304,7 +305,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
             min: 0,
             max: (map) => map.getSize().y
           },
-          bounds: (map) => L.bounds(L.point([0, 0]), map.getSize())
+          bounds: (map) => bounds(point([0, 0]), map.getSize())
         },
         tile: {
           horizontal: {
@@ -318,7 +319,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
             max: 256
           },
           get bounds() {
-            return L.bounds(
+            return bounds(
               [
                 M.CBMTILE.options.crs.tile.horizontal.min,
                 M.CBMTILE.options.crs.tile.vertical.min
@@ -350,7 +351,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
               )
           },
           bounds: (zoom) =>
-            L.bounds(
+            bounds(
               [0, 0],
               [
                 M.CBMTILE.options.crs.tilematrix.horizontal.max(zoom),
@@ -366,7 +367,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
     '+proj=stere +lat_0=90 +lat_ts=50 +lon_0=-150 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m +no_defs',
     {
       origin: [-2.8567784109255e7, 3.2567784109255e7],
-      bounds: L.bounds([
+      bounds: bounds([
         [-28567784.109254867, -28567784.109254755],
         [32567784.109255023, 32567784.10925506]
       ]),
@@ -398,7 +399,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
               )
           },
           bounds: (zoom) =>
-            L.bounds(
+            bounds(
               [
                 M.APSTILE.options.crs.tcrs.horizontal.min,
                 M.APSTILE.options.crs.tcrs.vertical.min
@@ -446,7 +447,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
             max: 90.0
           },
           get bounds() {
-            return L.latLngBounds(
+            return latLngBounds(
               [
                 M.APSTILE.options.crs.gcrs.vertical.min,
                 M.APSTILE.options.crs.gcrs.horizontal.min
@@ -469,7 +470,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
             min: 0,
             max: (map) => map.getSize().y
           },
-          bounds: (map) => L.bounds(L.point([0, 0]), map.getSize())
+          bounds: (map) => bounds(point([0, 0]), map.getSize())
         },
         tile: {
           horizontal: {
@@ -483,7 +484,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
             max: 256
           },
           get bounds() {
-            return L.bounds(
+            return bounds(
               [
                 M.APSTILE.options.crs.tile.horizontal.min,
                 M.APSTILE.options.crs.tile.vertical.min
@@ -515,7 +516,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
               )
           },
           bounds: (zoom) =>
-            L.bounds(
+            bounds(
               [0, 0],
               [
                 M.APSTILE.options.crs.tilematrix.horizontal.max(zoom),
@@ -526,10 +527,10 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
       }
     }
   );
-  M.OSMTILE = L.CRS.EPSG3857;
-  L.setOptions(M.OSMTILE, {
+  M.OSMTILE = CRS.EPSG3857;
+  setOptions(M.OSMTILE, {
     origin: [-20037508.342787, 20037508.342787],
-    bounds: L.bounds([
+    bounds: bounds([
       [-20037508.342787, -20037508.342787],
       [20037508.342787, 20037508.342787]
     ]),
@@ -563,7 +564,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
             )
         },
         bounds: (zoom) =>
-          L.bounds(
+          bounds(
             [
               M.OSMTILE.options.crs.tcrs.horizontal.min,
               M.OSMTILE.options.crs.tcrs.vertical.min
@@ -617,7 +618,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
           }
         },
         get bounds() {
-          return L.latLngBounds(
+          return latLngBounds(
             [
               M.OSMTILE.options.crs.gcrs.vertical.min,
               M.OSMTILE.options.crs.gcrs.horizontal.min
@@ -640,7 +641,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
           min: 0,
           max: (map) => map.getSize().y
         },
-        bounds: (map) => L.bounds(L.point([0, 0]), map.getSize())
+        bounds: (map) => bounds(point([0, 0]), map.getSize())
       },
       tile: {
         horizontal: {
@@ -654,7 +655,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
           max: 256
         },
         get bounds() {
-          return L.bounds(
+          return bounds(
             [
               M.OSMTILE.options.crs.tile.horizontal.min,
               M.OSMTILE.options.crs.tile.vertical.min
@@ -686,7 +687,7 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
             )
         },
         bounds: (zoom) =>
-          L.bounds(
+          bounds(
             [0, 0],
             [
               M.OSMTILE.options.crs.tilematrix.horizontal.max(zoom),
@@ -701,10 +702,10 @@ import { Proj } from '../proj4leaflet/proj4leaflet';
   M.mapml2geojson = Util.mapml2geojson;
 
   // see https://leafletjs.com/examples/extending/extending-3-controls.html#handlers
-  L.Map.addInitHook('addHandler', 'query', QueryHandler);
-  L.Map.addInitHook('addHandler', 'contextMenu', ContextMenu);
-  L.Map.addInitHook('addHandler', 'announceMovement', AnnounceMovement);
-  L.Map.addInitHook('addHandler', 'featureIndex', FeatureIndex);
+  Map.addInitHook('addHandler', 'query', QueryHandler);
+  Map.addInitHook('addHandler', 'contextMenu', ContextMenu);
+  Map.addInitHook('addHandler', 'announceMovement', AnnounceMovement);
+  Map.addInitHook('addHandler', 'featureIndex', FeatureIndex);
 
   // constants
   M.TILE_SIZE = 256;

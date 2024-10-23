@@ -1,4 +1,11 @@
-import { FeatureGroup, DomUtil, bounds, SVG, Util as LeafletUtil } from 'leaflet/dist/leaflet-src.esm.js';
+import {
+  FeatureGroup,
+  DomUtil,
+  bounds,
+  SVG,
+  Util as LeafletUtil,
+  Browser
+} from 'leaflet';
 import { Util } from '../utils/Util';
 import { path } from '../features/path';
 import { geometry } from '../features/geometry';
@@ -25,16 +32,33 @@ export var FeatureLayer = FeatureGroup.extend({
       // not a tiled vector layer
       this._container = null;
       if (this.options.query) {
-        this._container = DomUtil.create('div', 'leaflet-layer', this.options.pane);
-        DomUtil.addClass(this._container, 'leaflet-pane mapml-vector-container');
+        this._container = DomUtil.create(
+          'div',
+          'leaflet-layer',
+          this.options.pane
+        );
+        DomUtil.addClass(
+          this._container,
+          'leaflet-pane mapml-vector-container'
+        );
       } else if (this.options._leafletLayer) {
-        this._container = DomUtil.create('div', 'leaflet-layer', this.options.pane);
-        DomUtil.addClass(this._container, 'leaflet-pane mapml-vector-container');
+        this._container = DomUtil.create(
+          'div',
+          'leaflet-layer',
+          this.options.pane
+        );
+        DomUtil.addClass(
+          this._container,
+          'leaflet-pane mapml-vector-container'
+        );
       } else {
         // if the current featureLayer is a sublayer of templatedFeatureLayer,
         // append <svg> directly to the templated feature container (passed in as options.pane)
         this._container = this.options.pane;
-        DomUtil.addClass(this._container, 'leaflet-pane mapml-vector-container');
+        DomUtil.addClass(
+          this._container,
+          'leaflet-pane mapml-vector-container'
+        );
       }
       this.options.renderer.options.pane = this._container;
     }
@@ -334,11 +358,11 @@ export var FeatureLayer = FeatureGroup.extend({
         .subtract(this._map._getNewPixelOrigin(center, this._map.getZoom()))
         .round();
 
-    if (any3d) {
+    if (Browser.any3d) {
       DomUtil.setTransform(this._layers[clampZoom], translate, scale);
     } else {
       DomUtil.setPosition(this._layers[clampZoom], translate);
-  }
+    }
   },
 
   /**

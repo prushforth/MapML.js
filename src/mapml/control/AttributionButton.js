@@ -1,4 +1,4 @@
-import { Control, DomUtil, DomEvent, Map } from 'leaflet/dist/leaflet-src.esm.js';
+import { Control, DomUtil, DomEvent, Map } from 'leaflet';
 
 export var AttributionButton = Control.Attribution.extend({
   options: {
@@ -8,10 +8,7 @@ export var AttributionButton = Control.Attribution.extend({
 
   onAdd: function (map) {
     map.attributionControl = this;
-    this._container = DomUtil.create(
-      'details',
-      'leaflet-control-attribution'
-    );
+    this._container = DomUtil.create('details', 'leaflet-control-attribution');
     DomEvent.disableClickPropagation(this._container);
 
     for (var i in map._layers) {

@@ -51,30 +51,6 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            cwd: 'node_modules/leaflet/dist/',
-            flatten: true,
-            filter: 'isFile',
-            src: ['leaflet-src.js'],
-            dest: 'dist/'
-          },
-          {
-            expand: true,
-            cwd: 'node_modules/proj4/dist/',
-            flatten: true,
-            filter: 'isFile',
-            src: ['proj4-src.js'],
-            dest: 'dist/'
-          },
-          {
-            expand: true,
-            cwd: 'node_modules/proj4leaflet/src/',
-            flatten: true,
-            filter: 'isFile',
-            src: ['proj4leaflet.js'],
-            dest: 'dist/'
-          },
-          {
-            expand: true,
             flatten: true,
             filter: 'isFile',
             src: ['index.html'],
@@ -85,14 +61,6 @@ module.exports = function(grunt) {
             flatten: true,
             filter: 'isFile',
             src: ['src/pmtilesRules.js'],
-            dest: 'dist/'
-          },
-          {
-            expand: true,
-            cwd: 'node_modules/leaflet.locatecontrol/src/',
-            flatten: true,
-            filter: 'isFile',
-            src: ['L.Control.Locate.js'],
             dest: 'dist/'
           }
         ],
@@ -172,7 +140,7 @@ module.exports = function(grunt) {
     },
     clean: {
       dist: ['dist'],
-      tidyup: ['dist/leaflet-src.js','dist/proj4-src.js','dist/proj4leaflet.js','dist/L.Control.Locate.js','dist/mapmlviewer.js'],
+      tidyup: ['dist/mapmlviewer.js'],
       experiments: {
         options: {force: true},
         src: ['../experiments/dist']
@@ -194,10 +162,7 @@ module.exports = function(grunt) {
        options: {
          format: 'es',
          plugins: [
-           nodeResolve(),
-           legacy({
-             'node_modules/leaflet.locatecontrol/src/L.Control.Locate.js': 'L.Control.Locate' // Treat LocateControl as global
-           })
+           nodeResolve()
          ],
          external: './pmtilesRules.js'
        },

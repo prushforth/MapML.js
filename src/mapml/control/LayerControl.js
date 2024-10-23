@@ -1,4 +1,4 @@
-import { Control, DomEvent, DomUtil, setOptions, stamp } from 'leaflet/dist/leaflet-src.esm.js';
+import { Control, DomEvent, DomUtil, setOptions, stamp } from 'leaflet';
 
 // Refactored LayerControl to remove global L dependency
 export var LayerControl = Control.Layers.extend({

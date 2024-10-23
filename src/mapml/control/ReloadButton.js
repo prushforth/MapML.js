@@ -1,4 +1,4 @@
-import { Control, DomUtil, DomEvent } from 'leaflet/dist/leaflet-src.esm.js';
+import { Control, DomUtil, DomEvent } from 'leaflet';
 
 export var ReloadButton = Control.extend({
   options: {

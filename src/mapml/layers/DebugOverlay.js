@@ -1,4 +1,14 @@
-import { Layer, DomUtil, GridLayer, LayerGroup, Path, point, bounds, setOptions } from 'leaflet/dist/leaflet-src.esm.js';
+import {
+  Layer,
+  DomUtil,
+  GridLayer,
+  LayerGroup,
+  Path,
+  point,
+  circle,
+  bounds,
+  setOptions
+} from 'leaflet';
 
 export var DebugOverlay = Layer.extend({
   onAdd: function (map) {
@@ -113,7 +123,10 @@ export var DebugPanel = Layer.extend({
     let mapEl = this.options.mapEl,
       pointCoords = mapEl._map.project(e.latlng),
       scale = mapEl._map.options.crs.scale(+mapEl.zoom),
-      pcrs = mapEl._map.options.crs.transformation.untransform(pointCoords, scale),
+      pcrs = mapEl._map.options.crs.transformation.untransform(
+        pointCoords,
+        scale
+      ),
       tileSize = mapEl._map.options.crs.options.crs.tile.bounds.max.x,
       pointI = pointCoords.x % tileSize,
       pointJ = pointCoords.y % tileSize;
@@ -196,7 +209,7 @@ export var DebugVectors = LayerGroup.extend({
       point(0, 0),
       map.options.crs.scale(0)
     );
-    this._centerVector = L.circle(map.options.crs.pointToLatLng(center, 0), {
+    this._centerVector = circle(map.options.crs.pointToLatLng(center, 0), {
       radius: 250,
       className: 'mapml-debug-vectors projection-centre'
     });
@@ -231,15 +244,9 @@ export var DebugVectors = LayerGroup.extend({
           } else {
             boundsArray = [
               layers[i].extentBounds.min,
-              point(
-                layers[i].extentBounds.max.x,
-                layers[i].extentBounds.min.y
-              ),
+              point(layers[i].extentBounds.max.x, layers[i].extentBounds.min.y),
               layers[i].extentBounds.max,
-              point(
-                layers[i].extentBounds.min.x,
-                layers[i].extentBounds.max.y
-              )
+              point(layers[i].extentBounds.min.x, layers[i].extentBounds.max.y)
             ];
           }
 
@@ -327,14 +334,12 @@ var ProjectedExtent = Path.extend({
     let scale = this._map.options.crs.scale(this._map.getZoom()),
       map = this._map;
     for (let i = 0; i < this._locations.length; i++) {
-      let point = map.options.crs.transformation.transform(
+      let pt0 = map.options.crs.transformation.transform(
         this._locations[i],
         scale
       );
       //substract the pixel origin from the pixel coordinates to get the location relative to map viewport
-      this._rings.push(
-        point(point.x, point.y)._subtract(map.getPixelOrigin())
-      );
+      this._rings.push(point(pt0.x, pt0.y)._subtract(map.getPixelOrigin()));
     }
     //leaflet SVG renderer looks for and array of arrays to build polygons,
     //in this case it only deals with a rectangle so one closed array or points

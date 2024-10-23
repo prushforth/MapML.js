@@ -1,4 +1,4 @@
-import { Control, DomUtil, DomEvent, Map, Util as LeafletUtil } from 'leaflet/dist/leaflet-src.esm.js';
+import { Control, DomUtil, DomEvent, Map, Util as LeafletUtil } from 'leaflet';
 import { Util } from '../utils/Util';
 
 export var FullscreenButton = Control.extend({

@@ -1,6 +1,11 @@
-import { Control, DomUtil } from 'leaflet/dist/leaflet-src.esm.js';
-// Import the non-ESM Locate Control
-import 'leaflet.locatecontrol'; // Assumes Rollup plugin handles this
+import { Control } from 'leaflet';
+import { LocateControl } from 'leaflet.locatecontrol';
+
+// Create a local `L` object with only `Control`
+//const L = { Control };
+
+// Attach Locate to the local `LocateControl`
+//LocateControl = LocateControl;
 
 export var GeolocationButton = Control.extend({
   options: {
@@ -10,13 +15,13 @@ export var GeolocationButton = Control.extend({
   onAdd: function (map) {
     // customize locate control to focus map after start/stop, so that
     // featureIndexOverlay is correctly displayed
-    Control.CustomLocate = L.Control.Locate.extend({
+    Control.CustomLocate = LocateControl.extend({
       start: function () {
-        L.Control.Locate.prototype.start.call(this);
+        LocateControl.prototype.start.call(this);
         map.getContainer().focus();
       },
       stop: function () {
-        L.Control.Locate.prototype.stop.call(this);
+        LocateControl.prototype.stop.call(this);
         map.getContainer().focus();
       }
     });

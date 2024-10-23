@@ -4,8 +4,8 @@ import {
   Util,
   Transformation,
   Point as LPoint,
-  LatLng,
-} from 'leaflet/dist/leaflet-src.esm.js';
+  LatLng
+} from 'leaflet';
 
 import proj4 from 'proj4';
 

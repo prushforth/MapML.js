@@ -1,4 +1,4 @@
-import { Layer, DomUtil, point, bounds } from 'leaflet/dist/leaflet-src.esm.js';
+import { Layer, DomUtil, point, bounds } from 'leaflet';
 import { Util } from '../utils/Util';
 
 export var FeatureIndexOverlay = Layer.extend({
@@ -86,24 +86,24 @@ export var FeatureIndexOverlay = Layer.extend({
     keys.forEach((i) => {
       let layer = features[i].layer;
       let layers = features[i].layer._layers;
-      let bounds = bounds();
+      let b = bounds();
 
       if (layers) {
         let keys = Object.keys(layers);
         keys.forEach((j) => {
-          if (!bounds)
-            bounds = bounds(
+          if (!b)
+            b = bounds(
               layer._layers[j]._bounds.min,
               layer._layers[j]._bounds.max
             );
-          bounds.extend(layer._layers[j]._bounds.min);
-          bounds.extend(layer._layers[j]._bounds.max);
+          b.extend(layer._layers[j]._bounds.min);
+          b.extend(layer._layers[j]._bounds.max);
         });
       } else if (layer._bounds) {
-        bounds = bounds(layer._bounds.min, layer._bounds.max);
+        b = bounds(layer._bounds.min, layer._bounds.max);
       }
 
-      if (featureIndexBounds.overlaps(bounds)) {
+      if (featureIndexBounds.overlaps(b)) {
         let label = features[i].path.getAttribute('aria-label');
 
         if (index < 8) {

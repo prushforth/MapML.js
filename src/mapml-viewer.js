@@ -1,5 +1,12 @@
-import { map, LatLng, control, bounds, latLngBounds, LayerGroup } from 'leaflet/dist/leaflet-src.esm.js';
-import { Proj } from 'proj4leaflet/proj4leaflet.js';
+import {
+  map,
+  LatLng,
+  control,
+  bounds,
+  latLngBounds,
+  LayerGroup
+} from 'leaflet';
+import Proj from './proj4leaflet/proj4leaflet.js';
 import { Util } from './mapml/utils/Util';
 import { DOMTokenList } from './mapml/utils/DOMTokenList';
 
@@ -231,8 +238,8 @@ export class HTMLMapmlViewerElement extends HTMLElement {
           }, 0);
         }
       })
-      .catch(() => {
-        throw new Error('Projection not defined');
+      .catch((e) => {
+        throw new Error('Projection not defined: ' + e);
       });
   }
   _initShadowRoot() {
