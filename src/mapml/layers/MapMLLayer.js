@@ -6,10 +6,10 @@ import {
   latLng,
   latLngBounds
 } from 'leaflet';
-import { Util } from '../utils/Util';
-import { featureLayer } from './FeatureLayer';
-import { staticTileLayer } from './StaticTileLayer';
-import { featureRenderer } from '../features/featureRenderer';
+import { Util } from '../utils/Util.js';
+import { featureLayer } from './FeatureLayer.js';
+import { staticTileLayer } from './StaticTileLayer.js';
+import { featureRenderer } from '../features/featureRenderer.js';
 
 export var MapMLLayer = LayerGroup.extend({
   options: {

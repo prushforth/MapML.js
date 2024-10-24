@@ -7,8 +7,8 @@ import {
   Util as LeafletUtil
 } from 'leaflet';
 
-import { Util } from '../utils/Util';
-import { ImageLayer, imageLayer } from './ImageLayer';
+import { Util } from '../utils/Util.js';
+import { ImageLayer, imageLayer } from './ImageLayer.js';
 
 export var TemplatedImageLayer = Layer.extend({
   initialize: function (template, options) {

@@ -1,6 +1,6 @@
 import { FeatureGroup, LayerGroup, DomUtil, DomEvent, bounds } from 'leaflet';
 
-import { Path, path } from './path';
+import { Path, path } from './path.js';
 
 export var Geometry = FeatureGroup.extend({
   /**

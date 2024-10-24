@@ -1,8 +1,8 @@
 import { bounds as Lbounds, point as Lpoint } from 'leaflet';
 
-import { Util } from './mapml/utils/Util';
-import { extentLayer } from './mapml/layers/ExtentLayer';
-import { createLayerControlExtentHTML } from './mapml/elementSupport/extents/createLayerControlForExtent';
+import { Util } from './mapml/utils/Util.js';
+import { extentLayer } from './mapml/layers/ExtentLayer.js';
+import { createLayerControlExtentHTML } from './mapml/elementSupport/extents/createLayerControlForExtent.js';
 
 /* global M */
 export class HTMLExtentElement extends HTMLElement {

@@ -1,12 +1,12 @@
 import { Map, CRS, bounds, latLngBounds, point, setOptions } from 'leaflet';
-import { QueryHandler } from './handlers/QueryHandler';
-import { ContextMenu } from './handlers/ContextMenu';
-import { Util } from './utils/Util';
-import { AnnounceMovement } from './handlers/AnnounceMovement';
-import { FeatureIndex } from './handlers/FeatureIndex';
-import { Options } from './DefaultMapOptions';
-import './handlers/keyboard';
-import Proj from '../proj4leaflet/proj4leaflet';
+import { QueryHandler } from './handlers/QueryHandler.js';
+import { ContextMenu } from './handlers/ContextMenu.js';
+import { Util } from './utils/Util.js';
+import { AnnounceMovement } from './handlers/AnnounceMovement.js';
+import { FeatureIndex } from './handlers/FeatureIndex.js';
+import { Options } from './DefaultMapOptions.js';
+import './handlers/keyboard.js';
+import Proj from '../proj4leaflet/proj4leaflet.js';
 
 (function (window, document, undefined) {
   let M = {};

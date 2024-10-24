@@ -6,9 +6,9 @@ import {
   Util as LeafletUtil,
   Browser
 } from 'leaflet';
-import { Util } from '../utils/Util';
-import { path } from '../features/path';
-import { geometry } from '../features/geometry';
+import { Util } from '../utils/Util.js';
+import { path } from '../features/path.js';
+import { geometry } from '../features/geometry.js';
 
 export var FeatureLayer = FeatureGroup.extend({
   /*

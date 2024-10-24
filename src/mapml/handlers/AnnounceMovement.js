@@ -1,5 +1,5 @@
 import { Handler } from 'leaflet';
-import { Util } from '../utils/Util';
+import { Util } from '../utils/Util.js';
 export var AnnounceMovement = Handler.extend({
   addHooks: function () {
     this._map.on({

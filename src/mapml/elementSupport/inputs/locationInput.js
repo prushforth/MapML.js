@@ -1,6 +1,6 @@
 import { Point } from 'leaflet';
 
-import { Util } from '../../utils/Util';
+import { Util } from '../../utils/Util.js';
 export class LocationInput {
   constructor(name, position, axis, units, min, max, rel, layer) {
     this.name = name;

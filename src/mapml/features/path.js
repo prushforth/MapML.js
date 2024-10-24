@@ -6,7 +6,7 @@ import {
   bounds
 } from 'leaflet';
 
-import { Util } from '../utils/Util';
+import { Util } from '../utils/Util.js';
 /**
  * M.Path is a extension of Path that understands mapml feature markup
  * It converts the markup to the following structure (abstract enough to encompass all feature types) for example:

@@ -13,9 +13,9 @@ import {
   GridLayer
 } from 'leaflet';
 
-import { Util } from '../utils/Util';
-import { featureLayer } from '../layers/FeatureLayer';
-import { FeatureRenderer } from '../features/featureRenderer';
+import { Util } from '../utils/Util.js';
+import { featureLayer } from '../layers/FeatureLayer.js';
+import { FeatureRenderer } from '../features/featureRenderer.js';
 
 export var TemplatedTileLayer = TileLayer.extend({
   // a TemplateTileLayer is similar to a TileLayer except its templates are

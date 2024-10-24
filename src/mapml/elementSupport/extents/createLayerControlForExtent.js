@@ -1,5 +1,5 @@
 import { DomUtil, SVG, DomEvent, stamp } from 'leaflet';
-import { Util } from '../../utils/Util';
+import { Util } from '../../utils/Util.js';
 
 export var createLayerControlExtentHTML = function () {
   var extent = DomUtil.create('fieldset', 'mapml-layer-extent'),

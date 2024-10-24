@@ -1,6 +1,6 @@
 import { bounds, point } from 'leaflet';
 
-import { Util } from './mapml/utils/Util';
+import { Util } from './mapml/utils/Util.js';
 
 export class HTMLFeatureElement extends HTMLElement {
   static get observedAttributes() {

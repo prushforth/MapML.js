@@ -7,8 +7,8 @@ import {
   LayerGroup
 } from 'leaflet';
 import Proj from './proj4leaflet/proj4leaflet.js';
-import { Util } from './mapml/utils/Util';
-import { DOMTokenList } from './mapml/utils/DOMTokenList';
+import { Util } from './mapml/utils/Util.js';
+import { DOMTokenList } from './mapml/utils/DOMTokenList.js';
 
 import { HTMLLayerElement } from './map-layer.js';
 import { LayerDashElement } from './layer-.js';
@@ -19,18 +19,18 @@ import { HTMLInputElement } from './map-input.js';
 import { HTMLSelectElement } from './map-select.js';
 import { HTMLLinkElement } from './map-link.js';
 import { HTMLStyleElement } from './map-style.js';
-import { HTMLWebMapElement } from './web-map';
+import { HTMLWebMapElement } from './web-map.js';
 import { HTMLMapAreaElement } from './map-area.js';
 
-import { layerControl } from './mapml/control/LayerControl';
-import { AttributionButton } from './mapml/control/AttributionButton';
-import { reloadButton } from './mapml/control/ReloadButton';
-import { scaleBar } from './mapml/control/ScaleBar';
-import { fullscreenButton } from './mapml/control/FullscreenButton';
-import { geolocationButton } from './mapml/control/GeolocationButton';
-import { debugOverlay } from './mapml/layers/DebugOverlay';
-import { crosshair } from './mapml/layers/Crosshair';
-import { featureIndexOverlay } from './mapml/layers/FeatureIndexOverlay';
+import { layerControl } from './mapml/control/LayerControl.js';
+import { AttributionButton } from './mapml/control/AttributionButton.js';
+import { reloadButton } from './mapml/control/ReloadButton.js';
+import { scaleBar } from './mapml/control/ScaleBar.js';
+import { fullscreenButton } from './mapml/control/FullscreenButton.js';
+import { geolocationButton } from './mapml/control/GeolocationButton.js';
+import { debugOverlay } from './mapml/layers/DebugOverlay.js';
+import { crosshair } from './mapml/layers/Crosshair.js';
+import { featureIndexOverlay } from './mapml/layers/FeatureIndexOverlay.js';
 
 export class HTMLMapmlViewerElement extends HTMLElement {
   static get observedAttributes() {

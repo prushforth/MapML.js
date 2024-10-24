@@ -1,5 +1,5 @@
 import { GridLayer, setOptions, extend, point, bounds } from 'leaflet';
-import { Util } from '../utils/Util';
+import { Util } from '../utils/Util.js';
 
 export var StaticTileLayer = GridLayer.extend({
   initialize: function (options) {

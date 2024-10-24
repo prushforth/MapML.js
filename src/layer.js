@@ -1,8 +1,8 @@
 import { setOptions, DomUtil, bounds, point } from 'leaflet';
 
-import { Util } from './mapml/utils/Util';
-import { MapMLLayer, mapMLLayer } from './mapml/layers/MapMLLayer';
-import { createLayerControlHTML } from './mapml/elementSupport/layers/createLayerControlForLayer';
+import { Util } from './mapml/utils/Util.js';
+import { MapMLLayer, mapMLLayer } from './mapml/layers/MapMLLayer.js';
+import { createLayerControlHTML } from './mapml/elementSupport/layers/createLayerControlForLayer.js';
 
 export class BaseLayerElement extends HTMLElement {
   static get observedAttributes() {

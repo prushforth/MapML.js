@@ -5,8 +5,8 @@ import {
   Bounds,
   Util as LeafletUtil
 } from 'leaflet';
-import { featureLayer } from '../layers/FeatureLayer';
-import { featureRenderer } from '../features/featureRenderer';
+import { featureLayer } from '../layers/FeatureLayer.js';
+import { featureRenderer } from '../features/featureRenderer.js';
 
 export var QueryHandler = Handler.extend({
   addHooks: function () {

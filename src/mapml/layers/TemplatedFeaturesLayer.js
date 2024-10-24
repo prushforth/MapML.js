@@ -6,9 +6,9 @@ import {
   Util as LeafletUtil
 } from 'leaflet';
 
-import { Util } from '../utils/Util';
-import { featureLayer } from '../layers/FeatureLayer';
-import { featureRenderer } from '../features/featureRenderer';
+import { Util } from '../utils/Util.js';
+import { featureLayer } from '../layers/FeatureLayer.js';
+import { featureRenderer } from '../features/featureRenderer.js';
 
 export var TemplatedFeaturesLayer = Layer.extend({
   // this and M.ImageLayer could be merged or inherit from a common parent

@@ -1,5 +1,5 @@
 import { Control, DomUtil, DomEvent, Map, Util as LeafletUtil } from 'leaflet';
-import { Util } from '../utils/Util';
+import { Util } from '../utils/Util.js';
 
 export var FullscreenButton = Control.extend({
   options: {

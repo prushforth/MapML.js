@@ -7,11 +7,11 @@ import {
   Util as LeafletUtil
 } from 'leaflet';
 
-import { Util } from './mapml/utils/Util';
-import { templatedImageLayer } from './mapml/layers/TemplatedImageLayer';
-import { templatedTileLayer } from './mapml/layers/TemplatedTileLayer';
-import { templatedFeaturesLayer } from './mapml/layers/TemplatedFeaturesLayer';
-import { templatedPMTilesLayer } from './mapml/layers/TemplatedPMTilesLayer';
+import { Util } from './mapml/utils/Util.js';
+import { templatedImageLayer } from './mapml/layers/TemplatedImageLayer.js';
+import { templatedTileLayer } from './mapml/layers/TemplatedTileLayer.js';
+import { templatedFeaturesLayer } from './mapml/layers/TemplatedFeaturesLayer.js';
+import { templatedPMTilesLayer } from './mapml/layers/TemplatedPMTilesLayer.js';
 /* global M */
 
 export class HTMLLinkElement extends HTMLElement {

@@ -1,5 +1,5 @@
 import { Layer, DomUtil, point, bounds } from 'leaflet';
-import { Util } from '../utils/Util';
+import { Util } from '../utils/Util.js';
 
 export var FeatureIndexOverlay = Layer.extend({
   onAdd: function (map) {

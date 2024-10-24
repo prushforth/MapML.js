@@ -1,6 +1,6 @@
 import { SVG, DomUtil, stamp } from 'leaflet';
 
-import { Util } from '../utils/Util';
+import { Util } from '../utils/Util.js';
 /**
  * Returns a new Feature Renderer
  * @param {Object} options - Options for the renderer
