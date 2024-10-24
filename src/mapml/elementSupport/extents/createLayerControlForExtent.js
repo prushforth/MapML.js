@@ -1,4 +1,4 @@
-import { DomUtil, SVG, DomEvent, stamp } from 'leaflet';
+import { DomUtil, SVG, DomEvent, stamp } from 'leaflet/dist/leaflet-src.esm.js';
 import { Util } from '../../utils/Util.js';
 
 export var createLayerControlExtentHTML = function () {

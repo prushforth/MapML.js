@@ -1,4 +1,4 @@
-import { DomUtil, SVG, DomEvent, stamp } from 'leaflet';
+import { DomUtil, SVG, DomEvent, stamp } from 'leaflet/dist/leaflet-src.esm.js';
 export var createLayerControlHTML = async function () {
   var fieldset = DomUtil.create('fieldset', 'mapml-layer-item'),
     input = DomUtil.create('input'),

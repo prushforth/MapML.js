@@ -1,4 +1,9 @@
-import { Layer, DomUtil, extend, setOptions } from 'leaflet';
+import {
+  Layer,
+  DomUtil,
+  extend,
+  setOptions
+} from 'leaflet/dist/leaflet-src.esm.js';
 
 import { Util } from '../utils/Util.js';
 import * as protomapsL from '../../../node_modules/protomaps-leaflet/dist/esm/index.js';

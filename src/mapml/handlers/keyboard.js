@@ -1,4 +1,4 @@
-import { Map, DomEvent, point } from 'leaflet';
+import { Map, DomEvent, point } from 'leaflet/dist/leaflet-src.esm.js';
 Map.Keyboard.include({
   _onKeyDown: function (e) {
     if (e.altKey || e.metaKey) {

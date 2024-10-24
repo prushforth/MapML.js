@@ -1,4 +1,9 @@
-import { setOptions, DomUtil, bounds, point } from 'leaflet';
+import {
+  setOptions,
+  DomUtil,
+  bounds,
+  point
+} from 'leaflet/dist/leaflet-src.esm.js';
 
 import { Util } from './mapml/utils/Util.js';
 import { MapMLLayer, mapMLLayer } from './mapml/layers/MapMLLayer.js';

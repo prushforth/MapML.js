@@ -2,6 +2,7 @@ import {
   LayerGroup,
   setOptions,
   DomUtil,
+  DomEvent,
   bounds,
   latLng,
   latLngBounds

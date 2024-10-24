@@ -1,4 +1,4 @@
-import { Control } from 'leaflet';
+import { Control } from 'leaflet/dist/leaflet-src.esm.js';
 import { LocateControl } from 'leaflet.locatecontrol';
 
 // Create a local `L` object with only `Control`

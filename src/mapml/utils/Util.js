@@ -1,6 +1,11 @@
 /* global M */
 
-import { bounds, latLngBounds, point, latLng } from 'leaflet';
+import {
+  bounds,
+  latLngBounds,
+  point,
+  latLng
+} from 'leaflet/dist/leaflet-src.esm.js';
 
 export const Util = {
   // _convertAndFormatPCRS returns the converted CRS and formatted pcrsBounds in gcrs, pcrs, tcrs, and tilematrix. Used for setting extent for the map and layer (map.extent, layer.extent).

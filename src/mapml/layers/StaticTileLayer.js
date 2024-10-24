@@ -1,4 +1,10 @@
-import { GridLayer, setOptions, extend, point, bounds } from 'leaflet';
+import {
+  GridLayer,
+  setOptions,
+  extend,
+  point,
+  bounds
+} from 'leaflet/dist/leaflet-src.esm.js';
 import { Util } from '../utils/Util.js';
 
 export var StaticTileLayer = GridLayer.extend({

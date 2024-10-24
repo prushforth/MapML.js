@@ -1,4 +1,7 @@
-import { bounds as Lbounds, point as Lpoint } from 'leaflet';
+import {
+  bounds as Lbounds,
+  point as Lpoint
+} from 'leaflet/dist/leaflet-src.esm.js';
 
 import { Util } from './mapml/utils/Util.js';
 import { extentLayer } from './mapml/layers/ExtentLayer.js';

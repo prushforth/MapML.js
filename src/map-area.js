@@ -1,4 +1,11 @@
-import { point, circle, latLngBounds, rectangle, polygon, SVG } from 'leaflet';
+import {
+  point,
+  circle,
+  latLngBounds,
+  rectangle,
+  polygon,
+  SVG
+} from 'leaflet/dist/leaflet-src.esm.js';
 
 export class HTMLMapAreaElement extends HTMLAreaElement {
   static get observedAttributes() {

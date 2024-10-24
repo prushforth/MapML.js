@@ -1,4 +1,4 @@
-import { Layer, DomUtil, DomEvent } from 'leaflet';
+import { Layer, DomUtil, DomEvent } from 'leaflet/dist/leaflet-src.esm.js';
 
 export var Crosshair = Layer.extend({
   onAdd: function (map) {

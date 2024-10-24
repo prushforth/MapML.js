@@ -1,4 +1,10 @@
-import { FeatureGroup, LayerGroup, DomUtil, DomEvent, bounds } from 'leaflet';
+import {
+  FeatureGroup,
+  LayerGroup,
+  DomUtil,
+  DomEvent,
+  bounds
+} from 'leaflet/dist/leaflet-src.esm.js';
 
 import { Path, path } from './path.js';
 

@@ -1,6 +1,7 @@
 import {
   Handler,
   DomEvent,
+  DomUtil,
   setOptions,
   Bounds,
   Util as LeafletUtil

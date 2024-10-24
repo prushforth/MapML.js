@@ -1,4 +1,4 @@
-import { DomUtil } from 'leaflet';
+import { DomUtil } from 'leaflet/dist/leaflet-src.esm.js';
 
 export class HTMLSelectElement extends HTMLElement {
   static get observedAttributes() {

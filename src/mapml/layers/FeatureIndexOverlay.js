@@ -1,4 +1,4 @@
-import { Layer, DomUtil, point, bounds } from 'leaflet';
+import { Layer, DomUtil, point, bounds } from 'leaflet/dist/leaflet-src.esm.js';
 import { Util } from '../utils/Util.js';
 
 export var FeatureIndexOverlay = Layer.extend({
@@ -34,12 +34,12 @@ export var FeatureIndexOverlay = Layer.extend({
   },
 
   _calculateReticleBounds: function () {
-    let bounds = this._map.getPixelBounds();
-    let center = bounds.getCenter();
+    let bnds = this._map.getPixelBounds();
+    let center = bnds.getCenter();
     let wRatio =
-      Math.abs(bounds.min.x - bounds.max.x) / this._map.options.mapEl.width;
+      Math.abs(bnds.min.x - bnds.max.x) / this._map.options.mapEl.width;
     let hRatio =
-      Math.abs(bounds.min.y - bounds.max.y) / this._map.options.mapEl.height;
+      Math.abs(bnds.min.y - bnds.max.y) / this._map.options.mapEl.height;
 
     let reticleDimension = getComputedStyle(this._container).width.replace(
       /[^\d.]/g,

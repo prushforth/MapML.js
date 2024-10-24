@@ -1,4 +1,4 @@
-import { LayerGroup, DomUtil } from 'leaflet';
+import { LayerGroup, DomUtil } from 'leaflet/dist/leaflet-src.esm.js';
 
 export var ExtentLayer = LayerGroup.extend({
   initialize: function (options) {

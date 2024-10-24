@@ -1,4 +1,4 @@
-import { SVG, DomUtil, stamp } from 'leaflet';
+import { SVG, DomUtil, stamp } from 'leaflet/dist/leaflet-src.esm.js';
 
 import { Util } from '../utils/Util.js';
 /**

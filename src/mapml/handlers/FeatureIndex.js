@@ -1,4 +1,4 @@
-import { Handler } from 'leaflet';
+import { Handler } from 'leaflet/dist/leaflet-src.esm.js';
 import { Util } from '../utils/Util.js';
 export var FeatureIndex = Handler.extend({
   initialize: function (map) {

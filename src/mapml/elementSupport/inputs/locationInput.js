@@ -1,4 +1,4 @@
-import { Point } from 'leaflet';
+import { Point } from 'leaflet/dist/leaflet-src.esm.js';
 
 import { Util } from '../../utils/Util.js';
 export class LocationInput {

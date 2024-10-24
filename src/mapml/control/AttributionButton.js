@@ -1,4 +1,9 @@
-import { Control, DomUtil, DomEvent, Map } from 'leaflet';
+import {
+  Control,
+  DomUtil,
+  DomEvent,
+  Map
+} from 'leaflet/dist/leaflet-src.esm.js';
 
 export var AttributionButton = Control.Attribution.extend({
   options: {

@@ -1,4 +1,11 @@
-import { Map, CRS, bounds, latLngBounds, point, setOptions } from 'leaflet';
+import {
+  Map,
+  CRS,
+  bounds,
+  latLngBounds,
+  point,
+  setOptions
+} from 'leaflet/dist/leaflet-src.esm.js';
 import { QueryHandler } from './handlers/QueryHandler.js';
 import { ContextMenu } from './handlers/ContextMenu.js';
 import { Util } from './utils/Util.js';

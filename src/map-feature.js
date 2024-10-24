@@ -1,4 +1,4 @@
-import { bounds, point } from 'leaflet';
+import { bounds, point } from 'leaflet/dist/leaflet-src.esm.js';
 
 import { Util } from './mapml/utils/Util.js';
 
