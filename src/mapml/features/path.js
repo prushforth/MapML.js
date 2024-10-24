@@ -430,7 +430,7 @@ export var Path = LeafletPath.extend({
       }
       subParts.unshift({
         points: local,
-        center: bounds.getCenter(),
+        center: bnds.getCenter(),
         cls: `${cls || ''} ${wrapperAttr.className || ''}`.trim(),
         attr: attrMap,
         link: wrapperAttr.link,

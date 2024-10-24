@@ -228,8 +228,9 @@ export class HTMLWebMapElement extends HTMLMapElement {
           }, 0);
         }
       })
-      .catch(() => {
-        throw new Error('Projection not defined');
+      .catch((e) => {
+        console.log(e);
+        throw new Error('Error: ' + e);
       });
   }
   _initShadowRoot() {
@@ -337,7 +338,7 @@ export class HTMLWebMapElement extends HTMLMapElement {
           // exceptions because there are no area element children of the image map
           // for firefox only, a workaround is to actually remove the image...
           if (this.poster) {
-            if (L.Browser.gecko) {
+            if (Browser.gecko) {
               this.poster.removeAttribute('usemap');
             }
             //this.appendChild(this.poster);

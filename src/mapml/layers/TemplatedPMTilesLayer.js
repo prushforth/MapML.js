@@ -6,8 +6,7 @@ import {
 } from 'leaflet/dist/leaflet-src.esm.js';
 
 import { Util } from '../utils/Util.js';
-import * as protomapsL from '../../../node_modules/protomaps-leaflet/dist/esm/index.js';
-/* global L */
+import * as protomapsL from 'protomaps-leaflet';
 
 export var TemplatedPMTilesLayer = Layer.extend({
   initialize: function (template, options) {

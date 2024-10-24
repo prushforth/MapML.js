@@ -178,7 +178,7 @@ export var TemplatedTileLayer = TileLayer.extend({
           this._mapmlTileReady(tile);
         })
         .catch((err) => {
-          console.log('Error Creating Tile');
+          console.log('Error creating tile: ' + err);
         });
     }
   },
