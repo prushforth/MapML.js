@@ -1,12 +1,4 @@
-import {
-  map,
-  LatLng,
-  control,
-  bounds,
-  latLngBounds,
-  LayerGroup,
-  Browser
-} from 'leaflet';
+import { map, LatLng, control, bounds, latLngBounds, Browser } from 'leaflet';
 import Proj from 'proj4leaflet/src/proj4leaflet.js';
 import { Util } from './mapml/utils/Util.js';
 import { DOMTokenList } from './mapml/utils/DOMTokenList.js';

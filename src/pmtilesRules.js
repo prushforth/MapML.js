@@ -1,5 +1,3 @@
-/* global M */
-
 /* 
  * The following imports from protomaps-leaflet are available on the 
  * protomapsL global variable e.g. protomapsL.CenteredSymbolizer :
