@@ -4,6 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>localization.html</title>
+    <!-- 
+         the way that browser localization is simulated is via the <map-options> 
+         element injected by the mapml-extension chromium browser extension (manifest v3).
+         In this test case, we simulate the injection of the uk locale strings
+         via the template and script below
+    -->
     <template data-testid="map-options"><map-options>{"locale":{"cmBack":"Повернутися назад","cmForward":"Перейти вперед","cmReload":"Перезавантажити","cmToggleControls":"Увімкнути/вимкнути елементи керування","cmCopyCoords":"Копіювати","cmToggleDebug":"Перемкнути на режим діагностики","cmCopyMapML":"Мапа","cmCopyExtent":"Межа екрану","cmCopyLocation":"Місцеположення","cmPasteLayer":"Вставити","cmViewSource":"Переглянути джерело мапи","lmZoomToLayer":"Збільшити до шару","lmCopyLayer":"Копіювати шар","lmLayerSettings":"Налаштування шару","lmRemoveLayer":"Видалити шар","lmZoomToExtent":"Збільшити до підтипу шару","lmCopyExtent":"Копіювати підтип шару","lmExtentSettings":"Налаштування підшару","lmRemoveExtent":"Видалити підшар","lmStyle":"Стиль","lcOpacity":"Прозорість","btnZoomIn":"Збільшити","btnZoomOut":"Зменшити","btnAttribution":"Авторські права","btnFullScreen":"Повноекранний режим","btnExitFullScreen":"Вихід з повноекранного режиму","btnLocTrackOn":"Показувати моє місцезнаходження - відстеження місцезнаходження увімкнено","btnMyLocTrackOn":"Моє поточне місцезнаходження на карті","btnLocTrackOff":"Показувати моє місцезнаходження - відстеження місцезнаходження вимкнено","btnMyLastKnownLocTrackOn":"Моє останнє відоме місцезнаходження на карті","btnLocTrackLastKnown":"Показати моє місцезнаходження - показано останнє відоме місцезнаходження","btnFocusMap":"Карта Фокусування","btnFocusControls":"Елементи Керування Фокусуванням","btnPrevFeature":"Попередня Функція","btnNextFeature":"Наступна Функція","amZoom":"рівень масштабування","amColumn":"стовпчик","amRow":"рядок","amMaxZoom":"На максимальному рівні масштабування наближення вимкнено","amMinZoom":"На мінімальному рівні масштабування зменшення масштабу вимкнено","amZoomedOut":"Збільшення за межами, повернутись до","amDraggedOut":"Розширення за межами, повернутись до","amEastBound":"Досягнуто східного напрямку, панорамування на схід вимкнено","amWestBound":"Досягнуто західного напрямку, панорамування на захід вимкнено","amNorthBound":"Досягнуто північного напрямку, панорамування на північ вимкнено","amSouthBound":"Досягнуто південного напрямку, панорамування на південь вимкнено","kbdShortcuts":"Комбінації клавіш","kbdMovement":"Клавіші переміщення","kbdFeature":"Функціональні клавіші навігації","kbdPanUp":"Переміщення вгору","kbdPanDown":"Переміщення вниз","kbdPanLeft":"Переміщення ліворуч","kbdPanRight":"Переміщення праворуч","kbdPanIncrement":"крок переміщення зображення","kbdZoom":"Збільшення/зменшення на 3 рівні","kbdFocusMap":"Сфокусувати карту","kbdFocusControls":"Сфокусувати елементи керування","kbdPrevFeature":"Попередній об'єкт","kbdNextFeature":"Наступний об'єкт","dfLayer":"Шар","dfExtent":"Підтип шару","dfPastedLayer":"Вставлений шар","dfFeatureCaption":"Об'єкт","popupZoom":"Наблизити сюди","popupPropName":"Назва властивості","popupPropValue":"Значення властивості","fIndexNoFeatures":"Об'єктів не знайдено"}}</map-options></template>
     <script>
 // this is the only way to force the browser to  keep the map-options element in
@@ -41,7 +47,19 @@
     </script>
     <script type="module" src="./mapml.js"></script>
   </head>
-  <body >
+  <body>
+    <!-- the mapml-viewer makes special exceptions for localization of map chrome in fr and en locales -->
+    <!-- specifically, it localizes map chrome to fr or en based, not only on the browser locale, but also 
+         on the lang attribute in the ancestry of the element. -->
+    
+    <!-- normally, for example with the video element, video chrome is not localized 
+         UNLESS the _browser_ is localized, regardless of the lang attribute ancestry -->
+    
+    <!--  because of these special lang exceptions (made for use in Canada), 
+          the french map below will have map chrome in the fr locale, the english
+          map in en locale and the ukrainian map will have the browser locale as
+          established by the <map-options> above (uk).
+    -->
     <mapml-viewer data-testid="french" lang="fr" projection="CBMTILE" zoom="2" lat="56.8" lon="-90" controls controlslist="geolocation" width="500" height="275">
       <layer- checked>
         <map-meta name="projection" content="CBMTILE"></map-meta>
@@ -58,7 +76,7 @@
       <layer- src="localization.red.mapml"></layer->
       
     </mapml-viewer>
-    <mapml-viewer data-testid="ukrainian" lang="browser-language" projection="CBMTILE" zoom="2" lat="56.8" lon="-90"  controls controlslist="geolocation" width="500" height="275">
+    <mapml-viewer data-testid="ukrainian" lang="de" projection="CBMTILE" zoom="2" lat="56.8" lon="-90"  controls controlslist="geolocation" width="500" height="275">
       <layer- checked>
         <map-meta name="projection" content="CBMTILE"></map-meta>
         <map-extent units="CBMTILE" checked>
@@ -88,6 +106,32 @@
         </map-feature>
       </layer->
       <layer- src="localization.red.mapml"></layer->
-    </mapml-viewer> 
+    </mapml-viewer>
+    <host-element>
+      <template shadowrootmode="open">
+        <!-- 
+            this viewer should be localized to en (the document locale).  
+            This test case reveals a bug in firefox handling of shadow roots, 
+            so it will not pass on ff until the bug is resolved:
+            https://bugzilla.mozilla.org/show_bug.cgi?id=1928667
+        -->
+        <mapml-viewer data-testid="shadow-en" projection="CBMTILE" zoom="2" lat="56.8" lon="-90" controls controlslist="geolocation" width="500" height="275">
+          <layer- checked>
+            <map-meta name="projection" content="CBMTILE"></map-meta>
+            <map-extent units="CBMTILE" checked>
+              <map-link rel="query" tref="localization.mapml" ></map-link>
+            </map-extent>
+            <map-feature data-testid="map-feature">
+              <map-properties><h6>A place</h6></map-properties>
+              <map-geometry cs="gcrs">
+                <map-point><map-coordinates>-90 45</map-coordinates></map-point>
+              </map-geometry>
+            </map-feature>
+          </layer->
+          <layer- src="localization.red.mapml"></layer->
+
+        </mapml-viewer>
+      </template>
+    </host-element>
   </body>
 </html>
