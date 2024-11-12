@@ -98,6 +98,15 @@ module.exports = function(grunt) {
           }
         ]
       },
+      basemap: {
+        files: [
+          {
+            expand: true,
+            src: ['dist/*'],
+            dest: '../nrcan-basemap'
+          }
+        ]
+      },
       geoserver: {
         files: [
           {
@@ -124,6 +133,10 @@ module.exports = function(grunt) {
       experiments: {
         options: {force: true},
         src: ['../experiments/dist']
+      },
+      basemap: {
+        options: {force: true},
+        src: ['../nrcan-basemap/dist']
       },
       extension: {
         options: {force: true},
