@@ -400,24 +400,20 @@ export class HTMLLinkElement extends HTMLElement {
               s +
               ')'
           )?.querySelector(s);
-      if (pmtilesStylesheetLink) {
-        await pmtilesStylesheetLink.whenReady();
-        let options = {
-          zoomBounds: this.getZoomBounds(),
-          extentBounds: this.getBounds(),
-          crs: M[this.parentExtent.units],
-          zIndex: this.zIndex,
-          pane: this.parentExtent._extentLayer.getContainer(),
-          linkEl: this,
-          pmtilesRules: pmtilesStylesheetLink?._pmtilesRules
-        };
-        this._templatedLayer = templatedPMTilesLayer(
-          this._templateVars,
-          options
-        ).addTo(this.parentExtent._extentLayer);
-      } else {
-        console.warn('Stylesheet not found for ' + this._templateVars.template);
-      }
+      await pmtilesStylesheetLink.whenReady();
+      let options = {
+        zoomBounds: this.getZoomBounds(),
+        extentBounds: this.getBounds(),
+        crs: M[this.parentExtent.units],
+        zIndex: this.zIndex,
+        pane: this.parentExtent._extentLayer.getContainer(),
+        linkEl: this,
+        pmtilesRules: pmtilesStylesheetLink?._pmtilesRules
+      };
+      this._templatedLayer = templatedPMTilesLayer(
+        this._templateVars,
+        options
+      ).addTo(this.parentExtent._extentLayer);
     } else if (this.rel === 'tile') {
       this._templatedLayer = templatedTileLayer(this._templateVars, {
         zoomBounds: this.getZoomBounds(),
