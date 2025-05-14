@@ -75,6 +75,11 @@ export class HTMLTileElement extends HTMLElement {
         ? this.parentNode
         : this.parentNode.host;
 
+    // in the case of <map-tile> that is rendered but never connected, this won't
+    // matter, but it speeds up rendering for tiles that go through here...
+    const imgObj = new Image();
+    imgObj.src = this.getAttribute('src');
+
     this._createOrGetTileLayer();
 
     // Calculate the extent
