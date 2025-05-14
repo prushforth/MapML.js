@@ -273,6 +273,22 @@ export var TemplatedTileLayer = TileLayer.extend({
       mapEl: this._linkEl.getMapEl()
     });
     let fallback = Util.getNativeVariables(markup);
+    let tiles = markup.querySelectorAll('map-tile');
+    for (let i = 0; i < tiles.length; i++) {
+      let row = tiles[i].getAttribute('row'),
+        col = tiles[i].getAttribute('col'),
+        z = tiles[i].getAttribute('zoom');
+      console.log(
+        'Total tiles for row: ' +
+          row +
+          ', col: ' +
+          col +
+          ', z: ' +
+          z +
+          ': ' +
+          tiles.length
+      );
+    }
     let features = markup.querySelectorAll('map-feature:has(> map-geometry)');
     for (let i = 0; i < features.length; i++) {
       let feature = tileFeatures.createGeometry(
