@@ -98,6 +98,9 @@ export var TemplatedFeaturesOrTilesLayerGroup = LayerGroup.extend({
       this.extentBounds.overlaps(mapBounds)
     );
   },
+  redraw: function () {
+    this._onMoveEnd();
+  },
   _onMoveEnd: function () {
     let history = this._map.options.mapEl._history;
     let current = history[history.length - 1];
