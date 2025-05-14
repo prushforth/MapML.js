@@ -261,13 +261,12 @@ export class HTMLFeatureElement extends HTMLElement {
 
   addFeature(layerToAddTo) {
     this._featureLayer = layerToAddTo;
-    let parentLayer = this.getLayerEl();
     // "synchronize" the event handlers between map-feature and <g>
     if (!this.querySelector('map-geometry')) return;
     let fallbackCS = this._getFallbackCS();
-    let content = parentLayer.src ? parentLayer.shadowRoot : parentLayer;
     this._geometry = layerToAddTo.createGeometry(this, fallbackCS); // side effect: extends `this` with this._groupEl if successful, points to svg g element that renders to map SD
     if (!this._geometry) return;
+    this._geometry._layerEl = this.getLayerEl();
     layerToAddTo.addLayer(this._geometry);
     this._setUpEvents();
   }
@@ -327,7 +326,14 @@ export class HTMLFeatureElement extends HTMLElement {
           }
         }
       });
-      extend(this._featureLayer.options, { _leafletLayer: this._featureLayer });
+      // this is used by DebugOverlay testing "multipleExtents.test.js
+      // but do we really need or want each feature to have the bounds of the
+      // map link?  tbd
+      extend(this._featureLayer.options, {
+        _leafletLayer: Object.assign(this._featureLayer, {
+          _layerEl: this.getLayerEl()
+        })
+      });
 
       this.addFeature(this._featureLayer);
 
