@@ -291,14 +291,20 @@ export var TemplatedTileLayer = TileLayer.extend({
       );
     }
     let currentTileSelector =
-      '[row=' + coords.y + '][col=' + coords.x + '][zoom=' + coords.z + ']';
+      '[row="' +
+      coords.y +
+      '"][col="' +
+      coords.x +
+      '"][zoom="' +
+      coords.z +
+      '"]';
 
     // this should select and process the features and tiles in DOM order
     let featuresOrTiles = markup.querySelectorAll(
       'map-feature:has(> map-geometry),map-tile' + currentTileSelector
     );
     for (let i = 0; i < featuresOrTiles.length; i++) {
-      if (featuresOrTiles.NODE_NAME === 'MAP-FEATURE') {
+      if (featuresOrTiles[i].nodeName === 'map-feature') {
         let feature = tileFeatures.createGeometry(
           featuresOrTiles[i],
           fallback.cs,
@@ -316,10 +322,10 @@ export var TemplatedTileLayer = TileLayer.extend({
           FeatureRenderer.prototype._updateFeature(layer);
         }
       } else {
-        // render the tile as an svg image element
+        // render tile as an svg image element
         let tile = featuresOrTiles[i];
         let img = SVG.create('image');
-        img.href = tile.src;
+        img.setAttribute('href', tile.getAttribute('src'));
         g.appendChild(img);
       }
     }
