@@ -324,8 +324,12 @@ export var TemplatedTileLayer = TileLayer.extend({
       } else {
         // render tile as an svg image element
         let tile = featuresOrTiles[i];
+        // No need to append to DOM, the browser will cache it
+        // observed to be a bit faster than waiting until img is appended to DOM
+        const imgObj = new Image();
+        imgObj.src = tile.getAttribute('src');
         let img = SVG.create('image');
-        img.setAttribute('href', tile.getAttribute('src'));
+        img.setAttribute('href', imgObj.src);
         g.appendChild(img);
       }
     }
