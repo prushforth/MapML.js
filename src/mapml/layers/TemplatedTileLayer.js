@@ -273,6 +273,7 @@ export var TemplatedTileLayer = TileLayer.extend({
       mapEl: this._linkEl.getMapEl()
     });
     let fallback = Util.getNativeVariables(markup);
+    // temporary, log the tiles in case there's more than one...
     let tiles = markup.querySelectorAll('map-tile');
     for (let i = 0; i < tiles.length; i++) {
       let row = tiles[i].getAttribute('row'),
@@ -289,19 +290,37 @@ export var TemplatedTileLayer = TileLayer.extend({
           tiles.length
       );
     }
-    let features = markup.querySelectorAll('map-feature:has(> map-geometry)');
-    for (let i = 0; i < features.length; i++) {
-      let feature = tileFeatures.createGeometry(
-        features[i],
-        fallback.cs,
-        coords.z
-      );
-      for (let featureID in feature._layers) {
-        let layer = feature._layers[featureID];
-        FeatureRenderer.prototype._initPath(layer, false);
-        layer._project(this._map, point([xOffset, yOffset]), coords.z);
-        FeatureRenderer.prototype._addPath(layer, g, false);
-        FeatureRenderer.prototype._updateFeature(layer);
+    let currentTileSelector =
+      '[row=' + coords.y + '][col=' + coords.x + '][zoom=' + coords.z + ']';
+
+    // this should select and process the features and tiles in DOM order
+    let featuresOrTiles = markup.querySelectorAll(
+      'map-feature:has(> map-geometry),map-tile' + currentTileSelector
+    );
+    for (let i = 0; i < featuresOrTiles.length; i++) {
+      if (featuresOrTiles.NODE_NAME === 'MAP-FEATURE') {
+        let feature = tileFeatures.createGeometry(
+          featuresOrTiles[i],
+          fallback.cs,
+          coords.z
+        );
+        for (let featureID in feature._layers) {
+          // layer is an M.Path instance
+          let layer = feature._layers[featureID];
+          FeatureRenderer.prototype._initPath(layer, false);
+          // does something to layer
+          layer._project(this._map, point([xOffset, yOffset]), coords.z);
+          // appends the guts of layer to g
+          FeatureRenderer.prototype._addPath(layer, g, false);
+          // updates the guts of layer that have already been appended to g
+          FeatureRenderer.prototype._updateFeature(layer);
+        }
+      } else {
+        // render the tile as an svg image element
+        let tile = featuresOrTiles[i];
+        let img = SVG.create('image');
+        img.href = tile.src;
+        g.appendChild(img);
       }
     }
     svg.setAttribute('width', tileSize.toString());
