@@ -84,16 +84,46 @@ export var TemplatedFeaturesOrTilesLayerGroup = LayerGroup.extend({
     };
     return events;
   },
-  // stub this in for now
   isVisible: function () {
-    return true;
+    let map = this._linkEl.getMapEl()._map;
+    let mapZoom = map.getZoom();
+    let mapBounds = Util.pixelToPCRSBounds(
+      map.getPixelBounds(),
+      mapZoom,
+      map.options.projection
+    );
+    return (
+      mapZoom <= this.zoomBounds.maxZoom &&
+      mapZoom >= this.zoomBounds.minZoom &&
+      this.extentBounds.overlaps(mapBounds)
+    );
   },
   _onMoveEnd: function () {
-    let bounds = this._map.getPixelBounds(
-        this._map.getCenter(),
-        this._map.getZoom()
-      ),
-      zoom = this._map.getZoom();
+    let history = this._map.options.mapEl._history;
+    let current = history[history.length - 1];
+    let previous = history[history.length - 2] ?? current;
+    let step = this._template.step;
+    let mapZoom = this._map.getZoom();
+    let steppedZoom = mapZoom;
+    //If zooming out from one step interval into a lower one or panning, set the stepped zoom
+    if (
+      (step !== '1' &&
+        (mapZoom + 1) % step === 0 &&
+        current.zoom === previous.zoom - 1) ||
+      current.zoom === previous.zoom ||
+      Math.floor(mapZoom / step) * step !==
+        Math.floor(previous.zoom / step) * step
+    ) {
+      steppedZoom = Math.floor(mapZoom / step) * step;
+    }
+    //No request needed if in a step interval (unless panning)
+    else if (mapZoom % this._template.step !== 0) return;
+
+    let scaleBounds = this._map.getPixelBounds(
+      this._map.getCenter(),
+      steppedZoom
+    );
+
     const getUrl = ((zoom, bounds) => {
       if (zoom === undefined) zoom = this._map.getZoom();
       if (bounds === undefined) bounds = this._map.getPixelBounds();
@@ -138,7 +168,7 @@ export var TemplatedFeaturesOrTilesLayerGroup = LayerGroup.extend({
       }
       return LeafletUtil.template(this._template.template, obj);
     }).bind(this);
-    var url = getUrl(zoom, bounds);
+    var url = getUrl(steppedZoom, scaleBounds);
     this._url = url;
 
     // do cleaning up for new request
@@ -147,7 +177,14 @@ export var TemplatedFeaturesOrTilesLayerGroup = LayerGroup.extend({
     if (this._linkEl.shadowRoot) {
       this._linkEl.shadowRoot.innerHTML = '';
     }
-    // tbd when required    this._removeCSS();
+    const removeCSS = (container) => {
+      const styleElements = container.querySelectorAll(
+        'link[rel=stylesheet],style'
+      );
+      styleElements.forEach((element) => element.remove());
+    };
+    removeCSS(this._container);
+
     //Leave the layers cleared if the layer is not visible
     if (!this.isVisible()) {
       this._url = '';

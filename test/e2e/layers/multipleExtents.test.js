@@ -77,7 +77,7 @@ test.describe('Adding and Removing Multiple Extents', () => {
       (div) => div.className
     );
     expect(alabama).toEqual(
-      'leaflet-layer mapml-features-container leaflet-pane mapml-vector-container'
+      'leaflet-layer mapml-features-tiles-container leaflet-pane mapml-vector-container'
     );
     const cbmt = await page.$eval(
       'div > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-overlay-pane > div > div:nth-child(4) > div',
@@ -171,7 +171,7 @@ test.describe('Adding and Removing Multiple Extents', () => {
     // alabama is a templated feature extent
     // the opacity of the alabama features is tested by the selector
     expect(alabama).toEqual(
-      'leaflet-layer mapml-features-container leaflet-pane mapml-vector-container'
+      'leaflet-layer mapml-features-tiles-container leaflet-pane mapml-vector-container'
     );
     // cbmt is a templated tile extent
     // the opacity of the cbmt tiles is tested by the selector
@@ -226,7 +226,7 @@ test.describe('Adding and Removing Multiple Extents', () => {
     );
     // alabama opacity is tested by the selector
     expect(alabamaClass).toEqual(
-      'leaflet-layer mapml-features-container leaflet-pane mapml-vector-container'
+      'leaflet-layer mapml-features-tiles-container leaflet-pane mapml-vector-container'
     );
     // cbmt opacity is tested by the selector
     expect(cbmtClass).toEqual('leaflet-layer mapml-templated-tile-container');
@@ -435,7 +435,7 @@ test.describe('Multiple Extents Reordering and ZIndices Tests', () => {
     expect(secondExtentInLayerControl).toEqual('alabama_feature');
     // alabama (a templated features layer) should have a higher zIndex than cbmt
     let alabamaIndex = await page.$eval(
-      'div.mapml-features-container',
+      'div.mapml-features-tiles-container',
       (div) => +div.closest('.mapml-extentlayer-container').style.zIndex
     );
     let cbmtIndex = await page.$eval(
@@ -481,7 +481,7 @@ test.describe('Multiple Extents Reordering and ZIndices Tests', () => {
     expect(secondExtentInLayerControl).toEqual('cbmt');
     // alabama (a templated features layer) should have a lower zIndex than cbmt
     alabamaIndex = await page.$eval(
-      'div.mapml-features-container',
+      'div.mapml-features-tiles-container',
       (div) => +div.closest('.mapml-extentlayer-container').style.zIndex
     );
     cbmtIndex = await page.$eval(
@@ -519,7 +519,7 @@ test.describe('Multiple Extents Reordering and ZIndices Tests', () => {
     expect(secondExtentInLayerControl).toEqual('cbmt');
 
     let alabama = await page.$$eval(
-      'div.mapml-features-container',
+      'div.mapml-features-tiles-container',
       (divs) => divs.length
     );
     expect(alabama).toEqual(1);
@@ -555,7 +555,7 @@ test.describe('Multiple Extents Reordering and ZIndices Tests', () => {
     expect(secondExtentInLayerControl).toEqual('cbmt');
 
     alabama = await page.$$eval(
-      'div.mapml-features-container',
+      'div.mapml-features-tiles-container',
       (divs) => divs.length
     );
     expect(alabama).toEqual(1);
@@ -598,7 +598,7 @@ test.describe('Multiple Extents Reordering and ZIndices Tests', () => {
 
     // alabama (a templated features layer) should now have a higher zIndex than cbmt
     let alabamaIndex = await page.$eval(
-      'div.mapml-features-container',
+      'div.mapml-features-tiles-container',
       (div) => +div.closest('.mapml-extentlayer-container').style.zIndex
     );
     let cbmtIndex = await page.$eval(

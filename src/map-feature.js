@@ -1,4 +1,4 @@
-import { bounds, point } from 'leaflet';
+import { bounds, point, extend } from 'leaflet';
 
 import { featureLayer } from './mapml/layers/FeatureLayer.js';
 import { featureRenderer } from './mapml/features/featureRenderer.js';
@@ -327,6 +327,8 @@ export class HTMLFeatureElement extends HTMLElement {
           }
         }
       });
+      extend(this._featureLayer.options, { _leafletLayer: this._featureLayer });
+
       this.addFeature(this._featureLayer);
 
       // add featureLayer to TemplatedFeaturesOrTilesLayerGroup of the parentElement
