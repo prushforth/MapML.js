@@ -12,7 +12,7 @@ module.exports = {
       entries: [
         {
           find: 'leaflet',
-          replacement: 'leaflet/dist/leaflet-src.esm.js'
+          replacement: 'leaflet/dist/leaflet-src.js'
         }
       ]
     }),

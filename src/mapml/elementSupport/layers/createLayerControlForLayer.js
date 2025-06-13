@@ -1,4 +1,4 @@
-import { DomUtil, SVG, DomEvent, stamp } from 'leaflet';
+import { DomUtil, SVG, DomEvent, Util as LeafletUtil } from 'leaflet';
 export var createLayerControlHTML = async function () {
   var fieldset = DomUtil.create('fieldset', 'mapml-layer-item'),
     input = DomUtil.create('input'),
@@ -148,10 +148,11 @@ export var createLayerControlHTML = async function () {
   } else {
     layerItemName.innerHTML = this._layer._title;
   }
-  layerItemName.id = 'mapml-layer-item-name-{' + stamp(layerItemName) + '}';
+  layerItemName.id =
+    'mapml-layer-item-name-{' + LeafletUtil.stamp(layerItemName) + '}';
   opacityControlSummary.innerText = mapEl.locale.lcOpacity;
   opacityControlSummary.id =
-    'mapml-layer-item-opacity-' + stamp(opacityControlSummary);
+    'mapml-layer-item-opacity-' + LeafletUtil.stamp(opacityControlSummary);
   opacityControl.appendChild(opacityControlSummary);
   opacityControl.appendChild(opacity);
   opacity.setAttribute('type', 'range');
@@ -161,7 +162,7 @@ export var createLayerControlHTML = async function () {
   opacity.setAttribute('step', '0.1');
   opacity.setAttribute(
     'aria-labelledby',
-    'mapml-layer-item-opacity-' + stamp(opacityControlSummary)
+    'mapml-layer-item-opacity-' + LeafletUtil.stamp(opacityControlSummary)
   );
 
   const changeOpacity = function (e) {

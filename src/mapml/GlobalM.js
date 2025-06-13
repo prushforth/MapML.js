@@ -1,4 +1,11 @@
-import { Map, CRS, bounds, latLngBounds, point, setOptions } from 'leaflet';
+import {
+  Map,
+  CRS,
+  Bounds,
+  LatLngBounds,
+  Point,
+  Util as LeafletUtil
+} from 'leaflet';
 import { QueryHandler } from './handlers/QueryHandler.js';
 import { ContextMenu } from './handlers/ContextMenu.js';
 import { Util } from './utils/Util.js';
@@ -34,7 +41,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
     '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ',
     {
       origin: [-180, +90],
-      bounds: bounds([
+      bounds: new Bounds([
         [-180, -90],
         [180, 90]
       ]),
@@ -68,7 +75,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
               )
           },
           bounds: (zoom) =>
-            bounds(
+            new Bounds(
               [
                 M.WGS84.options.crs.tcrs.horizontal.min,
                 M.WGS84.options.crs.tcrs.vertical.min
@@ -116,7 +123,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
             max: 90.0
           },
           get bounds() {
-            return latLngBounds(
+            return new LatLngBounds(
               [
                 M.WGS84.options.crs.gcrs.vertical.min,
                 M.WGS84.options.crs.gcrs.horizontal.min
@@ -139,7 +146,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
             min: 0,
             max: (map) => map.getSize().y
           },
-          bounds: (map) => bounds(point([0, 0]), map.getSize())
+          bounds: (map) => new Bounds(new Point([0, 0]), map.getSize())
         },
         tile: {
           horizontal: {
@@ -153,7 +160,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
             max: 256
           },
           get bounds() {
-            return bounds(
+            return new Bounds(
               [
                 M.WGS84.options.crs.tile.horizontal.min,
                 M.WGS84.options.crs.tile.vertical.min
@@ -185,7 +192,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
               )
           },
           bounds: (zoom) =>
-            bounds(
+            new Bounds(
               [
                 M.WGS84.options.crs.tilematrix.horizontal.min,
                 M.WGS84.options.crs.tilematrix.vertical.min
@@ -204,7 +211,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
     '+proj=lcc +lat_1=49 +lat_2=77 +lat_0=49 +lon_0=-95 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
     {
       origin: [-34655800, 39310000],
-      bounds: bounds([
+      bounds: new Bounds([
         [-34655800, -39000000],
         [10000000, 39310000]
       ]),
@@ -240,7 +247,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
               )
           },
           bounds: (zoom) =>
-            bounds(
+            new Bounds(
               [
                 M.CBMTILE.options.crs.tcrs.horizontal.min,
                 M.CBMTILE.options.crs.tcrs.vertical.min
@@ -288,7 +295,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
             max: 86.46
           },
           get bounds() {
-            return latLngBounds(
+            return new LatLngBounds(
               [
                 M.CBMTILE.options.crs.gcrs.vertical.min,
                 M.CBMTILE.options.crs.gcrs.horizontal.min
@@ -311,7 +318,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
             min: 0,
             max: (map) => map.getSize().y
           },
-          bounds: (map) => bounds(point([0, 0]), map.getSize())
+          bounds: (map) => new Bounds(new Point([0, 0]), map.getSize())
         },
         tile: {
           horizontal: {
@@ -325,7 +332,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
             max: 256
           },
           get bounds() {
-            return bounds(
+            return new Bounds(
               [
                 M.CBMTILE.options.crs.tile.horizontal.min,
                 M.CBMTILE.options.crs.tile.vertical.min
@@ -357,7 +364,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
               )
           },
           bounds: (zoom) =>
-            bounds(
+            new Bounds(
               [0, 0],
               [
                 M.CBMTILE.options.crs.tilematrix.horizontal.max(zoom),
@@ -373,7 +380,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
     '+proj=stere +lat_0=90 +lat_ts=50 +lon_0=-150 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m +no_defs',
     {
       origin: [-2.8567784109255e7, 3.2567784109255e7],
-      bounds: bounds([
+      bounds: new Bounds([
         [-28567784.109254867, -28567784.109254755],
         [32567784.109255023, 32567784.10925506]
       ]),
@@ -405,7 +412,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
               )
           },
           bounds: (zoom) =>
-            bounds(
+            new Bounds(
               [
                 M.APSTILE.options.crs.tcrs.horizontal.min,
                 M.APSTILE.options.crs.tcrs.vertical.min
@@ -453,7 +460,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
             max: 90.0
           },
           get bounds() {
-            return latLngBounds(
+            return new LatLngBounds(
               [
                 M.APSTILE.options.crs.gcrs.vertical.min,
                 M.APSTILE.options.crs.gcrs.horizontal.min
@@ -476,7 +483,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
             min: 0,
             max: (map) => map.getSize().y
           },
-          bounds: (map) => bounds(point([0, 0]), map.getSize())
+          bounds: (map) => new Bounds(new Point([0, 0]), map.getSize())
         },
         tile: {
           horizontal: {
@@ -490,7 +497,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
             max: 256
           },
           get bounds() {
-            return bounds(
+            return new Bounds(
               [
                 M.APSTILE.options.crs.tile.horizontal.min,
                 M.APSTILE.options.crs.tile.vertical.min
@@ -522,7 +529,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
               )
           },
           bounds: (zoom) =>
-            bounds(
+            new Bounds(
               [0, 0],
               [
                 M.APSTILE.options.crs.tilematrix.horizontal.max(zoom),
@@ -534,9 +541,9 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
     }
   );
   M.OSMTILE = CRS.EPSG3857;
-  setOptions(M.OSMTILE, {
+  LeafletUtil.setOptions(M.OSMTILE, {
     origin: [-20037508.342787, 20037508.342787],
-    bounds: bounds([
+    bounds: new Bounds([
       [-20037508.342787, -20037508.342787],
       [20037508.342787, 20037508.342787]
     ]),
@@ -570,7 +577,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
             )
         },
         bounds: (zoom) =>
-          bounds(
+          new Bounds(
             [
               M.OSMTILE.options.crs.tcrs.horizontal.min,
               M.OSMTILE.options.crs.tcrs.vertical.min
@@ -624,7 +631,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
           }
         },
         get bounds() {
-          return latLngBounds(
+          return new LatLngBounds(
             [
               M.OSMTILE.options.crs.gcrs.vertical.min,
               M.OSMTILE.options.crs.gcrs.horizontal.min
@@ -647,7 +654,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
           min: 0,
           max: (map) => map.getSize().y
         },
-        bounds: (map) => bounds(point([0, 0]), map.getSize())
+        bounds: (map) => new Bounds(new Point([0, 0]), map.getSize())
       },
       tile: {
         horizontal: {
@@ -661,7 +668,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
           max: 256
         },
         get bounds() {
-          return bounds(
+          return new Bounds(
             [
               M.OSMTILE.options.crs.tile.horizontal.min,
               M.OSMTILE.options.crs.tile.vertical.min
@@ -693,7 +700,7 @@ import Proj from 'proj4leaflet/src/proj4leaflet.js';
             )
         },
         bounds: (zoom) =>
-          bounds(
+          new Bounds(
             [0, 0],
             [
               M.OSMTILE.options.crs.tilematrix.horizontal.max(zoom),

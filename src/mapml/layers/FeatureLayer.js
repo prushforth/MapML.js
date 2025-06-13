@@ -1,7 +1,7 @@
 import {
   FeatureGroup,
   DomUtil,
-  bounds,
+  Bounds,
   SVG,
   Util as LeafletUtil,
   Browser
@@ -122,7 +122,7 @@ export var FeatureLayer = FeatureGroup.extend({
     if (!this.options.layerBounds) {
       this.layerBounds = this.layerBounds
         ? this.layerBounds.extend(layerToAdd.layerBounds)
-        : bounds(layerToAdd.layerBounds.min, layerToAdd.layerBounds.max);
+        : new Bounds(layerToAdd.layerBounds.min, layerToAdd.layerBounds.max);
 
       if (this.zoomBounds) {
         if (layerToAdd.zoomBounds.minZoom < this.zoomBounds.minZoom)
@@ -187,7 +187,10 @@ export var FeatureLayer = FeatureGroup.extend({
         if (layerBounds) {
           layerBounds.extend(layer.layerBounds);
         } else {
-          layerBounds = bounds(layer.layerBounds.min, layer.layerBounds.max);
+          layerBounds = new Bounds(
+            layer.layerBounds.min,
+            layer.layerBounds.max
+          );
         }
         if (zoomBounds) {
           if (layer.zoomBounds.minZoom < zoomBounds.minZoom)

@@ -1,4 +1,4 @@
-import { FeatureGroup, LayerGroup, DomUtil, DomEvent, bounds } from 'leaflet';
+import { FeatureGroup, LayerGroup, DomUtil, DomEvent, Bounds } from 'leaflet';
 
 import { Path, path } from './path.js';
 
@@ -248,7 +248,7 @@ export var Geometry = FeatureGroup.extend({
     for (let l in this._layers) {
       let layer = this._layers[l];
       if (!bnds) {
-        bnds = bounds(layer.getPCRSCenter(), layer.getPCRSCenter());
+        bnds = new Bounds(layer.getPCRSCenter(), layer.getPCRSCenter());
       } else {
         bnds.extend(layer.getPCRSCenter());
       }

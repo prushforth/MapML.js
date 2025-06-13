@@ -3,9 +3,8 @@ import {
   Browser,
   DomUtil,
   DomEvent,
-  point,
-  stamp,
-  extend
+  Point,
+  Util as LeafletUtil
 } from 'leaflet';
 import { Util } from '../utils/Util.js';
 /*
@@ -657,7 +656,7 @@ export var ContextMenu = Handler.extend({
       tileSize = mapEl._map.options.crs.options.crs.tile.bounds.max.x,
       pointX = pt0.x % tileSize,
       pointY = pt0.y % tileSize,
-      pt = point(pointX, pointY).trunc(),
+      pt = new Point(pointX, pointY).trunc(),
       projection = mapEl.projection,
       feature = this.contextMenu.t.content.firstElementChild.cloneNode(true),
       caption = feature.querySelector('map-featurecaption'),
@@ -769,7 +768,7 @@ export var ContextMenu = Handler.extend({
     }
 
     return {
-      id: stamp(el),
+      id: LeafletUtil.stamp(el),
       el: el,
       callback: callback
     };
@@ -784,7 +783,7 @@ export var ContextMenu = Handler.extend({
     );
 
     return {
-      id: stamp(el),
+      id: LeafletUtil.stamp(el),
       el: el
     };
   },
@@ -910,7 +909,7 @@ export var ContextMenu = Handler.extend({
 
   _showAtPoint: function (pt, data, container) {
     if (this._items.length) {
-      let event = extend(data || {}, { contextmenu: this });
+      let event = LeafletUtil.extend(data || {}, { contextmenu: this });
 
       this._showLocation = {
         containerPoint: pt
@@ -951,7 +950,7 @@ export var ContextMenu = Handler.extend({
       anchor;
 
     if (this._map.options.contextmenuAnchor) {
-      anchor = point(this._map.options.contextmenuAnchor);
+      anchor = new Point(this._map.options.contextmenuAnchor);
       pt = pt.add(anchor);
     }
 

@@ -12,4 +12,3 @@
 .idea/
 *.iml
 test.html
-**/.claude/settings.local.json

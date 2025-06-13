@@ -1,4 +1,4 @@
-import { bounds, point, extend } from 'leaflet';
+import { Bounds, Point, Util as LeafletUtil } from 'leaflet';
 
 import { featureLayer } from './mapml/layers/FeatureLayer.js';
 import { featureRenderer } from './mapml/features/featureRenderer.js';
@@ -329,7 +329,7 @@ export class HTMLFeatureElement extends HTMLElement {
       // this is used by DebugOverlay testing "multipleExtents.test.js
       // but do we really need or want each feature to have the bounds of the
       // map link?  tbd
-      extend(this._featureLayer.options, {
+      LeafletUtil.extend(this._featureLayer.options, {
         _leafletLayer: Object.assign(this._featureLayer, {
           _layerEl: this.getLayerEl()
         })
@@ -433,10 +433,10 @@ export class HTMLFeatureElement extends HTMLElement {
             bboxExtent = _updateExtent(shape, coord[i], bboxExtent);
           }
         }
-        let topLeft = point(bboxExtent[0], bboxExtent[1]);
-        let bottomRight = point(bboxExtent[2], bboxExtent[3]);
+        let topLeft = new Point(bboxExtent[0], bboxExtent[1]);
+        let bottomRight = new Point(bboxExtent[2], bboxExtent[3]);
         let pcrsBound = Util.boundsToPCRSBounds(
-          bounds(topLeft, bottomRight),
+          new Bounds(topLeft, bottomRight),
           zoom,
           map.options.projection,
           cs
@@ -455,7 +455,7 @@ export class HTMLFeatureElement extends HTMLElement {
               M[projection].scale(+this.zoom || maxZoom)
             );
           pcrsBound = Util.pixelToPCRSBounds(
-            bounds(pixel.subtract(tileCenter), pixel.add(tileCenter)),
+            new Bounds(pixel.subtract(tileCenter), pixel.add(tileCenter)),
             this.zoom || maxZoom,
             projection
           );
@@ -511,9 +511,9 @@ export class HTMLFeatureElement extends HTMLElement {
   getZoomToZoom() {
     let tL = this.extent.topLeft.pcrs,
       bR = this.extent.bottomRight.pcrs,
-      bound = bounds(
-        point(tL.horizontal, tL.vertical),
-        point(bR.horizontal, bR.vertical)
+      bound = new Bounds(
+        new Point(tL.horizontal, tL.vertical),
+        new Point(bR.horizontal, bR.vertical)
       );
     let projection = this.getMapEl()._map.options.projection,
       layerZoomBounds = this.getLayerEl().extent.zoom,
@@ -704,9 +704,9 @@ export class HTMLFeatureElement extends HTMLElement {
       map = this.getMapEl()._map;
     let tL = extent.topLeft.pcrs,
       bR = extent.bottomRight.pcrs,
-      bound = bounds(
-        point(tL.horizontal, tL.vertical),
-        point(bR.horizontal, bR.vertical)
+      bound = new Bounds(
+        new Point(tL.horizontal, tL.vertical),
+        new Point(bR.horizontal, bR.vertical)
       ),
       center = map.options.crs.unproject(bound.getCenter(true));
     map.setView(center, this.getZoomToZoom(), { animate: false });

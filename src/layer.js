@@ -1,4 +1,4 @@
-import { setOptions, DomUtil, bounds, point } from 'leaflet';
+import { Util as LeafletUtil, DomUtil, Bounds, Point } from 'leaflet';
 
 import { Util } from './mapml/utils/Util.js';
 import { MapMLLayer, mapMLLayer } from './mapml/layers/MapMLLayer.js';
@@ -590,7 +590,7 @@ export class BaseLayerElement extends HTMLElement {
     var proj = this.parentNode.projection
       ? this.parentNode.projection
       : 'OSMTILE';
-    setOptions(this._layer, {
+    LeafletUtil.setOptions(this._layer, {
       zIndex: position,
       mapprojection: proj,
       opacity: window.getComputedStyle(this).opacity
@@ -804,9 +804,9 @@ export class BaseLayerElement extends HTMLElement {
         extent = this.extent,
         tL = extent.topLeft.pcrs,
         bR = extent.bottomRight.pcrs,
-        layerBounds = bounds(
-          point(tL.horizontal, tL.vertical),
-          point(bR.horizontal, bR.vertical)
+        layerBounds = new Bounds(
+          new Point(tL.horizontal, tL.vertical),
+          new Point(bR.horizontal, bR.vertical)
         ),
         center = map.options.crs.unproject(layerBounds.getCenter(true));
 

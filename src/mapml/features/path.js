@@ -1,9 +1,9 @@
 import {
   Path as LeafletPath,
-  setOptions,
+  Util as LeafletUtil,
   DomEvent,
-  point,
-  bounds
+  Point,
+  Bounds
 } from 'leaflet';
 
 import { Util } from '../utils/Util.js';
@@ -41,7 +41,7 @@ export var Path = LeafletPath.extend({
 
     if (options.wrappers.length > 0)
       options = Object.assign(this._convertWrappers(options.wrappers), options);
-    setOptions(this, options);
+    LeafletUtil.setOptions(this, options);
 
     this.group = this.options.group;
     this.options.interactive =
@@ -219,7 +219,7 @@ export var Path = LeafletPath.extend({
       let interm = [];
       for (let p of sub.points) {
         let conv = map.options.crs.transformation.transform(p, scale);
-        interm.push(point(conv.x, conv.y)._subtract(origin).round());
+        interm.push(new Point(conv.x, conv.y)._subtract(origin).round());
       }
       parts.push(interm);
     }
@@ -403,13 +403,13 @@ export var Path = LeafletPath.extend({
       let numPair = [];
       p.split(/\s+/gim).forEach(Util._parseNumber, numPair);
       let pt = Util.pointToPCRSPoint(
-        point(numPair),
+        new Point(numPair),
         this.options.zoom,
         this.options.projection,
         this.options.nativeCS
       );
       local.push(pt);
-      bnds = bnds ? bnds.extend(pt) : bounds(pt, pt);
+      bnds = bnds ? bnds.extend(pt) : new Bounds(pt, pt);
     }
     if (this._bounds) {
       this._bounds.extend(bnds.min);

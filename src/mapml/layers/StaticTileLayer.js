@@ -1,14 +1,14 @@
-import { GridLayer, setOptions, extend, point, bounds } from 'leaflet';
+import { GridLayer, Util as LeafletUtil, Point, Bounds } from 'leaflet';
 import { Util } from '../utils/Util.js';
 
 export var StaticTileLayer = GridLayer.extend({
   initialize: function (options) {
-    setOptions(this, options);
+    LeafletUtil.setOptions(this, options);
     this.zoomBounds = this._getZoomBounds(
       options.tileContainer,
       options.maxZoomBound
     );
-    extend(this.options, this.zoomBounds);
+    LeafletUtil.extend(this.options, this.zoomBounds);
     this._groups = this._groupTiles(
       this.options.tileContainer.getElementsByTagName('map-tile')
     );
@@ -100,14 +100,14 @@ export var StaticTileLayer = GridLayer.extend({
       pixelCoords.y = +sCoords[1] * tileSize;
       pixelCoords.z = +sCoords[2]; //+String same as parseInt(String)
       if (sCoords[2] in layerBounds) {
-        layerBounds[sCoords[2]].extend(point(pixelCoords.x, pixelCoords.y));
+        layerBounds[sCoords[2]].extend(new Point(pixelCoords.x, pixelCoords.y));
         layerBounds[sCoords[2]].extend(
-          point(pixelCoords.x + tileSize, pixelCoords.y + tileSize)
+          new Point(pixelCoords.x + tileSize, pixelCoords.y + tileSize)
         );
       } else {
         layerBounds[sCoords[2]] = bounds(
-          point(pixelCoords.x, pixelCoords.y),
-          point(pixelCoords.x + tileSize, pixelCoords.y + tileSize)
+          new Point(pixelCoords.x, pixelCoords.y),
+          new Point(pixelCoords.x + tileSize, pixelCoords.y + tileSize)
         );
       }
     }

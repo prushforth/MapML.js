@@ -1,11 +1,11 @@
 import {
   LayerGroup,
-  setOptions,
+  Util as LeafletUtil,
   DomUtil,
   DomEvent,
-  bounds,
-  latLng,
-  latLngBounds
+  Bounds,
+  LatLng,
+  LatLngBounds
 } from 'leaflet';
 import { Util } from '../utils/Util.js';
 import { featureLayer } from './FeatureLayer.js';
@@ -28,7 +28,7 @@ export var MapMLLayer = LayerGroup.extend({
     }
     this._layerEl = layerEl;
     this._content = layerEl.src ? layerEl.shadowRoot : layerEl;
-    setOptions(this, options);
+    LeafletUtil.setOptions(this, options);
     this._container = DomUtil.create('div', 'leaflet-layer');
     this.changeOpacity(this.options.opacity);
     DomUtil.addClass(this._container, 'mapml-layer');
@@ -142,7 +142,7 @@ export var MapMLLayer = LayerGroup.extend({
           if (mapExtents[i]._extentLayer.bounds) {
             let mapExtentLayer = mapExtents[i]._extentLayer;
             if (!bnds) {
-              bnds = bounds(
+              bnds = new Bounds(
                 mapExtentLayer.bounds.min,
                 mapExtentLayer.bounds.max
               );
@@ -210,7 +210,7 @@ export var MapMLLayer = LayerGroup.extend({
       this.bounds = bnds;
     } else {
       let projectionBounds = M[this.options.projection].options.bounds;
-      this.bounds = bounds(projectionBounds.min, projectionBounds.max);
+      this.bounds = new Bounds(projectionBounds.min, projectionBounds.max);
     }
     // we could get here and zoomBounds might still not be defined (empty layer)
     if (!zoomBounds) zoomBounds = {};
@@ -359,7 +359,7 @@ export var MapMLLayer = LayerGroup.extend({
           licenseTitle +
           '</a>';
       }
-      setOptions(layer, { attribution: attText });
+      LeafletUtil.setOptions(layer, { attribution: attText });
       var legendLink = mapml.querySelector('map-link[rel=legend]');
       if (legendLink) {
         layer._legendUrl = legendLink.getAttribute('href');
@@ -628,9 +628,9 @@ export var MapMLLayer = LayerGroup.extend({
       // calculate zoom parameters
       let tL = featureEl.extent.topLeft.gcrs,
         bR = featureEl.extent.bottomRight.gcrs,
-        center = latLngBounds(
-          latLng(tL.horizontal, tL.vertical),
-          latLng(bR.horizontal, bR.vertical)
+        center = new LatLngBounds(
+          new LatLng(tL.horizontal, tL.vertical),
+          new LatLng(bR.horizontal, bR.vertical)
         ).getCenter(true);
 
       // construct zoom link

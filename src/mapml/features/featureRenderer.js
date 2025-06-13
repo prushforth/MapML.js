@@ -1,4 +1,4 @@
-import { SVG, DomUtil, stamp } from 'leaflet';
+import { SVG, DomUtil, Util as LeafletUtil } from 'leaflet';
 
 import { Util } from '../utils/Util.js';
 /**
@@ -69,7 +69,7 @@ export var FeatureRenderer = SVG.extend({
       this._updateStyle(layer);
     }
     if (stampLayer) {
-      let s = stamp(layer);
+      let s = LeafletUtil.stamp(layer);
       this._layers[s] = layer;
     }
   },
@@ -176,7 +176,7 @@ export var FeatureRenderer = SVG.extend({
     if (layer.outlinePath) DomUtil.remove(layer.outlinePath);
     layer.removeInteractiveTarget(layer.group);
     DomUtil.remove(layer.group);
-    delete this._layers[stamp(layer)];
+    delete this._layers[LeafletUtil.stamp(layer)];
   },
 
   /**

@@ -2,7 +2,6 @@ import {
   Handler,
   DomEvent,
   DomUtil,
-  setOptions,
   Bounds,
   Util as LeafletUtil
 } from 'leaflet';
@@ -14,7 +13,7 @@ export var QueryHandler = Handler.extend({
     // get a reference to the actual <map> element, so we can
     // use its layers property to iterate the layers from top down
     // evaluating if they are 'on the map' (enabled)
-    setOptions(this, { mapEl: this._map.options.mapEl });
+    LeafletUtil.setOptions(this, { mapEl: this._map.options.mapEl });
     DomEvent.on(this._map, 'click', this._queryTopLayer, this);
     DomEvent.on(this._map, 'keypress', this._queryTopLayerAtMapCenter, this);
   },

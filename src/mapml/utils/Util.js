@@ -1,6 +1,6 @@
 /* global M */
 
-import { bounds, latLngBounds, point, latLng } from 'leaflet';
+import { Bounds, LatLngBounds, Point, LatLng } from 'leaflet';
 
 import proj4 from 'proj4';
 
@@ -93,17 +93,23 @@ export const Util = {
   extentToBounds(extent, crs) {
     switch (crs.toUpperCase()) {
       case 'PCRS':
-        return bounds(
-          point(extent.topLeft.pcrs.horizontal, extent.topLeft.pcrs.vertical),
-          point(
+        return new Bounds(
+          new Point(
+            extent.topLeft.pcrs.horizontal,
+            extent.topLeft.pcrs.vertical
+          ),
+          new Point(
             extent.bottomRight.pcrs.horizontal,
             extent.bottomRight.pcrs.vertical
           )
         );
       case 'GCRS':
-        return latLngBounds(
-          latLng(extent.topLeft.gcrs.vertical, extent.topLeft.gcrs.horizontal),
-          latLng(
+        return new LatLngBounds(
+          new LatLng(
+            extent.topLeft.gcrs.vertical,
+            extent.topLeft.gcrs.horizontal
+          ),
+          new LatLng(
             extent.bottomRight.gcrs.vertical,
             extent.bottomRight.gcrs.horizontal
           )
@@ -215,18 +221,18 @@ export const Util = {
             pcrsBounds.max,
             projection.scale(+zoom)
           );
-        if (cs.toUpperCase() === 'TCRS') return bounds(minPixel, maxPixel);
+        if (cs.toUpperCase() === 'TCRS') return new Bounds(minPixel, maxPixel);
         let tileSize = projection.options.crs.tile.bounds.max.x;
-        return bounds(
-          point(minPixel.x / tileSize, minPixel.y / tileSize),
-          point(maxPixel.x / tileSize, maxPixel.y / tileSize)
+        return new Bounds(
+          new Point(minPixel.x / tileSize, minPixel.y / tileSize),
+          new Point(maxPixel.x / tileSize, maxPixel.y / tileSize)
         );
       case 'GCRS':
         let minGCRS = projection.unproject(pcrsBounds.min),
           maxGCRS = projection.unproject(pcrsBounds.max);
-        return bounds(
-          point(minGCRS.lng, minGCRS.lat),
-          point(maxGCRS.lng, maxGCRS.lat)
+        return new Bounds(
+          new Point(minGCRS.lng, minGCRS.lat),
+          new Point(maxGCRS.lng, maxGCRS.lat)
         );
       default:
         return undefined;
@@ -250,7 +256,7 @@ export const Util = {
     switch (cs.toUpperCase()) {
       case 'TILEMATRIX':
         return Util.pixelToPCRSPoint(
-          point(pt.x * tileSize, pt.y * tileSize),
+          new Point(pt.x * tileSize, pt.y * tileSize),
           zoom,
           projection
         );
@@ -259,7 +265,7 @@ export const Util = {
       case 'TCRS' || 'TILE':
         return Util.pixelToPCRSPoint(pt, zoom, projection);
       case 'GCRS':
-        return projection.project(latLng(pt.y, pt.x));
+        return projection.project(new LatLng(pt.y, pt.x));
       default:
         return undefined;
     }
@@ -294,7 +300,7 @@ export const Util = {
     )
       return undefined;
     projection = typeof projection === 'string' ? M[projection] : projection;
-    return bounds(
+    return new Bounds(
       Util.pointToPCRSPoint(bnds.min, zoom, projection, cs),
       Util.pointToPCRSPoint(bnds.max, zoom, projection, cs)
     );
@@ -313,7 +319,7 @@ export const Util = {
     )
       return undefined;
     projection = typeof projection === 'string' ? M[projection] : projection;
-    return bounds(
+    return new Bounds(
       Util.pixelToPCRSPoint(bnds.min, zoom, projection),
       Util.pixelToPCRSPoint(bnds.max, zoom, projection)
     );
@@ -494,9 +500,9 @@ export const Util = {
         );
       let axes = Util.csToAxes(cs);
       return Util.boundsToPCRSBounds(
-        bounds(
-          point(+meta[`top-left-${axes[0]}`], +meta[`top-left-${axes[1]}`]),
-          point(
+        new Bounds(
+          new Point(+meta[`top-left-${axes[0]}`], +meta[`top-left-${axes[1]}`]),
+          new Point(
             +meta[`bottom-right-${axes[0]}`],
             +meta[`bottom-right-${axes[1]}`]
           )
@@ -1515,7 +1521,7 @@ export const Util = {
         map.options.projection
       );
 
-    let mapPCRS = bounds(mapTlPCRSNew, mapBrPCRSNew),
+    let mapPCRS = new Bounds(mapTlPCRSNew, mapBrPCRSNew),
       zOffset = mapPCRS.contains(bound) ? 1 : -1;
 
     while (
@@ -1542,7 +1548,7 @@ export const Util = {
         map.options.projection
       );
 
-      mapPCRS = bounds(mapTlPCRSNew, mapBrPCRSNew);
+      mapPCRS = new Bounds(mapTlPCRSNew, mapBrPCRSNew);
     }
 
     if (
