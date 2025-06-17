@@ -1,4 +1,4 @@
-import { DomUtil, SVG, DomEvent, stamp } from 'leaflet';
+import { DomUtil, SVG, DomEvent, Util as LeafletUtil } from 'leaflet';
 import { Util } from '../../utils/Util.js';
 
 export var createLayerControlExtentHTML = function () {
@@ -103,14 +103,14 @@ export var createLayerControlExtentHTML = function () {
   extentNameIcon.appendChild(svgExtentControlIcon);
   extentOpacitySummary.innerText = mapEl.locale.lcOpacity;
   extentOpacitySummary.id =
-    'mapml-extent-item-opacity-' + stamp(extentOpacitySummary);
+    'mapml-extent-item-opacity-' + LeafletUtil.stamp(extentOpacitySummary);
   opacity.setAttribute('type', 'range');
   opacity.setAttribute('min', '0');
   opacity.setAttribute('max', '1.0');
   opacity.setAttribute('step', '0.1');
   opacity.setAttribute(
     'aria-labelledby',
-    'mapml-extent-item-opacity-' + stamp(extentOpacitySummary)
+    'mapml-extent-item-opacity-' + LeafletUtil.stamp(extentOpacitySummary)
   );
   const changeOpacity = function (e) {
     if (e && e.target && e.target.value >= 0 && e.target.value <= 1.0) {
@@ -137,7 +137,7 @@ export var createLayerControlExtentHTML = function () {
   this._layerControlCheckbox = input;
   input.addEventListener('change', changeCheck.bind(this));
   extentItemNameSpan.id =
-    'mapml-extent-item-name-{' + stamp(extentItemNameSpan) + '}';
+    'mapml-extent-item-name-{' + LeafletUtil.stamp(extentItemNameSpan) + '}';
   extent.setAttribute('aria-labelledby', extentItemNameSpan.id);
   extentItemNameSpan.extent = this;
 

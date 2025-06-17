@@ -1,4 +1,4 @@
-import { Layer, DomUtil, point, bounds } from 'leaflet';
+import { Layer, DomUtil, Point, Bounds } from 'leaflet';
 import { Util } from '../utils/Util.js';
 
 export var FeatureIndexOverlay = Layer.extend({
@@ -51,9 +51,9 @@ export var FeatureIndexOverlay = Layer.extend({
     }
     let w = (wRatio * reticleDimension) / 2;
     let h = (hRatio * reticleDimension) / 2;
-    let minPoint = point(center.x - w, center.y + h);
-    let maxPoint = point(center.x + w, center.y - h);
-    let b = bounds(minPoint, maxPoint);
+    let minPoint = new Point(center.x - w, center.y + h);
+    let maxPoint = new Point(center.x + w, center.y - h);
+    let b = new Bounds(minPoint, maxPoint);
     return Util.pixelToPCRSBounds(
       b,
       this._map.getZoom(),
@@ -87,13 +87,13 @@ export var FeatureIndexOverlay = Layer.extend({
     keys.forEach((i) => {
       let layer = features[i].layer;
       let layers = features[i].layer._layers;
-      let b = bounds();
+      let b = new Bounds();
 
       if (layers) {
         let keys = Object.keys(layers);
         keys.forEach((j) => {
           if (!b)
-            b = bounds(
+            b = new Bounds(
               layer._layers[j]._bounds.min,
               layer._layers[j]._bounds.max
             );
@@ -101,7 +101,7 @@ export var FeatureIndexOverlay = Layer.extend({
           b.extend(layer._layers[j]._bounds.max);
         });
       } else if (layer._bounds) {
-        b = bounds(layer._bounds.min, layer._bounds.max);
+        b = new Bounds(layer._bounds.min, layer._bounds.max);
       }
 
       if (featureIndexBounds.overlaps(b)) {

@@ -1,10 +1,4 @@
-import {
-  LayerGroup,
-  DomUtil,
-  extend,
-  setOptions,
-  Util as LeafletUtil
-} from 'leaflet';
+import { LayerGroup, DomUtil, Util as LeafletUtil } from 'leaflet';
 import { Util } from '../utils/Util.js';
 import { mapTileLayer } from './MapTileLayer.js';
 import { featureLayer } from './FeatureLayer.js';
@@ -44,7 +38,10 @@ export var TemplatedFeaturesOrTilesLayerGroup = LayerGroup.extend({
     delete options.extentBounds;
 
     this._linkEl = options.linkEl;
-    setOptions(this, extend(options, this._setUpTemplateVars(template)));
+    LeafletUtil.setOptions(
+      this,
+      LeafletUtil.extend(options, this._setUpTemplateVars(template))
+    );
   },
   /**
    * @override

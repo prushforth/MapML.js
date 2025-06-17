@@ -1,4 +1,4 @@
-import { Layer, GridLayer, DomUtil, extend, setOptions } from 'leaflet';
+import { Layer, GridLayer, DomUtil, Util as LeafletUtil } from 'leaflet';
 // window.L as defined below is required for protomaps-leaflet <= 4.0.1
 const Leaflet = { GridLayer, DomUtil };
 window.L = Leaflet;
@@ -37,17 +37,21 @@ export var TemplatedPMTilesLayer = Layer.extend({
 
     let paintRules = options?.pmtilesRules?.get(this._template.template);
     if (paintRules?.rules) {
-      extend(this._pmtilesOptions, {
+      LeafletUtil.extend(this._pmtilesOptions, {
         paintRules: paintRules.rules.PAINT_RULES
       });
-      extend(this._pmtilesOptions, {
+      LeafletUtil.extend(this._pmtilesOptions, {
         labelRules: paintRules.rules.LABEL_RULES
       });
       if (paintRules.sheet) {
-        extend(this._pmtilesOptions, { tasks: [paintRules.sheet.load()] });
+        LeafletUtil.extend(this._pmtilesOptions, {
+          tasks: [paintRules.sheet.load()]
+        });
       }
     } else if (paintRules?.theme?.theme) {
-      extend(this._pmtilesOptions, { theme: paintRules.theme.theme });
+      LeafletUtil.extend(this._pmtilesOptions, {
+        theme: paintRules.theme.theme
+      });
     } else {
       console.warn(
         'pmtiles symbolizer rules or theme not found for map-link@tref ->  ' +
@@ -60,7 +64,7 @@ export var TemplatedPMTilesLayer = Layer.extend({
     delete options.zoomBounds;
     delete options.extentBounds;
     this._linkEl = options.linkEl;
-    setOptions(this, options);
+    LeafletUtil.setOptions(this, options);
   },
   /**
    *

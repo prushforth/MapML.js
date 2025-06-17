@@ -1,4 +1,4 @@
-import { Control, DomEvent, DomUtil, setOptions, stamp } from 'leaflet';
+import { Control, DomEvent, DomUtil, Util as LeafletUtil } from 'leaflet';
 
 // Refactored LayerControl to remove global L dependency
 export var LayerControl = Control.Layers.extend({
@@ -14,10 +14,10 @@ export var LayerControl = Control.Layers.extend({
     }
   },
   initialize: function (overlays, options) {
-    setOptions(this, options);
+    LeafletUtil.setOptions(this, options);
 
     // the _layers array contains objects like {layer: layer, name: "name", overlay: true}
-    // the array index is the id of the layer returned by stamp(layer) which I guess is a unique hash
+    // the array index is the id of the layer returned by LeafletUtil.stamp(layer) which I guess is a unique hash
     this._layerControlInputs = [];
     this._layers = [];
     this._lastZIndex = 0;
@@ -154,7 +154,7 @@ export var LayerControl = Control.Layers.extend({
     );
 
     this._layerControlInputs.push(obj.input);
-    obj.input.layerId = stamp(obj.layer);
+    obj.input.layerId = LeafletUtil.stamp(obj.layer);
 
     this._overlaysList.appendChild(layercontrols);
     return layercontrols;

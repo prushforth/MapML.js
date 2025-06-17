@@ -1,11 +1,4 @@
-import {
-  Layer,
-  DomUtil,
-  extend,
-  setOptions,
-  point,
-  Util as LeafletUtil
-} from 'leaflet';
+import { Layer, DomUtil, Point, Util as LeafletUtil } from 'leaflet';
 
 import { Util } from '../utils/Util.js';
 import { ImageLayer, imageLayer } from './ImageLayer.js';
@@ -21,7 +14,10 @@ export var TemplatedImageLayer = Layer.extend({
     // get rid of unused duplicate information that can be confusing
     delete options.zoomBounds;
     delete options.extentBounds;
-    setOptions(this, extend(options, this._setUpExtentTemplateVars(template)));
+    LeafletUtil.setOptions(
+      this,
+      LeafletUtil.extend(options, this._setUpExtentTemplateVars(template))
+    );
   },
   getEvents: function () {
     var events = {
@@ -127,14 +123,14 @@ export var TemplatedImageLayer = Layer.extend({
       (mapZoom + 1) % step === 0 &&
       current.zoom === previous.zoom - 1
     ) {
-      this._addImage(bounds, steppedZoom, point(0, 0));
+      this._addImage(bounds, steppedZoom, new Point(0, 0));
       this._scaleImage(bounds, mapZoom);
       //Zooming or panning within a step increment
     } else if (e && mapZoom % step !== 0) {
       this._imageOverlay._overlayToRemove = this._imageOverlay._url;
       if (current.zoom !== previous.zoom) {
         //Zoomed from within one step increment into another
-        this._addImage(bounds, steppedZoom, point(0, 0));
+        this._addImage(bounds, steppedZoom, new Point(0, 0));
         this._pixelOrigins[steppedZoom] = bounds.min;
         this._scaleImage(bounds, mapZoom);
       } else {

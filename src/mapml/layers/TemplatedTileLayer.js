@@ -1,15 +1,11 @@
 import {
   TileLayer,
   DomUtil,
-  extend,
-  bind,
-  setOptions,
   SVG,
-  point,
   Point,
   Util as LeafletUtil,
   Browser,
-  bounds,
+  Bounds,
   GridLayer
 } from 'leaflet';
 
@@ -36,8 +32,8 @@ export var TemplatedTileLayer = TileLayer.extend({
     this.zoomBounds = Object.assign({}, options.zoomBounds);
     // unpack object to this.options.minZ... etc where minZ... are the props
     // of the this.zoomBounds object:
-    extend(options, this.zoomBounds);
-    setOptions(this, options);
+    LeafletUtil.extend(options, this.zoomBounds);
+    LeafletUtil.setOptions(this, options);
     // _setup call here relies on this.options.minZ.. etc
     this._setUpTileTemplateVars(template);
     this._linkEl = options.linkEl;
@@ -53,7 +49,7 @@ export var TemplatedTileLayer = TileLayer.extend({
     TileLayer.prototype.initialize.call(
       this,
       template.template,
-      extend(options, { pane: this.options.pane })
+      LeafletUtil.extend(options, { pane: this.options.pane })
     );
   },
   onAdd: function (map) {
@@ -315,7 +311,7 @@ export var TemplatedTileLayer = TileLayer.extend({
           let layer = feature._layers[featureID];
           FeatureRenderer.prototype._initPath(layer, false);
           // does something to layer
-          layer._project(this._map, point([xOffset, yOffset]), coords.z);
+          layer._project(this._map, new Point([xOffset, yOffset]), coords.z);
           // appends the guts of layer to g
           FeatureRenderer.prototype._addPath(layer, g, false);
           // updates the guts of layer that have already been appended to g
@@ -580,7 +576,7 @@ export var TemplatedTileLayer = TileLayer.extend({
     }
     var transformation = this.options.crs.transformation,
       tileSize = this.options.crs.options.crs.tile.bounds.max.x,
-      scale = bind(this.options.crs.scale, this.options.crs),
+      scale = LeafletUtil.bind(this.options.crs.scale, this.options.crs),
       tilematrix2pcrs = function (c, zoom) {
         return transformation.untransform(c.multiplyBy(tileSize), scale(zoom));
       },
@@ -592,7 +588,7 @@ export var TemplatedTileLayer = TileLayer.extend({
       };
     if (east && north) {
       template.pcrs = {};
-      template.pcrs.bounds = bounds(
+      template.pcrs.bounds = new Bounds(
         [east.min, north.min],
         [east.max, north.max]
       );
@@ -610,7 +606,10 @@ export var TemplatedTileLayer = TileLayer.extend({
       }
 
       template.pcrs.bounds = Util.boundsToPCRSBounds(
-        bounds(point([col.min, row.min]), point([col.max, row.max])),
+        new Bounds(
+          new Point([col.min, row.min]),
+          new Point([col.max, row.max])
+        ),
         template.zoom.initialValue,
         this.options.crs,
         Util.axisToCS('column')
@@ -637,11 +636,11 @@ export var TemplatedTileLayer = TileLayer.extend({
     for (var z = 0; z <= zmax; z++) {
       template.tilematrix.bounds[z] =
         z >= zmin
-          ? bounds(
+          ? new Bounds(
               pcrs2tilematrix(pcrsBounds.min, z),
               pcrs2tilematrix(pcrsBounds.max, z)
             )
-          : bounds(point([-1, -1]), point([-1, -1]));
+          : new Bounds(new Point([-1, -1]), new Point([-1, -1]));
     }
   },
   _clampZoom: function (zoom) {

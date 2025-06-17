@@ -1,4 +1,4 @@
-import { GridLayer, DomUtil, point, bounds } from 'leaflet';
+import { GridLayer, DomUtil, Point, Bounds } from 'leaflet';
 import { Util } from '../utils/Util.js';
 
 /**
@@ -280,12 +280,12 @@ export var MapTileLayer = GridLayer.extend({
 
         if (!pixelBounds) {
           pixelBounds = bounds(
-            point(pixelX, pixelY),
-            point(pixelX + tileSize, pixelY + tileSize)
+            new Point(pixelX, pixelY),
+            new Point(pixelX + tileSize, pixelY + tileSize)
           );
         } else {
-          pixelBounds.extend(point(pixelX, pixelY));
-          pixelBounds.extend(point(pixelX + tileSize, pixelY + tileSize));
+          pixelBounds.extend(new Point(pixelX, pixelY));
+          pixelBounds.extend(new Point(pixelX + tileSize, pixelY + tileSize));
         }
       }
 

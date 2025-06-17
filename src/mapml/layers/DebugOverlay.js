@@ -4,10 +4,10 @@ import {
   GridLayer,
   LayerGroup,
   Path,
-  point,
-  circle,
-  bounds,
-  setOptions
+  Point,
+  Circle,
+  Bounds,
+  Util as LeafletUtil
 } from 'leaflet';
 
 export var DebugOverlay = Layer.extend({
@@ -58,7 +58,7 @@ export var debugOverlay = function () {
 
 export var DebugPanel = Layer.extend({
   initialize: function (options) {
-    setOptions(this, options);
+    LeafletUtil.setOptions(this, options);
   },
 
   onAdd: function (map) {
@@ -173,7 +173,7 @@ export var debugPanel = function (options) {
 
 export var DebugGrid = GridLayer.extend({
   initialize: function (options) {
-    setOptions(this, options);
+    LeafletUtil.setOptions(this, options);
     GridLayer.prototype.initialize.call(this, this._map);
   },
 
@@ -199,17 +199,17 @@ export var debugGrid = function (options) {
 
 export var DebugVectors = LayerGroup.extend({
   initialize: function (options) {
-    setOptions(this, options);
+    LeafletUtil.setOptions(this, options);
     LayerGroup.prototype.initialize.call(this, this._map, options);
   },
   onAdd: function (map) {
     map.on('overlayremove', this._mapLayerUpdate, this);
     map.on('overlayadd', this._mapLayerUpdate, this);
     let center = map.options.crs.transformation.transform(
-      point(0, 0),
+      new Point(0, 0),
       map.options.crs.scale(0)
     );
-    this._centerVector = circle(map.options.crs.pointToLatLng(center, 0), {
+    this._centerVector = new Circle(map.options.crs.pointToLatLng(center, 0), {
       radius: 250,
       className: 'mapml-debug-vectors projection-centre'
     });
@@ -237,16 +237,28 @@ export var DebugVectors = LayerGroup.extend({
           if (layers[i].layerBounds) {
             boundsArray = [
               layers[i].layerBounds.min,
-              point(layers[i].layerBounds.max.x, layers[i].layerBounds.min.y),
+              new Point(
+                layers[i].layerBounds.max.x,
+                layers[i].layerBounds.min.y
+              ),
               layers[i].layerBounds.max,
-              point(layers[i].layerBounds.min.x, layers[i].layerBounds.max.y)
+              new Point(
+                layers[i].layerBounds.min.x,
+                layers[i].layerBounds.max.y
+              )
             ];
           } else {
             boundsArray = [
               layers[i].extentBounds.min,
-              point(layers[i].extentBounds.max.x, layers[i].extentBounds.min.y),
+              new Point(
+                layers[i].extentBounds.max.x,
+                layers[i].extentBounds.min.y
+              ),
               layers[i].extentBounds.max,
-              point(layers[i].extentBounds.min.x, layers[i].extentBounds.max.y)
+              new Point(
+                layers[i].extentBounds.min.x,
+                layers[i].extentBounds.max.y
+              )
             ];
           }
 
@@ -287,9 +299,9 @@ export var DebugVectors = LayerGroup.extend({
       if (map.totalLayerBounds) {
         let totalBoundsArray = [
           map.totalLayerBounds.min,
-          point(map.totalLayerBounds.max.x, map.totalLayerBounds.min.y),
+          new Point(map.totalLayerBounds.max.x, map.totalLayerBounds.min.y),
           map.totalLayerBounds.max,
-          point(map.totalLayerBounds.min.x, map.totalLayerBounds.max.y)
+          new Point(map.totalLayerBounds.min.x, map.totalLayerBounds.max.y)
         ];
 
         let totalBounds = projectedExtent(totalBoundsArray, {
@@ -317,7 +329,7 @@ export var debugVectors = function (options) {
 var ProjectedExtent = Path.extend({
   getCenter: function (round) {
     let crs = this._map.options.crs;
-    return crs.unproject(bounds(this._locations).getCenter());
+    return crs.unproject(new Bounds(this._locations).getCenter());
   },
 
   options: {
@@ -326,7 +338,7 @@ var ProjectedExtent = Path.extend({
   initialize: function (locations, options) {
     //locations passed in as pcrs coordinates
     this._locations = locations;
-    setOptions(this, options);
+    LeafletUtil.setOptions(this, options);
   },
 
   _project: function () {
@@ -339,7 +351,7 @@ var ProjectedExtent = Path.extend({
         scale
       );
       //substract the pixel origin from the pixel coordinates to get the location relative to map viewport
-      this._rings.push(point(pt0.x, pt0.y)._subtract(map.getPixelOrigin()));
+      this._rings.push(new Point(pt0.x, pt0.y)._subtract(map.getPixelOrigin()));
     }
     //leaflet SVG renderer looks for and array of arrays to build polygons,
     //in this case it only deals with a rectangle so one closed array or points

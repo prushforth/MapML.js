@@ -1,11 +1,4 @@
-import {
-  bounds,
-  point,
-  extend,
-  DomEvent,
-  stamp,
-  Util as LeafletUtil
-} from 'leaflet';
+import { Bounds, Point, DomEvent, Util as LeafletUtil } from 'leaflet';
 
 import { Util } from './mapml/utils/Util.js';
 import { templatedImageLayer } from './mapml/layers/TemplatedImageLayer.js';
@@ -158,7 +151,7 @@ export class HTMLLinkElement extends HTMLElement {
       xmax = extent.bottomRight.pcrs.horizontal,
       ymin = extent.bottomRight.pcrs.vertical,
       ymax = extent.topLeft.pcrs.vertical,
-      newBounds = bounds(point(xmin, ymin), point(xmax, ymax)),
+      newBounds = new Bounds(new Point(xmin, ymin), new Point(xmax, ymax)),
       center = map.options.crs.unproject(newBounds.getCenter(true)),
       maxZoom = extent.zoom.maxZoom,
       minZoom = extent.zoom.minZoom;
@@ -569,8 +562,13 @@ export class HTMLLinkElement extends HTMLElement {
       if (!this.shadowRoot) {
         this.attachShadow({ mode: 'open' });
       }
-      extend(this._templateVars, this._setupQueryVars(this._templateVars));
-      extend(this._templateVars, { extentBounds: this.getBounds() });
+      LeafletUtil.extend(
+        this._templateVars,
+        this._setupQueryVars(this._templateVars)
+      );
+      LeafletUtil.extend(this._templateVars, {
+        extentBounds: this.getBounds()
+      });
     }
   }
   _setupQueryVars(template) {
@@ -882,12 +880,12 @@ export class HTMLLinkElement extends HTMLElement {
       }
       let axes = Util.csToAxes(cs);
       bnds = Util.boundsToPCRSBounds(
-        bounds(
-          point(
+        new Bounds(
+          new Point(
             +content[`top-left-${axes[0]}`],
             +content[`top-left-${axes[1]}`]
           ),
-          point(
+          new Point(
             +content[`bottom-right-${axes[0]}`],
             +content[`bottom-right-${axes[1]}`]
           )
@@ -983,7 +981,7 @@ export class HTMLLinkElement extends HTMLElement {
       xmax = extent.bottomRight.pcrs.horizontal,
       ymin = extent.bottomRight.pcrs.vertical,
       ymax = extent.topLeft.pcrs.vertical,
-      mapBounds = bounds(point(xmin, ymin), point(xmax, ymax));
+      mapBounds = new Bounds(new Point(xmin, ymin), new Point(xmax, ymax));
 
     if (this._templatedLayer) {
       isVisible = this._templatedLayer.isVisible();
@@ -1018,11 +1016,14 @@ export class HTMLLinkElement extends HTMLElement {
         document.createElement('input')
       );
     styleOptionInput.setAttribute('type', 'radio');
-    styleOptionInput.setAttribute('id', 'rad-' + stamp(styleOptionInput));
+    styleOptionInput.setAttribute(
+      'id',
+      'rad-' + LeafletUtil.stamp(styleOptionInput)
+    );
     styleOptionInput.setAttribute(
       'name',
       // grouping radio buttons based on parent layer's style <detail>
-      'styles-' + stamp(styleOption)
+      'styles-' + LeafletUtil.stamp(styleOption)
     );
     styleOptionInput.setAttribute('value', this.getAttribute('title'));
     styleOptionInput.setAttribute(
@@ -1032,7 +1033,10 @@ export class HTMLLinkElement extends HTMLElement {
     var styleOptionLabel = styleOption.appendChild(
       document.createElement('label')
     );
-    styleOptionLabel.setAttribute('for', 'rad-' + stamp(styleOptionInput));
+    styleOptionLabel.setAttribute(
+      'for',
+      'rad-' + LeafletUtil.stamp(styleOptionInput)
+    );
     styleOptionLabel.innerText = this.title;
     if (this.rel === 'style self' || this.rel === 'self style') {
       styleOptionInput.checked = true;

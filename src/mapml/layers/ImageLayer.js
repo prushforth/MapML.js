@@ -1,9 +1,8 @@
 import {
   ImageOverlay,
   DomUtil,
-  point,
-  setOptions,
-  Util,
+  Point,
+  Util as LeafletUtil,
   Browser
 } from 'leaflet';
 
@@ -13,15 +12,15 @@ export var ImageLayer = ImageOverlay.extend({
     this._container = container;
     this._url = url;
     // instead of calculating where the image goes, put it at 0,0
-    // this._location = point(location);
+    // this._location = new Point(location);
     // the location for WMS requests will be the upper left-hand
     // corner of the map.  When the map is initialized, that is 0,0,
     // but as the user pans, of course the
     this._location = location;
-    this._size = point(size);
+    this._size = new Point(size);
     this._angle = angle;
 
-    setOptions(this, options);
+    LeafletUtil.setOptions(this, options);
   },
   getEvents: function () {
     var events = {
@@ -118,8 +117,8 @@ export var ImageLayer = ImageOverlay.extend({
       nextFrame = true;
     }
     if (nextFrame) {
-      Util.cancelAnimFrame(this._fadeFrame);
-      this._fadeFrame = Util.requestAnimFrame(this._updateOpacity, this);
+      LeafletUtil.cancelAnimFrame(this._fadeFrame);
+      this._fadeFrame = LeafletUtil.requestAnimFrame(this._updateOpacity, this);
     }
     DomUtil.addClass(image, 'leaflet-image-loaded');
   }

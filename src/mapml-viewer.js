@@ -28,7 +28,7 @@ import { AttributionButton } from './mapml/control/AttributionButton.js';
 import { reloadButton } from './mapml/control/ReloadButton.js';
 import { scaleBar } from './mapml/control/ScaleBar.js';
 import { fullscreenButton } from './mapml/control/FullscreenButton.js';
-import { geolocationButton } from './mapml/control/GeolocationButton.js';
+//import { geolocationButton } from './mapml/control/GeolocationButton.js';
 import { debugOverlay } from './mapml/layers/DebugOverlay.js';
 import { crosshair } from './mapml/layers/Crosshair.js';
 import { featureIndexOverlay } from './mapml/layers/FeatureIndexOverlay.js';
