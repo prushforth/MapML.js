@@ -30,7 +30,7 @@ export var TemplatedFeaturesOrTilesLayerGroup = LayerGroup.extend({
     LayerGroup.prototype.initialize.call(this, []);
     this._template = template;
     this._container = DomUtil.create('div', 'leaflet-layer');
-    DomUtil.addClass(this._container, 'mapml-features-tiles-container');
+    this._container.classList.add('mapml-features-tiles-container');
     this.zoomBounds = options.zoomBounds;
     this.extentBounds = options.extentBounds;
     // get rid of duplicate info, it can be confusing
@@ -40,7 +40,7 @@ export var TemplatedFeaturesOrTilesLayerGroup = LayerGroup.extend({
     this._linkEl = options.linkEl;
     LeafletUtil.setOptions(
       this,
-      LeafletUtil.extend(options, this._setUpTemplateVars(template))
+      Object.assign(options, this._setUpTemplateVars(template))
     );
   },
   /**
@@ -63,10 +63,10 @@ export var TemplatedFeaturesOrTilesLayerGroup = LayerGroup.extend({
 
   onRemove: function (map) {
     // Remove container from DOM, but don't delete it
-    DomUtil.remove(this._container);
+    this._container.remove();
     // clean up the container
     for (let child of this._container.children) {
-      DomUtil.remove(child);
+      child.remove();
     }
 
     // Remove each layer from the map, but does not clearLayers

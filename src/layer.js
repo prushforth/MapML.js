@@ -748,9 +748,8 @@ export class BaseLayerElement extends HTMLElement {
 
       for (var j = 0; j < styleLinks.length; j++) {
         stylesControl.appendChild(styleLinks[j].getLayerControlOption());
-        DomUtil.addClass(
-          stylesControl,
-          'mapml-layer-item-style mapml-control-layers'
+        stylesControl.classList.add(
+          'mapml-layer-item-style, mapml-control-layers'
         );
       }
       return stylesControl;

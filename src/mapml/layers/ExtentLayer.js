@@ -9,7 +9,7 @@ export var ExtentLayer = LayerGroup.extend({
     this._extentEl = this.options.extentEl;
     this.changeOpacity(this.options.opacity);
     // Add class to the container
-    DomUtil.addClass(this._container, 'mapml-extentlayer-container');
+    this._container.classList.add('mapml-extentlayer-container');
   },
   getEvents: function () {
     return {
@@ -54,7 +54,7 @@ export var ExtentLayer = LayerGroup.extend({
   },
   onRemove: function () {
     LayerGroup.prototype.onRemove.call(this, this._map);
-    DomUtil.remove(this._container);
+    this._container.remove();
   },
 
   _previousFeature: function (e) {

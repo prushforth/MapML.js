@@ -8,7 +8,7 @@ export var StaticTileLayer = GridLayer.extend({
       options.tileContainer,
       options.maxZoomBound
     );
-    LeafletUtil.extend(this.options, this.zoomBounds);
+    Object.assign(this.options, this.zoomBounds);
     this._groups = this._groupTiles(
       this.options.tileContainer.getElementsByTagName('map-tile')
     );

@@ -30,7 +30,7 @@ export var MapTileLayer = GridLayer.extend({
     this._pendingTiles = {};
     this._buildTileMap();
     this._container = DomUtil.create('div', 'leaflet-layer');
-    DomUtil.addClass(this._container, 'mapml-static-tile-container');
+    this._container.classList.add('mapml-static-tile-container');
     // Store bounds for visibility checks
     //    this.layerBounds = this._computeLayerBounds();
     //    this.zoomBounds = this._computeZoomBounds();
@@ -44,7 +44,7 @@ export var MapTileLayer = GridLayer.extend({
   onRemove: function (map) {
     // Clean up pending tiles
     this._pendingTiles = {};
-    DomUtil.remove(this._container);
+    this._container.remove();
   },
 
   /**
@@ -116,7 +116,7 @@ export var MapTileLayer = GridLayer.extend({
     tileElement.setAttribute('col', coords.x);
     tileElement.setAttribute('row', coords.y);
     tileElement.setAttribute('zoom', coords.z);
-    DomUtil.addClass(tileElement, 'leaflet-tile');
+    tileElement.classList.add('leaflet-tile');
 
     // Set size
     tileElement.style.width = tileSize.x + 'px';
@@ -140,7 +140,7 @@ export var MapTileLayer = GridLayer.extend({
       tileElement.appendChild(img);
 
       // Add the loaded class manually to ensure tile is visible
-      DomUtil.addClass(tileElement, 'leaflet-tile-loaded');
+      tileElement.classList.add('leaflet-tile-loaded');
 
       // Call the done callback to signal that the tile is ready
       done(null, tileElement);
@@ -204,7 +204,7 @@ export var MapTileLayer = GridLayer.extend({
       tileElement.appendChild(img);
 
       // Add the loaded class manually to ensure tile is visible
-      DomUtil.addClass(tileElement, 'leaflet-tile-loaded');
+      tileElement.classList.add('leaflet-tile-loaded');
 
       // Call the done callback to signal that the tile is now ready
       if (doneCallback) {

@@ -7,7 +7,7 @@ export var TemplatedImageLayer = Layer.extend({
   initialize: function (template, options) {
     this._template = template;
     this._container = DomUtil.create('div', 'leaflet-layer');
-    DomUtil.addClass(this._container, 'mapml-image-container');
+    this._container.classList.add('mapml-image-container');
     this._linkEl = options.linkEl;
     this.zoomBounds = options.zoomBounds;
     this.extentBounds = options.extentBounds;
@@ -16,7 +16,7 @@ export var TemplatedImageLayer = Layer.extend({
     delete options.extentBounds;
     LeafletUtil.setOptions(
       this,
-      LeafletUtil.extend(options, this._setUpExtentTemplateVars(template))
+      Object.assign(options, this._setUpExtentTemplateVars(template))
     );
   },
   getEvents: function () {
@@ -171,7 +171,7 @@ export var TemplatedImageLayer = Layer.extend({
     }
   },
   onRemove: function (map) {
-    DomUtil.remove(this._container);
+    this._container.remove();
     this._clearLayer();
   },
   getImageUrl: function (pixelBounds, zoom) {

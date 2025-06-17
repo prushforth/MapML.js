@@ -32,7 +32,7 @@ export var TemplatedTileLayer = TileLayer.extend({
     this.zoomBounds = Object.assign({}, options.zoomBounds);
     // unpack object to this.options.minZ... etc where minZ... are the props
     // of the this.zoomBounds object:
-    LeafletUtil.extend(options, this.zoomBounds);
+    Object.assign(options, this.zoomBounds);
     LeafletUtil.setOptions(this, options);
     // _setup call here relies on this.options.minZ.. etc
     this._setUpTileTemplateVars(template);
@@ -49,7 +49,7 @@ export var TemplatedTileLayer = TileLayer.extend({
     TileLayer.prototype.initialize.call(
       this,
       template.template,
-      LeafletUtil.extend(options, { pane: this.options.pane })
+      Object.assign(options, { pane: this.options.pane })
     );
   },
   onAdd: function (map) {
@@ -59,10 +59,10 @@ export var TemplatedTileLayer = TileLayer.extend({
   },
 
   onRemove: function () {
-    DomUtil.remove(this._container);
+    this._container.remove();
     // should clean up the container
     for (let child of this._container.children) {
-      DomUtil.remove(child);
+      child.remove();
     }
   },
 
@@ -94,7 +94,7 @@ export var TemplatedTileLayer = TileLayer.extend({
     }
 
     this._container = DomUtil.create('div', 'leaflet-layer', this.options.pane);
-    DomUtil.addClass(this._container, 'mapml-templated-tile-container');
+    this._container.classList.add('mapml-templated-tile-container');
     this._updateZIndex();
   },
 
@@ -105,8 +105,7 @@ export var TemplatedTileLayer = TileLayer.extend({
   createTile: function (coords) {
     let tileGroup = document.createElement('DIV'),
       tileSize = this.getTileSize();
-    DomUtil.addClass(tileGroup, 'mapml-tile-group');
-    DomUtil.addClass(tileGroup, 'leaflet-tile');
+    tileGroup.classList.add('mapml-tile-group', 'leaflet-tile');
 
     this._template.linkEl.dispatchEvent(
       new CustomEvent('tileloadstart', {
@@ -140,7 +139,7 @@ export var TemplatedTileLayer = TileLayer.extend({
     return tileGroup;
   },
   _mapmlTileReady: function (tile) {
-    DomUtil.addClass(tile, 'leaflet-tile-loaded');
+    tile.classList.add('leaflet-tile-loaded');
   },
   // instead of being child of a pane, the TemplatedTileLayers are 'owned' by the group,
   // and so are DOM children of the group, not the pane element (the MapMLLayer is
@@ -419,7 +418,8 @@ export var TemplatedTileLayer = TileLayer.extend({
       tileSize = this.getTileSize(),
       nwPoint = coords.scaleBy(tileSize),
       sePoint = nwPoint.add(tileSize),
-      centrePoint = nwPoint.add(Math.floor(tileSize / 2)),
+      centre = [Math.floor(tileSize.x / 2), Math.floor(tileSize.y / 2)],
+      centrePoint = nwPoint.add(centre),
       nw = crs.transformation.untransform(nwPoint, crs.scale(coords.z)),
       se = crs.transformation.untransform(sePoint, crs.scale(coords.z)),
       cen = crs.transformation.untransform(centrePoint, crs.scale(coords.z)),
@@ -576,7 +576,7 @@ export var TemplatedTileLayer = TileLayer.extend({
     }
     var transformation = this.options.crs.transformation,
       tileSize = this.options.crs.options.crs.tile.bounds.max.x,
-      scale = LeafletUtil.bind(this.options.crs.scale, this.options.crs),
+      scale = this.options.crs.scale.bind(this.options.crs),
       tilematrix2pcrs = function (c, zoom) {
         return transformation.untransform(c.multiplyBy(tileSize), scale(zoom));
       },

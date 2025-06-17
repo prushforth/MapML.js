@@ -31,7 +31,7 @@ export var MapMLLayer = LayerGroup.extend({
     LeafletUtil.setOptions(this, options);
     this._container = DomUtil.create('div', 'leaflet-layer');
     this.changeOpacity(this.options.opacity);
-    DomUtil.addClass(this._container, 'mapml-layer');
+    this._container.classList.add('mapml-layer');
 
     // this layer 'owns' a mapmlTileLayer, which is a subclass of L.GridLayer
     // it 'passes' what tiles to load via the content of this._mapmlTileContainer
@@ -232,7 +232,7 @@ export var MapMLLayer = LayerGroup.extend({
 
   onRemove: function (map) {
     LayerGroup.prototype.onRemove.call(this, map);
-    DomUtil.remove(this._container);
+    this._container.remove();
     map.off('popupopen', this._attachSkipButtons);
   },
   getAttribution: function () {
@@ -439,10 +439,10 @@ export var MapMLLayer = LayerGroup.extend({
     }
 
     if (popup._container.querySelector('nav[class="mapml-focus-buttons"]')) {
-      DomUtil.remove(
-        popup._container.querySelector('nav[class="mapml-focus-buttons"]')
-      );
-      DomUtil.remove(popup._container.querySelector('hr'));
+      popup._container
+        .querySelector('nav[class="mapml-focus-buttons"]')
+        .remove();
+      popup._container.querySelector('hr').remove();
     }
     //add when popopen event happens instead
     let div = DomUtil.create('nav', 'mapml-focus-buttons');

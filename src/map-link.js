@@ -562,11 +562,11 @@ export class HTMLLinkElement extends HTMLElement {
       if (!this.shadowRoot) {
         this.attachShadow({ mode: 'open' });
       }
-      LeafletUtil.extend(
+      Object.assign(
         this._templateVars,
         this._setupQueryVars(this._templateVars)
       );
-      LeafletUtil.extend(this._templateVars, {
+      Object.assign(this._templateVars, {
         extentBounds: this.getBounds()
       });
     }

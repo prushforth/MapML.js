@@ -37,19 +37,19 @@ export var TemplatedPMTilesLayer = Layer.extend({
 
     let paintRules = options?.pmtilesRules?.get(this._template.template);
     if (paintRules?.rules) {
-      LeafletUtil.extend(this._pmtilesOptions, {
+      Object.assign(this._pmtilesOptions, {
         paintRules: paintRules.rules.PAINT_RULES
       });
-      LeafletUtil.extend(this._pmtilesOptions, {
+      Object.assign(this._pmtilesOptions, {
         labelRules: paintRules.rules.LABEL_RULES
       });
       if (paintRules.sheet) {
-        LeafletUtil.extend(this._pmtilesOptions, {
+        Object.assign(this._pmtilesOptions, {
           tasks: [paintRules.sheet.load()]
         });
       }
     } else if (paintRules?.theme?.theme) {
-      LeafletUtil.extend(this._pmtilesOptions, {
+      Object.assign(this._pmtilesOptions, {
         theme: paintRules.theme.theme
       });
     } else {
@@ -105,7 +105,7 @@ export var TemplatedPMTilesLayer = Layer.extend({
   },
   onRemove: function (map) {
     this._pmtilesLayer.remove();
-    DomUtil.remove(this._container);
+    this._container.remove();
   },
   isVisible: function () {
     if (this._template.projection !== 'OSMTILE') return false;

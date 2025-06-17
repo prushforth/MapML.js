@@ -47,7 +47,7 @@ export var DebugOverlay = Layer.extend({
     if (this._panel) {
       //conditionally remove the panel, as it's not always added
       map.removeLayer(this._panel);
-      DomUtil.remove(this._container);
+      this._container.remove();
     }
   }
 });
@@ -112,9 +112,9 @@ export var DebugPanel = Layer.extend({
     this._map.on('mousemove', this._updateCoords);
   },
   onRemove: function () {
-    DomUtil.remove(this._title);
+    this._title.remove();
     if (this._debugContainer) {
-      DomUtil.remove(this._debugContainer);
+      this._debugContainer.remove();
       this._map.off('mousemove', this._updateCoords);
     }
   },

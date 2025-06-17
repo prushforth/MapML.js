@@ -43,7 +43,7 @@ export var ImageLayer = ImageOverlay.extend({
     }
 
     if (this.options.interactive) {
-      DomUtil.addClass(this._image, 'leaflet-interactive');
+      this._image.classList.add('leaflet-interactive');
       this.addInteractiveTarget(this._image);
     }
 
@@ -51,7 +51,7 @@ export var ImageLayer = ImageOverlay.extend({
     this._reset();
   },
   onRemove: function () {
-    DomUtil.remove(this._image);
+    this._image.remove();
     if (this.options.interactive) {
       this.removeInteractiveTarget(this._image);
     }
@@ -120,7 +120,7 @@ export var ImageLayer = ImageOverlay.extend({
       LeafletUtil.cancelAnimFrame(this._fadeFrame);
       this._fadeFrame = LeafletUtil.requestAnimFrame(this._updateOpacity, this);
     }
-    DomUtil.addClass(image, 'leaflet-image-loaded');
+    image.classList.add('leaflet-image-loaded');
   }
 });
 export var imageLayer = function (

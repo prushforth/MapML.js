@@ -28,7 +28,7 @@ export var Geometry = FeatureGroup.extend({
       (this.options.onEachFeature && this.options.properties) ||
       this.options.link
     ) {
-      DomUtil.addClass(this.options.group, 'leaflet-interactive');
+      this.options.group.classList.add('leaflet-interactive');
       if (this.options.link) {
         Path.prototype.attachLinkHandler.call(
           this,

@@ -1,4 +1,4 @@
-import { point, circle, latLngBounds, rectangle, polygon, SVG } from 'leaflet';
+import { Point, Circle, LatLngBounds, Rectangle, Polygon, SVG } from 'leaflet';
 
 export class HTMLMapAreaElement extends HTMLAreaElement {
   static get observedAttributes() {
@@ -91,26 +91,26 @@ export class HTMLMapAreaElement extends HTMLAreaElement {
 
       if (this.shape === 'circle') {
         var pixelRadius = parseInt(this.coords.split(',')[2]),
-          pointOnCirc = point(points[0]).add(point(0, pixelRadius)),
+          pointOnCirc = new Point(points[0]).add(new Point(0, pixelRadius)),
           latLngOnCirc = map.containerPointToLatLng(pointOnCirc),
           latLngCenter = map.containerPointToLatLng(points[0]),
           radiusInMeters = map.distance(latLngCenter, latLngOnCirc);
-        this._feature = circle(latLngCenter, radiusInMeters, options).addTo(
+        this._feature = new Circle(latLngCenter, radiusInMeters, options).addTo(
           map
         );
       } else if (!this.shape || this.shape === 'rect') {
-        var bnds = latLngBounds(
+        var bnds = new LatLngBounds(
           map.containerPointToLatLng(points[0]),
           map.containerPointToLatLng(points[1])
         );
-        this._feature = rectangle(bnds, options).addTo(map);
+        this._feature = new Rectangle(bnds, options).addTo(map);
       } else if (this.shape === 'poly') {
         this._feature = polygon(this._pointsToLatLngs(points), options).addTo(
           map
         );
       } else {
         // whole initial area of map is a hyperlink
-        this._feature = rectangle(map.getBounds(), options).addTo(map);
+        this._feature = new Rectangle(map.getBounds(), options).addTo(map);
       }
       if (this.alt) {
         // other Leaflet features are implemented via SVG.  SVG displays tooltips

@@ -102,13 +102,13 @@ Map.include({
   },
 
   _enablePseudoFullscreen: function (container) {
-    DomUtil.addClass(container, 'leaflet-pseudo-fullscreen');
+    container.classList.add('leaflet-pseudo-fullscreen');
     this._setFullscreen(true);
     this.fire('fullscreenchange');
   },
 
   _disablePseudoFullscreen: function (container) {
-    DomUtil.removeClass(container, 'leaflet-pseudo-fullscreen');
+    container.classList.remove('leaflet-pseudo-fullscreen');
     this._setFullscreen(false);
     this.fire('fullscreenchange');
   },
@@ -120,9 +120,9 @@ Map.include({
       'mapml-viewer,[is=web-map]'
     );
     if (fullscreen) {
-      DomUtil.addClass(container, 'mapml-fullscreen-on');
+      container.classList.add('mapml-fullscreen-on');
     } else {
-      DomUtil.removeClass(container, 'mapml-fullscreen-on');
+      container.classList.remove('mapml-fullscreen-on');
     }
     this.invalidateSize();
   },
@@ -165,7 +165,7 @@ Map.addInitHook(function () {
   }
 
   if (fullscreenchange) {
-    var onFullscreenChange = LeafletUtil.bind(this._onFullscreenChange, this);
+    var onFullscreenChange = this._onFullscreenChange.bind(this);
 
     this.whenReady(function () {
       DomEvent.on(document, fullscreenchange, onFullscreenChange);

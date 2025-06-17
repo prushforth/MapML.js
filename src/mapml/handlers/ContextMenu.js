@@ -847,18 +847,19 @@ export var ContextMenu = Handler.extend({
     this._clickEvent = e;
     let elem = e.originalEvent.target;
     // Opening contextmenu for layercontrol
+    let showLoc = { x: e.originalEvent.clientX, y: e.originalEvent.clientY };
     if (elem.closest('fieldset')) {
       elem = elem.closest('fieldset');
       // layer layercontrol
       if (elem.className === 'mapml-layer-item') {
         elem = elem.querySelector('span');
         this._layerMenu.removeAttribute('hidden');
-        this._showAtPoint(e.containerPoint, e, this._layerMenu);
+        this._showAtPoint(showLoc, e, this._layerMenu);
         // map-extent layercontrol
       } else if (elem.className === 'mapml-layer-extent') {
         elem = elem.querySelector('span');
         this._extentLayerMenu.removeAttribute('hidden');
-        this._showAtPoint(e.containerPoint, e, this._extentLayerMenu);
+        this._showAtPoint(showLoc, e, this._extentLayerMenu);
       }
       this._layerClicked = elem;
     } else if (
@@ -870,7 +871,7 @@ export var ContextMenu = Handler.extend({
       let layerList = this._map.options.mapEl.layers;
       this._layerClicked = Array.from(layerList).find((el) => el.checked);
       // the 'hidden' attribute must be removed before any attempt to get the size of container
-      let pt = e.containerPoint;
+      let pt = showLoc;
       // this is for firefox, which reports the e.containerPoint as x=0 when you
       // use a keyboard Shift+F10 to display the context menu; this appears
       // to be because blink returns a PointerEvent of type==='contextmenu',
@@ -909,7 +910,7 @@ export var ContextMenu = Handler.extend({
 
   _showAtPoint: function (pt, data, container) {
     if (this._items.length) {
-      let event = LeafletUtil.extend(data || {}, { contextmenu: this });
+      let event = Object.assign(data || {}, { contextmenu: this });
 
       this._showLocation = {
         containerPoint: pt
@@ -1382,14 +1383,16 @@ export var ContextMenu = Handler.extend({
   },
 
   _onItemMouseOver: function (e) {
-    DomUtil.addClass(e.target || e.srcElement, 'over');
+    let el = e.target || e.srcElement;
+    el.classList.add('over');
     let locale = e.locale || M.options.locale;
     if (e.srcElement.innerText === locale.cmCopyCoords + ' (C)')
       this._showCopySubMenu(e);
   },
 
   _onItemMouseOut: function (e) {
-    DomUtil.removeClass(e.target || e.srcElement, 'over');
+    let el = e.target || e.srcElement;
+    el.classList.remove('over');
     this._hideCopySubMenu(e);
   },
 

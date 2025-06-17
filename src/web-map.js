@@ -1,9 +1,9 @@
 import {
-  map,
+  Map,
   LatLng,
-  control,
-  bounds,
-  latLngBounds,
+  Control,
+  Bounds,
+  LatLngBounds,
   LayerGroup,
   Browser
 } from 'leaflet';
@@ -16,7 +16,7 @@ import { AttributionButton } from './mapml/control/AttributionButton.js';
 import { reloadButton } from './mapml/control/ReloadButton.js';
 import { scaleBar } from './mapml/control/ScaleBar.js';
 import { fullscreenButton } from './mapml/control/FullscreenButton.js';
-import { geolocationButton } from './mapml/control/GeolocationButton.js';
+//import { geolocationButton } from './mapml/control/GeolocationButton.js';
 import { debugOverlay } from './mapml/layers/DebugOverlay.js';
 import { crosshair } from './mapml/layers/Crosshair.js';
 import { featureIndexOverlay } from './mapml/layers/FeatureIndexOverlay.js';
@@ -315,7 +315,7 @@ export class HTMLWebMapElement extends HTMLMapElement {
   }
   _createMap() {
     if (!this._map) {
-      this._map = map(this._container, {
+      this._map = new Map(this._container, {
         center: new LatLng(this.lat, this.lon),
         minZoom: 0,
         maxZoom: M[this.projection].options.resolutions.length - 1,
@@ -525,12 +525,10 @@ export class HTMLWebMapElement extends HTMLMapElement {
     // Only add controls if there is enough top left vertical space
     if (!this._zoomControl && totalSize + 93 <= mapSize) {
       totalSize += 93;
-      this._zoomControl = control
-        .zoom({
-          zoomInTitle: this.locale.btnZoomIn,
-          zoomOutTitle: this.locale.btnZoomOut
-        })
-        .addTo(this._map);
+      this._zoomControl = new Control.Zoom({
+        zoomInTitle: this.locale.btnZoomIn,
+        zoomOutTitle: this.locale.btnZoomOut
+      }).addTo(this._map);
     }
     if (!this._reloadButton && totalSize + 49 <= mapSize) {
       totalSize += 49;
@@ -541,9 +539,9 @@ export class HTMLWebMapElement extends HTMLMapElement {
       this._fullScreenControl = fullscreenButton().addTo(this._map);
     }
 
-    if (!this._geolocationButton) {
-      this._geolocationButton = geolocationButton().addTo(this._map);
-    }
+    //    if (!this._geolocationButton) {
+    //      this._geolocationButton = geolocationButton().addTo(this._map);
+    //    }
   }
 
   // Sets controls by hiding/unhiding them based on the map attribute
@@ -612,7 +610,7 @@ export class HTMLWebMapElement extends HTMLMapElement {
     delete this._zoomControl;
     delete this._reloadButton;
     delete this._fullScreenControl;
-    delete this._geolocationButton;
+    //    delete this._geolocationButton;
     delete this._scaleBar;
   }
   // Sets the control's visibility AND all its childrens visibility,
@@ -640,11 +638,11 @@ export class HTMLWebMapElement extends HTMLMapElement {
           container = this._layerControl._container;
         }
         break;
-      case 'geolocation':
-        if (this._geolocationButton) {
-          container = this._geolocationButton._container;
-        }
-        break;
+      //      case 'geolocation':
+      //        if (this._geolocationButton) {
+      //          container = this._geolocationButton._container;
+      //        }
+      //        break;
       case 'scale':
         if (this._scaleBar) {
           container = this._scaleBar._container;
@@ -921,14 +919,17 @@ export class HTMLWebMapElement extends HTMLMapElement {
     this._map.on(
       'contextmenu',
       function (e) {
+        let details = {
+          x: e.originalEvent.clientX,
+          y: e.originalEvent.clientY
+        };
+        if (e.latlng) {
+          details.lat = e.latlng.lat;
+          details.lon = e.latlng.lng;
+        }
         this.dispatchEvent(
           new CustomEvent('contextmenu', {
-            detail: {
-              lat: e.latlng.lat,
-              lon: e.latlng.lng,
-              x: e.containerPoint.x,
-              y: e.containerPoint.y
-            }
+            detail: details
           })
         );
       },
@@ -1281,7 +1282,7 @@ export class HTMLWebMapElement extends HTMLMapElement {
     M[t.projection] = new Proj.CRS(t.projection, t.proj4string, {
       origin: t.origin,
       resolutions: t.resolutions,
-      bounds: bounds(t.bounds),
+      bounds: new Bounds(t.bounds),
       crs: {
         tcrs: {
           horizontal: {
@@ -1303,7 +1304,7 @@ export class HTMLWebMapElement extends HTMLMapElement {
               )
           },
           bounds: (zoom) =>
-            bounds(
+            new Bounds(
               [
                 M[t.projection].options.crs.tcrs.horizontal.min,
                 M[t.projection].options.crs.tcrs.vertical.min
@@ -1363,7 +1364,7 @@ export class HTMLWebMapElement extends HTMLMapElement {
             }
           },
           get bounds() {
-            return latLngBounds(
+            return new LatLngBounds(
               [
                 M[t.projection].options.crs.gcrs.vertical.min,
                 M[t.projection].options.crs.gcrs.horizontal.min
@@ -1386,7 +1387,7 @@ export class HTMLWebMapElement extends HTMLMapElement {
             min: 0,
             max: (map) => map.getSize().y
           },
-          bounds: (map) => bounds([0, 0], map.getSize())
+          bounds: (map) => new Bounds([0, 0], map.getSize())
         },
         tile: {
           horizontal: {
@@ -1400,7 +1401,7 @@ export class HTMLWebMapElement extends HTMLMapElement {
             max: tileSize
           },
           get bounds() {
-            return bounds(
+            return new Bounds(
               [
                 M[t.projection].options.crs.tile.horizontal.min,
                 M[t.projection].options.crs.tile.vertical.min
@@ -1432,7 +1433,7 @@ export class HTMLWebMapElement extends HTMLMapElement {
               )
           },
           bounds: (zoom) =>
-            bounds(
+            new Bounds(
               [
                 M[t.projection].options.crs.tilematrix.horizontal.min,
                 M[t.projection].options.crs.tilematrix.vertical.min

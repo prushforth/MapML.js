@@ -58,7 +58,7 @@ export var Crosshair = Layer.extend({
     if (this._map.isFocused && !this._outline) {
       this._outline = DomUtil.create('div', 'mapml-outline', mapContainer);
     } else if (!this._map.isFocused && this._outline) {
-      DomUtil.remove(this._outline);
+      this._outline.remove();
       delete this._outline;
     }
   },

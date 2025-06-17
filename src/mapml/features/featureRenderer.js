@@ -34,11 +34,10 @@ export var FeatureRenderer = SVG.extend({
     if (layer._outline) {
       let outlinePath = SVG.create('path');
       if (layer.options.className)
-        DomUtil.addClass(
-          outlinePath,
+        outlinePath.classList.add(
           layer.featureAttributes.class || layer.options.className
         );
-      DomUtil.addClass(outlinePath, 'mapml-feature-outline');
+      outlinePath.classList.add('mapml-feature-outline');
       outlinePath.style.fill = 'none';
       layer.outlinePath = outlinePath;
     }
@@ -101,10 +100,10 @@ export var FeatureRenderer = SVG.extend({
       }
     }
     if (ring.cls || cls) {
-      DomUtil.addClass(p, ring.cls || cls);
+      p.classList.add(ring.cls || cls);
     }
     if (interactive) {
-      DomUtil.addClass(p, 'leaflet-interactive');
+      p.classList.add('leaflet-interactive');
     }
   },
 
@@ -167,15 +166,15 @@ export var FeatureRenderer = SVG.extend({
     for (let p of layer._parts) {
       if (p.path) {
         layer.removeInteractiveTarget(p.path);
-        DomUtil.remove(p.path);
+        p.path.remove();
       }
       for (let subP of p.subrings) {
-        if (subP.path) DomUtil.remove(subP.path);
+        if (subP.path) subP.path.remove();
       }
     }
-    if (layer.outlinePath) DomUtil.remove(layer.outlinePath);
+    if (layer.outlinePath) layer.outlinePath.remove();
     layer.removeInteractiveTarget(layer.group);
-    DomUtil.remove(layer.group);
+    layer.group.remove();
     delete this._layers[LeafletUtil.stamp(layer)];
   },
 

@@ -107,8 +107,8 @@ export var LayerControl = Control.Layers.extend({
       return this;
     }
 
-    DomUtil.empty(this._baseLayersList);
-    DomUtil.empty(this._overlaysList);
+    this._baseLayersList.replaceChildren();
+    this._overlaysList.replaceChildren();
 
     this._layerControlInputs = [];
     var baseLayersPresent,
@@ -184,15 +184,15 @@ export var LayerControl = Control.Layers.extend({
     )
       return this;
 
-    DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
+    this._container.classList.remove('leaflet-control-layers-expanded');
     if (e.originalEvent?.pointerType === 'touch') {
       this._container._isExpanded = false;
     }
     return this;
   },
   _preventDefaultContextMenu: function (e) {
-    let latlng = this._map.mouseEventToLatLng(e);
-    let containerPoint = this._map.mouseEventToContainerPoint(e);
+    // with leaflet-2, e.latLng and e.containerPoint are not available for
+    // layer control contextmenu events
     e.preventDefault();
     // for touch devices, when the layer control is not expanded,
     // the layer context menu should not show on map
@@ -201,9 +201,7 @@ export var LayerControl = Control.Layers.extend({
       return;
     }
     this._map.fire('contextmenu', {
-      originalEvent: e,
-      containerPoint: containerPoint,
-      latlng: latlng
+      originalEvent: e
     });
   }
 });

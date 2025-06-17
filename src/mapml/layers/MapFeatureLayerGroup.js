@@ -53,28 +53,19 @@ export var MapFeatureLayerGroup = FeatureGroup.extend({
           'leaflet-layer',
           this.options.pane
         );
-        DomUtil.addClass(
-          this._container,
-          'leaflet-pane mapml-vector-container'
-        );
+        this._container.classList.add('leaflet-pane', 'mapml-vector-container');
       } else if (this.options._leafletLayer) {
         this._container = DomUtil.create(
           'div',
           'leaflet-layer',
           this.options.pane
         );
-        DomUtil.addClass(
-          this._container,
-          'leaflet-pane mapml-vector-container'
-        );
+        this._container.classList.add('leaflet-pane mapml-vector-container');
       } else {
         // if the current featureLayer is a sublayer of templatedFeatureLayer,
         // append <svg> directly to the templated feature container (passed in as options.pane)
         this._container = this.options.pane;
-        DomUtil.addClass(
-          this._container,
-          'leaflet-pane mapml-vector-container'
-        );
+        this._container.classList.add('leaflet-pane', 'mapml-vector-container');
       }
       this.options.renderer.options.pane = this._container;
     }
@@ -173,7 +164,7 @@ export var MapFeatureLayerGroup = FeatureGroup.extend({
     if (this._queryFeatures) {
       map.off('featurepagination', this.showPaginationFeature, this);
       delete this._queryFeatures;
-      DomUtil.remove(this._container);
+      this._container.remove();
     }
     FeatureGroup.prototype.onRemove.call(this, map);
     this._map.featureIndex.cleanIndex();
@@ -459,7 +450,7 @@ export var MapFeatureLayerGroup = FeatureGroup.extend({
     var style = this.options.style;
     if (style) {
       // reset any custom styles
-      LeafletUtil.extend(layer.options, layer.defaultOptions);
+      Object.assign(layer.options, layer.defaultOptions);
       this._setLayerStyle(layer, style);
     }
   },

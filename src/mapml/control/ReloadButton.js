@@ -56,14 +56,14 @@ export var ReloadButton = Control.extend({
 
   _updateDisabled: function () {
     setTimeout(() => {
-      DomUtil.removeClass(this._reloadButton, 'leaflet-disabled');
+      this._reloadButton.classList.remove('leaflet-disabled');
       this._reloadButton.setAttribute('aria-disabled', 'false');
 
       if (
         this._map &&
         (this._disabled || this._map.options.mapEl._history.length <= 1)
       ) {
-        DomUtil.addClass(this._reloadButton, 'leaflet-disabled');
+        this._reloadButton.classList.add('leaflet-disabled');
         this._reloadButton.setAttribute('aria-disabled', 'true');
       }
     }, 0);

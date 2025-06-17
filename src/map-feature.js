@@ -329,7 +329,7 @@ export class HTMLFeatureElement extends HTMLElement {
       // this is used by DebugOverlay testing "multipleExtents.test.js
       // but do we really need or want each feature to have the bounds of the
       // map link?  tbd
-      LeafletUtil.extend(this._featureLayer.options, {
+      Object.assign(this._featureLayer.options, {
         _leafletLayer: Object.assign(this._featureLayer, {
           _layerEl: this.getLayerEl()
         })
