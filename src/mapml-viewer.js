@@ -179,6 +179,15 @@ export class HTMLMapmlViewerElement extends HTMLElement {
   connectedCallback() {
     this.whenProjectionDefined(this.projection)
       .then(() => {
+        const height = parseInt(
+          window.getComputedStyle(this).height.replace('px', '')
+        );
+
+        if (height === 0) {
+          Promise.resolve().then(() => this.connectedCallback());
+          return;
+        }
+
         this._setLocale();
         this._initShadowRoot();
 
@@ -238,6 +247,18 @@ export class HTMLMapmlViewerElement extends HTMLElement {
             }
           }, 0);
         }
+        Promise.resolve().then(() => {
+          if (this._map) {
+            // Method 1: Trigger Leaflet's full resize pipeline
+            window.dispatchEvent(new Event('resize'));
+
+            // Method 2: If above doesn't work, comprehensive manual approach
+            this._map.invalidateSize(true);
+            this._map.eachLayer((layer) => {
+              if (layer.redraw) layer.redraw();
+            });
+          }
+        });
       })
       .catch((e) => {
         console.log(e);
