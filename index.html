@@ -5,15 +5,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>index-map.html</title>
     <script type="module" src="dist/mapml.js"></script>
-    <link rel="stylesheet"
-      href="https://cdn.design-system.alpha.canada.ca/@cdssnc/gcds-utility@latest/dist/gcds-utility.min.css">
+    <link rel="stylesheet" href="https://cdn.design-system.alpha.canada.ca/@cdssnc/gcds-utility@latest/dist/gcds-utility.min.css">
     <script type="module" src="./component-display/component-display/component-display.esm.js"></script>
     <script nomodule src="./component-display/component-display/component-display.js"></script>
-    <link rel="stylesheet"
-      href="https://cdn.design-system.alpha.canada.ca/@cdssnc/gcds-components@latest/dist/gcds/gcds.css">
-    <script type="module"
-      src="https://cdn.design-system.alpha.canada.ca/@cdssnc/gcds-components@latest/dist/gcds/gcds.esm.js"
-    ></script> 
+    <link rel="stylesheet" href="https://cdn.design-system.alpha.canada.ca/@cdssnc/gcds-components@latest/dist/gcds/gcds.css">
+    <script type="module" src="https://cdn.design-system.alpha.canada.ca/@cdssnc/gcds-components@latest/dist/gcds/gcds.esm.js"></script> 
     <style>
       mapml-viewer {
         width: 100%;
@@ -24,7 +20,6 @@
   </head>
   <body>
   <gcds-container size="xl" main-container centered tag="main">
-
     <component-display 
         attrs='[
             {
@@ -96,12 +91,6 @@
                 "onlyProperty": true
             }
         ]'
-        slots='[
-            {
-                "name": "default",
-                "description": "Map layers and other child elements"
-            }
-        ]'
         events='[
             {
                 "name": "map-moveend",
@@ -126,16 +115,7 @@
         ]'
         accessibility="true">
         
-        <mapml-viewer 
-            projection="OSMTILE" 
-            zoom="14" 
-            lat="45.406314" 
-            lon="-75.6883335" 
-            controls 
-            controlslist="geolocation"
-            width="600"
-            height="400">
-            
+        <mapml-viewer projection="OSMTILE" zoom="14" lat="45.406314" lon="-75.6883335" controls  controlslist="geolocation"            width="600" height="400">
             <map-layer label="OpenStreetMap" checked>
                 <map-link 
                     rel="license" 

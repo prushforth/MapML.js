@@ -46,6 +46,11 @@ module.exports = function(grunt) {
           },
           {
             expand: true,
+            src: 'component-display/**/*',
+            dest: 'dist/'
+          },
+          {
+            expand: true,
             flatten: true,
             filter: 'isFile',
             src: ['src/pmtilesRules.js'],

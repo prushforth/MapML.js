@@ -179,15 +179,6 @@ export class HTMLMapmlViewerElement extends HTMLElement {
   connectedCallback() {
     this.whenProjectionDefined(this.projection)
       .then(() => {
-        const height = parseInt(
-          window.getComputedStyle(this).height.replace('px', '')
-        );
-
-        if (height === 0) {
-          Promise.resolve().then(() => this.connectedCallback());
-          return;
-        }
-
         this._setLocale();
         this._initShadowRoot();
 
@@ -247,16 +238,9 @@ export class HTMLMapmlViewerElement extends HTMLElement {
             }
           }, 0);
         }
-        Promise.resolve().then(() => {
+        this._waitForControlsRendered().then(() => {
           if (this._map) {
-            // Method 1: Trigger Leaflet's full resize pipeline
-            window.dispatchEvent(new Event('resize'));
-
-            // Method 2: If above doesn't work, comprehensive manual approach
             this._map.invalidateSize(true);
-            this._map.eachLayer((layer) => {
-              if (layer.redraw) layer.redraw();
-            });
           }
         });
       })
@@ -264,6 +248,84 @@ export class HTMLMapmlViewerElement extends HTMLElement {
         console.log(e);
         throw new Error('Error: ' + e);
       });
+  }
+  _waitForVisualRender() {
+    return new Promise((resolve) => {
+      const checkVisibility = () => {
+        // Check if element has actual rendered dimensions AND is visible
+        const rect = this.getBoundingClientRect();
+        const computed = window.getComputedStyle(this);
+
+        // Ensure element is actually visible and has layout
+        const isVisible =
+          rect.width > 0 &&
+          rect.height > 0 &&
+          computed.visibility !== 'hidden' &&
+          computed.display !== 'none';
+
+        // Also check if border is rendered (sign of complete CSS application)
+        const hasBorder =
+          computed.borderWidth && computed.borderWidth !== '0px';
+
+        if (isVisible && (hasBorder || rect.width > 300)) {
+          // Element is visually rendered
+          resolve();
+        } else {
+          // Not ready yet, check again next frame
+          requestAnimationFrame(checkVisibility);
+        }
+      };
+
+      checkVisibility();
+    });
+  }
+  _waitForControlsRendered() {
+    return new Promise((resolve) => {
+      const checkControls = () => {
+        const zoomControl = this.shadowRoot?.querySelector(
+          '.leaflet-control-zoom'
+        );
+
+        if (zoomControl) {
+          // Force layout calculation
+          const rect = zoomControl.getBoundingClientRect();
+          const style = window.getComputedStyle(zoomControl);
+
+          // Check multiple visual indicators
+          const hasPosition = rect.width > 0 && rect.height > 0;
+          const hasVisibility =
+            style.visibility !== 'hidden' && style.display !== 'none';
+          const hasOpacity = parseFloat(style.opacity) > 0;
+          const isInViewport = rect.top >= 0 && rect.left >= 0;
+
+          // Most importantly: check if it's actually painted
+          const isPainted = zoomControl.offsetParent !== null; // Element is rendered
+
+          console.log('Visual render check:', {
+            hasPosition,
+            hasVisibility,
+            hasOpacity,
+            isInViewport,
+            isPainted,
+            rect: {
+              width: rect.width,
+              height: rect.height,
+              top: rect.top,
+              left: rect.left
+            }
+          });
+
+          if (hasPosition && hasVisibility && hasOpacity && isPainted) {
+            resolve();
+            return;
+          }
+        }
+
+        requestAnimationFrame(checkControls);
+      };
+
+      checkControls();
+    });
   }
   _setLocale() {
     if (this.closest(':lang(fr)') === this) {
