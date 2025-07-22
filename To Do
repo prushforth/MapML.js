@@ -1,0 +1,19 @@
+
+ 17 failed
+Not sure, but added ignoreHTTPSErrors: true    api/matchMedia/map-bounding-box.test.js:19:7 › matchMedia map-bounding-box tests › matchMedia API detects changes in map-extents
+HTTPS problem    elements/map-link/map-link-media.test.js:105:7 › map-link media attribute › map-link rel=features is enabled when non-matching media attribute removed
+    layers/step/request.js:67:9 › Templated image layer with step › Request Tests › At zoom level 2, zooming in to 3
+    layers/step/request.js:71:9 › Templated image layer with step › Request Tests › At zoom level 3, zooming in to 4
+    layers/step/request.js:75:9 › Templated image layer with step › Request Tests › At zoom level 4, zooming in to 5
+    layers/step/request.js:88:9 › Templated image layer with step › Request Tests › Panning makes new request as needed
+    layers/step/imageStep.test.js:49:9 › Templated image layer with step › Shift zooming from level 1 -> 4 requests and scales level 3
+    layers/step/request.js:67:9 › Templated tile layer with step › Request Tests › At zoom level 2, zooming in to 3
+    layers/step/request.js:71:9 › Templated tile layer with step › Request Tests › At zoom level 3, zooming in to 4
+    layers/step/request.js:75:9 › Templated tile layer with step › Request Tests › At zoom level 4, zooming in to 5
+    layers/step/request.js:81:11 › Templated tile layer with step › Request Tests › No requests out of native zoom bounds
+    layers/step/request.js:88:9 › Templated tile layer with step › Request Tests › Panning makes new request as needed
+    layers/templatedPMTilesMVTLayer.test.js:88:7 › Playwright templatedPMTilesLayer Tests › A protomaps map-link in a non-OSMTILE map-extent is never enabled
+    mapml-viewer/viewerContextMenu.test.js:403:7 › Playwright mapml-viewer Context Menu (and api) Tests › Submenu, copy extent with zoom level = 1
+    mapml-viewer/viewerContextMenu.test.js:437:7 › Playwright mapml-viewer Context Menu (and api) Tests › Submenu, copy mapml-viewer location in gcrs (default) coordinates
+    mapml-viewer/viewerContextMenu.test.js:479:7 › Playwright mapml-viewer Context Menu (and api) Tests › Paste map-feature to mapml-viewer
+    mapml-viewer/viewerContextMenu.test.js:512:7 › Playwright mapml-viewer Context Menu (and api) Tests › Submenu, copy location in tilematrix coordinates, which is not implemented, so faked with gcrs

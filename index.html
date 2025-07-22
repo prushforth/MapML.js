@@ -20,142 +20,131 @@
   </head>
   <body>
   <gcds-container size="xl" main-container centered tag="main">
-    <component-display 
-        attrs='[
-            {
-                "name": "projection",
-                "control": "select",
-                "options": "[\"OSMTILE\", \"WGS84\", \"CBMTILE\", \"APSTILE\"]",
-                "required": false,
-                "defaultValue": "OSMTILE",
-                "type": "string"
-            },
-            {
-                "name": "lat",
-                "control": "text",
-                "required": false,
-                "defaultValue": "45.406314",
-                "type": "number"
-            },
-            {
-                "name": "lon",
-                "control": "text",
-                "required": false,
-                "defaultValue": "-75.6883335",
-                "type": "number"
-            },
-            {
-                "name": "zoom",
-                "control": "text",
-                "required": false,
-                "defaultValue": "14",
-                "type": "number"
-            },
-            {
-                "name": "width",
-                "control": "text",
-                "required": false,
-                "defaultValue": "300",
-                "type": "number"
-            },
-            {
-                "name": "height",
-                "control": "text",
-                "required": false,
-                "defaultValue": "150",
-                "type": "number"
-            },
-            {
-                "name": "controls",
-                "control": "select",
-                "options": "[\"true\", \"false\"]",
-                "required": false,
-                "defaultValue": "true",
-                "type": "boolean",
-                "onlyProperty": true
-            },
-            {
-                "name": "controlslist",
-                "control": "text",
-                "required": false,
-                "defaultValue": "geolocation",
-                "type": "string"
-            },
-            {
-                "name": "static",
-                "control": "select",
-                "options": "[\"true\", \"false\"]",
-                "required": false,
-                "defaultValue": "false",
-                "type": "boolean",
-                "onlyProperty": true
-            }
-        ]'
-        events='[
-            {
-                "name": "map-moveend",
-                "description": "Fired when the map finishes moving",
-                "details": "{ target: mapml-viewer }"
-            },
-            {
-                "name": "click",
-                "description": "Fired when the map is clicked",
-                "details": "{ lat: number, lon: number, x: number, y: number }"
-            },
-            {
-                "name": "zoomend",
-                "description": "Fired when the map finishes zooming",
-                "details": "{ target: mapml-viewer }"
-            },
-            {
-                "name": "layerchange",
-                "description": "Fired when a layer changes",
-                "details": "{ target: mapml-viewer, originalEvent: Event }"
-            }
-        ]'
-        accessibility="true">
-        
-        <mapml-viewer projection="OSMTILE" zoom="14" lat="45.406314" lon="-75.6883335" controls  controlslist="geolocation"            width="600" height="400">
-            <map-layer label="OpenStreetMap" checked>
-                <map-link 
-                    rel="license" 
-                    title="© OpenStreetMap contributors CC BY-SA" 
-                    href="https://www.openstreetmap.org/copyright">
-                </map-link>
-                <map-extent units="OSMTILE" checked="checked">
-                    <map-input 
-                        name="z" 
-                        type="zoom" 
-                        value="18" 
-                        min="0" 
-                        max="18">
-                    </map-input>
-                    <map-input 
-                        name="x" 
-                        type="location" 
-                        units="tilematrix" 
-                        axis="column" 
-                        min="0" 
-                        max="262144">
-                    </map-input>
-                    <map-input 
-                        name="y" 
-                        type="location" 
-                        units="tilematrix" 
-                        axis="row" 
-                        min="0" 
-                        max="262144">
-                    </map-input>
-                    <map-link 
-                        rel="tile" 
-                        tref="https://tile.openstreetmap.org/{z}/{x}/{y}.png">
-                    </map-link>
-                </map-extent>
-            </map-layer>
-            
-        </mapml-viewer>
-        
-    </component-display>
-</gcds-container>
-  </body>
+    <host-element>
+      <template shadowrootmode="open">
+        <slot></slot>
+      </template>
+      <h2>Light content</h2>
+      <mapml-viewer projection="OSMTILE" zoom="14" lat="45.406314" lon="-75.6883335" >
+        <map-layer label="OpenStreetMap" checked>
+          <map-link rel="license" title="© OpenStreetMap contributors CC BY-SA" href="https://www.openstreetmap.org/copyright"></map-link>
+          <map-extent units="OSMTILE" checked="checked">
+            <map-input name="z" type="zoom" value="18" min="0" max="18"> </map-input>
+            <map-input name="x" type="location" units="tilematrix" axis="column" min="0" max="262144"> </map-input>
+            <map-input name="y" type="location" units="tilematrix" axis="row" min="0" max="262144"> </map-input>
+            <map-link rel="tile" tref="https://tile.openstreetmap.org/{z}/{x}/{y}.png"> </map-link>
+          </map-extent>
+        </map-layer>
+      </mapml-viewer>
+    </host-element>
+<!--    <component-display 
+      attrs='[
+      {
+      "name": "projection",
+      "control": "select",
+      "options": "[\"OSMTILE\", \"WGS84\", \"CBMTILE\", \"APSTILE\"]",
+      "required": false,
+      "defaultValue": "OSMTILE",
+      "type": "string"
+      },
+      {
+      "name": "lat",
+      "control": "text",
+      "required": false,
+      "defaultValue": "45.406314",
+      "type": "number"
+      },
+      {
+      "name": "lon",
+      "control": "text",
+      "required": false,
+      "defaultValue": "-75.6883335",
+      "type": "number"
+      },
+      {
+      "name": "zoom",
+      "control": "text",
+      "required": false,
+      "defaultValue": "14",
+      "type": "number"
+      },
+      {
+      "name": "width",
+      "control": "text",
+      "required": false,
+      "defaultValue": "300",
+      "type": "number"
+      },
+      {
+      "name": "height",
+      "control": "text",
+      "required": false,
+      "defaultValue": "150",
+      "type": "number"
+      },
+      {
+      "name": "controls",
+      "control": "select",
+      "options": "[\"true\", \"false\"]",
+      "required": false,
+      "defaultValue": "true",
+      "type": "boolean",
+      "onlyProperty": true
+      },
+      {
+      "name": "controlslist",
+      "control": "text",
+      "required": false,
+      "defaultValue": "geolocation",
+      "type": "string"
+      },
+      {
+      "name": "static",
+      "control": "select",
+      "options": "[\"true\", \"false\"]",
+      "required": false,
+      "defaultValue": "false",
+      "type": "boolean",
+      "onlyProperty": true
+      }
+      ]'
+      events='[
+      {
+      "name": "map-moveend",
+      "description": "Fired when the map finishes moving",
+      "details": "{ target: mapml-viewer }"
+      },
+      {
+      "name": "click",
+      "description": "Fired when the map is clicked",
+      "details": "{ lat: number, lon: number, x: number, y: number }"
+      },
+      {
+      "name": "zoomend",
+      "description": "Fired when the map finishes zooming",
+      "details": "{ target: mapml-viewer }"
+      },
+      {
+      "name": "layerchange",
+      "description": "Fired when a layer changes",
+      "details": "{ target: mapml-viewer, originalEvent: Event }"
+      }
+      ]'
+      accessibility="true">
+
+<mapml-viewer projection="OSMTILE" zoom="14" lat="45.406314" lon="-75.6883335" >
+  <map-layer label="OpenStreetMap" checked>
+    <map-link rel="license" title="© OpenStreetMap contributors CC BY-SA" href="https://www.openstreetmap.org/copyright"></map-link>
+    <map-extent units="OSMTILE" checked="checked">
+      <map-input name="z" type="zoom" value="18" min="0" max="18"> </map-input>
+      <map-input name="x" type="location" units="tilematrix" axis="column" min="0" max="262144"> </map-input>
+      <map-input name="y" type="location" units="tilematrix" axis="row" min="0" max="262144"> </map-input>
+      <map-link rel="tile" tref="https://tile.openstreetmap.org/{z}/{x}/{y}.png"> </map-link>
+    </map-extent>
+  </map-layer>
+</mapml-viewer>
+
+    </component-display>-->
+  </gcds-container>
+</body>
 </html>

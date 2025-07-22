@@ -238,58 +238,34 @@ export class HTMLMapmlViewerElement extends HTMLElement {
             }
           }, 0);
         }
-        this._waitForControlsRendered().then(() => {
-          if (this._map) {
-            this._map.invalidateSize(true);
-          }
-        });
+        if (this.closest('gcds-map')) {
+          this._waitForControlsRendered().then(() => {
+            // if rendered by the stencil.js component-display component
+            if (this._map) {
+              // make up for stencil.js rendering issues
+              this._map.invalidateSize(false);
+            }
+          });
+        }
       })
       .catch((e) => {
         console.log(e);
         throw new Error('Error: ' + e);
       });
   }
-  _waitForVisualRender() {
-    return new Promise((resolve) => {
-      const checkVisibility = () => {
-        // Check if element has actual rendered dimensions AND is visible
-        const rect = this.getBoundingClientRect();
-        const computed = window.getComputedStyle(this);
-
-        // Ensure element is actually visible and has layout
-        const isVisible =
-          rect.width > 0 &&
-          rect.height > 0 &&
-          computed.visibility !== 'hidden' &&
-          computed.display !== 'none';
-
-        // Also check if border is rendered (sign of complete CSS application)
-        const hasBorder =
-          computed.borderWidth && computed.borderWidth !== '0px';
-
-        if (isVisible && (hasBorder || rect.width > 300)) {
-          // Element is visually rendered
-          resolve();
-        } else {
-          // Not ready yet, check again next frame
-          requestAnimationFrame(checkVisibility);
-        }
-      };
-
-      checkVisibility();
-    });
-  }
   _waitForControlsRendered() {
     return new Promise((resolve) => {
+      let attempts = 0;
+
       const checkControls = () => {
-        const zoomControl = this.shadowRoot?.querySelector(
-          '.leaflet-control-zoom'
+        const attributionControl = this.shadowRoot?.querySelector(
+          '.leaflet-control-attribution'
         );
 
-        if (zoomControl) {
+        if (attributionControl) {
           // Force layout calculation
-          const rect = zoomControl.getBoundingClientRect();
-          const style = window.getComputedStyle(zoomControl);
+          const rect = attributionControl.getBoundingClientRect();
+          const style = window.getComputedStyle(attributionControl);
 
           // Check multiple visual indicators
           const hasPosition = rect.width > 0 && rect.height > 0;
@@ -297,23 +273,14 @@ export class HTMLMapmlViewerElement extends HTMLElement {
             style.visibility !== 'hidden' && style.display !== 'none';
           const hasOpacity = parseFloat(style.opacity) > 0;
           const isInViewport = rect.top >= 0 && rect.left >= 0;
+          const isPainted = attributionControl.offsetParent !== null;
 
-          // Most importantly: check if it's actually painted
-          const isPainted = zoomControl.offsetParent !== null; // Element is rendered
-
-          console.log('Visual render check:', {
-            hasPosition,
-            hasVisibility,
-            hasOpacity,
-            isInViewport,
-            isPainted,
-            rect: {
-              width: rect.width,
-              height: rect.height,
-              top: rect.top,
-              left: rect.left
-            }
-          });
+          // Only log occasionally to reduce console spam
+          if (attempts % 5 === 0) {
+            console.log(
+              `Visual render check: hasPosition=${hasPosition}, hasVisibility=${hasVisibility}, hasOpacity=${hasOpacity}, isInViewport=${isInViewport}, isPainted=${isPainted}, rect={width=${rect.width}, height=${rect.height}, top=${rect.top}, left=${rect.left}}`
+            );
+          }
 
           if (hasPosition && hasVisibility && hasOpacity && isPainted) {
             resolve();
@@ -321,7 +288,14 @@ export class HTMLMapmlViewerElement extends HTMLElement {
           }
         }
 
-        requestAnimationFrame(checkControls);
+        attempts++;
+
+        // Use setTimeout instead of RAF to reduce frequency
+        if (attempts < 20) {
+          setTimeout(checkControls, 50); // Check every 50ms instead of every frame
+        } else {
+          resolve(); // Give up after 1 second
+        }
       };
 
       checkControls();
