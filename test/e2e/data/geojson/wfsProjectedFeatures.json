@@ -1,0 +1,35 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[
+                    [-8433179, 5765668],
+                    [-8433179, 5765868],
+                    [-8432979, 5765868],
+                    [-8432979, 5765668],
+                    [-8433179, 5765668]
+                ]]
+            },
+            "properties": {
+                "name": "WFS Building A",
+                "type": "commercial",
+                "area_sqm": 40000
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-8433079, 5765768]
+            },
+            "properties": {
+                "name": "WFS Landmark",
+                "type": "monument",
+                "year": 1965
+            }
+        }
+    ]
+}

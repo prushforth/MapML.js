@@ -192,6 +192,28 @@ app.get('/data/query/geojsonPoint.json', (req, res, next) => {
     }
   );
 });
+app.get('/data/wfs/projected', (req, res, next) => {
+  res.sendFile(
+    __dirname + '/e2e/data/geojson/wfsProjectedFeatures.json',
+    { headers: { 'Content-Type': 'application/json' } },
+    (err) => {
+      if (err) {
+        res.status(403).send('Error.');
+      }
+    }
+  );
+});
+app.get('/data/wfs/geographic', (req, res, next) => {
+  res.sendFile(
+    __dirname + '/e2e/data/geojson/wfsGeographicFeatures.json',
+    { headers: { 'Content-Type': 'application/json' } },
+    (err) => {
+      if (err) {
+        res.status(403).send('Error.');
+      }
+    }
+  );
+});
 
 app.use('/data', express.static(path.join(__dirname, 'e2e/data/tiles/cbmt')));
 app.use('/data', express.static(path.join(__dirname, 'e2e/data/tiles/wgs84')));

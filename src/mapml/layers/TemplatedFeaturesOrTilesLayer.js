@@ -194,11 +194,39 @@ export var TemplatedFeaturesOrTilesLayer = LayerGroup.extend({
     }
 
     let mapml,
+      isJSON =
+        this.options.type === 'application/json' ||
+        this.options.type === 'application/geo+json',
       headers = new Headers({
-        Accept: 'text/mapml'
+        Accept: isJSON
+          ? 'application/json, application/geo+json;q=0.9'
+          : 'text/mapml'
       }),
       linkEl = this._linkEl,
       getMapML = (url) => {
+        if (isJSON) {
+          return fetch(url, { redirect: 'follow', headers: headers })
+            .then(function (response) {
+              return response.json();
+            })
+            .then((json) => {
+              let mapmlLayer = Util.geojson2mapml(json, {
+                projection: this.options.projection
+              });
+              if (Util._hasProjectedCoordinates(json)) {
+                let csMeta = mapmlLayer.querySelector('map-meta[name=cs]');
+                if (csMeta) csMeta.setAttribute('content', 'pcrs');
+              }
+              let frag = document.createDocumentFragment();
+              let elements = mapmlLayer.querySelectorAll(
+                'map-meta, map-style, map-feature'
+              );
+              for (let i = 0; i < elements.length; i++) {
+                frag.appendChild(elements[i]);
+              }
+              linkEl.shadowRoot.appendChild(frag);
+            });
+        }
         return fetch(url, { redirect: 'follow', headers: headers })
           .then(function (response) {
             return response.text();

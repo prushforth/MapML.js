@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>WFS GeoJSON Features Test</title>
+  <meta charset="UTF-8">
+  <script type="module" src="mapml.js"></script>
+</head>
+
+<body>
+  <mapml-viewer style="width: 500px;height: 500px;" projection="OSMTILE" zoom="10" lat="45.4" lon="-75.7" controls>
+    <map-layer label="WFS Projected Features" checked>
+      <map-extent label="WFS projected extent" units="OSMTILE" checked>
+        <map-input name="z" type="zoom" min="0" max="18"></map-input>
+        <map-input name="xmin" type="location" rel="map" position="top-left" axis="easting" units="pcrs"></map-input>
+        <map-input name="ymin" type="location" rel="map" position="bottom-left" axis="northing" units="pcrs"></map-input>
+        <map-input name="xmax" type="location" rel="map" position="top-right" axis="easting" units="pcrs"></map-input>
+        <map-input name="ymax" type="location" rel="map" position="top-left" axis="northing" units="pcrs"></map-input>
+        <map-link rel="features" type="application/json" tref="data/wfs/projected?service=WFS&amp;request=GetFeature&amp;srsName=EPSG:3857&amp;bbox={xmin},{ymin},{xmax},{ymax}&amp;zoom={z}"></map-link>
+      </map-extent>
+    </map-layer>
+    <map-layer label="WFS Geographic Features" checked>
+      <map-extent label="WFS geographic extent" units="OSMTILE" checked>
+        <map-input name="z" type="zoom" min="0" max="18"></map-input>
+        <map-input name="xmin" type="location" rel="map" position="top-left" axis="easting" units="pcrs"></map-input>
+        <map-input name="ymin" type="location" rel="map" position="bottom-left" axis="northing" units="pcrs"></map-input>
+        <map-input name="xmax" type="location" rel="map" position="top-right" axis="easting" units="pcrs"></map-input>
+        <map-input name="ymax" type="location" rel="map" position="top-left" axis="northing" units="pcrs"></map-input>
+        <map-link rel="features" type="application/json" tref="data/wfs/geographic?service=WFS&amp;request=GetFeature&amp;srsName=EPSG:4326&amp;bbox={xmin},{ymin},{xmax},{ymax}&amp;zoom={z}"></map-link>
+      </map-extent>
+    </map-layer>
+  </mapml-viewer>
+</body>
+
+</html>

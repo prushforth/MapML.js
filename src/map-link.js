@@ -36,10 +36,12 @@ export class HTMLLinkElement extends HTMLElement {
     return this.getAttribute('type') || 'image/*';
   }
   set type(val) {
-    // improve this
     if (
       val === 'text/mapml' ||
-      val.startsWith('image/' || val === 'application/pmtiles')
+      val === 'application/json' ||
+      val === 'application/geo+json' ||
+      val === 'application/pmtiles' ||
+      val.startsWith('image/')
     ) {
       this.setAttribute('type', val);
     }
@@ -560,7 +562,8 @@ export class HTMLLinkElement extends HTMLElement {
         zIndex: this.zIndex,
         pane: this.parentExtent._extentLayer.getContainer(),
         linkEl: this,
-        projection: this.mapEl._map.options.projection
+        projection: this.mapEl._map.options.projection,
+        type: this.type
       }).addTo(this.parentExtent._extentLayer);
     } else if (this.rel === 'query') {
       if (!this.shadowRoot) {

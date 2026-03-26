@@ -1570,5 +1570,39 @@ export const Util = {
     }
 
     return Util.getClosest(node.parentNode, selector);
+  },
+
+  // Determine if a GeoJSON object has projected (non-CRS:84) coordinates.
+  // Returns true if a "crs" member is present and non-null, or if coordinate
+  // values exceed CRS:84 bounds (lon [-180,180], lat [-90,90]), indicating
+  // meter-based projected units (e.g. from WMS GetFeatureInfo responses).
+  _hasProjectedCoordinates: function (json) {
+    if (json.crs != null) return true;
+    let c = Util._firstCoordinate(json);
+    return c !== null && (Math.abs(c[0]) > 180 || Math.abs(c[1]) > 90);
+  },
+
+  // Extract the first [x, y] coordinate pair from a GeoJSON object,
+  // drilling into FeatureCollection → Feature → Geometry → coordinates.
+  _firstCoordinate: function (json) {
+    if (!json) return null;
+    let type = json.type && json.type.toUpperCase();
+    if (type === 'FEATURECOLLECTION') {
+      if (json.features && json.features.length > 0)
+        return Util._firstCoordinate(json.features[0]);
+    } else if (type === 'FEATURE') {
+      return Util._firstCoordinate(json.geometry);
+    } else if (json.coordinates) {
+      // Unwrap nested arrays until we reach a [number, number] pair
+      let coords = json.coordinates;
+      while (Array.isArray(coords) && Array.isArray(coords[0])) {
+        coords = coords[0];
+      }
+      if (coords.length >= 2 && typeof coords[0] === 'number') return coords;
+    } else if (type === 'GEOMETRYCOLLECTION' && json.geometries) {
+      if (json.geometries.length > 0)
+        return Util._firstCoordinate(json.geometries[0]);
+    }
+    return null;
   }
 };
