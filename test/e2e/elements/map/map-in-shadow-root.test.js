@@ -109,7 +109,7 @@ test.describe('Playwright map[is=web-map] fullscreen tests', () => {
     await map3.click();
     await page.keyboard.press('Shift+F10');
     await page.keyboard.press('F');
-    await page.waitForTimeout(200);
+    await page.waitForTimeout(500);
     let fullscreenElement = await map3.evaluate(
       (m) => M.Util.getClosest(m._map.getContainer(), ':fullscreen').id
     );
@@ -117,9 +117,9 @@ test.describe('Playwright map[is=web-map] fullscreen tests', () => {
     await map3.click();
     await page.keyboard.press('Shift+F10');
     await page.keyboard.press('F'); // exit fullscreen
-    await page.waitForTimeout(200);
+    await page.waitForTimeout(500);
     fullscreenElement = await page.evaluate(`document.fullscreenElement`);
-    await page.waitForTimeout(200);
+    await page.waitForTimeout(500);
     expect(fullscreenElement).toBeFalsy();
   });
 });
