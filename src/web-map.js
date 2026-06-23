@@ -544,13 +544,10 @@ export class HTMLWebMapElement extends HTMLMapElement {
         })
         .addTo(this._map);
     }
-    if (
-      !this._searchButton &&
-      this._controlsList &&
-      this._controlsList.contains('search') &&
-      totalSize + 49 <= mapSize
-    ) {
-      totalSize += 49;
+    if (!this._searchButton) {
+      // Note: search is opt-in (default hidden) so it occupies no
+      // vertical space until enabled by controlslist="search"; do not
+      // charge it against the mapSize budget here.
       this._searchButton = searchButton({ mapEl: this }).addTo(this._map);
     }
     if (!this._reloadButton && totalSize + 49 <= mapSize) {
@@ -619,11 +616,6 @@ export class HTMLWebMapElement extends HTMLMapElement {
             this._setControlsVisibility('geolocation', false);
             break;
           case 'search':
-            if (!this._searchButton) {
-              this._searchButton = searchButton({ mapEl: this }).addTo(
-                this._map
-              );
-            }
             this._setControlsVisibility('search', false);
             break;
           case 'noscale':

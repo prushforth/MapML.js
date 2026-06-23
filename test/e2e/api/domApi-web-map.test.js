@@ -437,7 +437,12 @@ test.describe('web-map DOM API Tests', () => {
       '.leaflet-top.leaflet-left',
       (div) => div.childElementCount
     );
-    expect(leftControlCount).toBe(2);
+    // 3 controls in DOM: zoom, search (always created up-front for
+    // correct DOM ordering but hidden because controlslist does not
+    // contain "search"), and reload. Fullscreen is squeezed out by the
+    // mapSize budget at default size. The search control is opt-in and
+    // hidden by default, so visually only zoom + reload are shown.
+    expect(leftControlCount).toBe(3);
 
     let zoomHidden = await page.$eval(
       '.leaflet-top.leaflet-left > .leaflet-control-zoom',
@@ -787,11 +792,16 @@ test.describe('web-map DOM API Tests', () => {
         document.querySelector('map')
       );
 
-      // search control should not exist by default (opt-in, lazily created)
-      let searchEl = await page.$(
-        '.leaflet-top.leaflet-left > .mapml-search-control'
+      // search control is now always created up-front and hidden by
+      // default (opt-in via controlslist="search"). This ensures it
+      // ends up in its correct DOM slot (between zoom and reload) when
+      // controlslist is set at runtime, instead of being appended after
+      // fullscreen.
+      let searchHiddenInitial = await page.$eval(
+        '.leaflet-top.leaflet-left > .mapml-search-control',
+        (div) => div.hidden
       );
-      expect(searchEl).toBeNull();
+      expect(searchHiddenInitial).toEqual(true);
 
       // enable search via controlslist attribute
       await page.evaluate(

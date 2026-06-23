@@ -193,6 +193,65 @@ test.describe('Playwright mapml-viewer Element Tests', () => {
           viewer.removeAttribute('controlslist')
         );
       });
+      test('search control inserted between zoom and reload when controlslist="search" is added at runtime', async () => {
+        // Regression test: previously the search button was created
+        // lazily when controlslist="search" was observed, which meant
+        // Leaflet's Control.addTo() appended its container at the END of
+        // the topleft control corner (after fullscreen) instead of in
+        // its correct slot between zoom and reload. The fix creates the
+        // search button up-front in _createControls() and merely toggles
+        // its visibility via controlslist, mirroring the reload control
+        // pattern.
+
+        // Make sure we start without controlslist.
+        await page.$eval('body > mapml-viewer', (viewer) =>
+          viewer.removeAttribute('controlslist')
+        );
+        await page.waitForTimeout(200);
+
+        // Add controlslist="search" at runtime.
+        await page.$eval('body > mapml-viewer', (viewer) =>
+          viewer.setAttribute('controlslist', 'search')
+        );
+        await page.waitForTimeout(200);
+
+        // Read the DOM order of the topleft control corner and find the
+        // indexes of zoom, search and reload. The search button must
+        // appear AFTER zoom and BEFORE reload.
+        const order = await page.$eval('body > mapml-viewer', (viewer) => {
+          const corner = viewer.shadowRoot.querySelector(
+            '.leaflet-control-container > .leaflet-top.leaflet-left'
+          );
+          if (!corner) return [];
+          const result = [];
+          for (let i = 0; i < corner.children.length; i++) {
+            result.push(corner.children[i].className);
+          }
+          return result;
+        });
+
+        const zoomIndex = order.findIndex((cn) =>
+          cn.includes('leaflet-control-zoom')
+        );
+        const searchIndex = order.findIndex((cn) =>
+          cn.includes('mapml-search-control')
+        );
+        const reloadIndex = order.findIndex((cn) =>
+          cn.includes('mapml-reload-button')
+        );
+
+        expect(zoomIndex).toBeGreaterThanOrEqual(0);
+        expect(searchIndex).toBeGreaterThanOrEqual(0);
+        expect(reloadIndex).toBeGreaterThanOrEqual(0);
+
+        expect(searchIndex).toBeGreaterThan(zoomIndex);
+        expect(searchIndex).toBeLessThan(reloadIndex);
+
+        // clean up
+        await page.$eval('body > mapml-viewer', (viewer) =>
+          viewer.removeAttribute('controlslist')
+        );
+      });
     });
   });
   test('Paste geojson Layer to map using ctrl+v', async () => {
