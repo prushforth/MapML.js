@@ -93,7 +93,9 @@ export class HTMLSelectElement extends HTMLElement {
         );
       }
 
-      option.innerHTML = options[i].innerHTML;
+      // textContent (not innerHTML) so that a malicious option body
+      // cannot inject markup into the layer control.
+      option.textContent = options[i].textContent;
       select.appendChild(option);
     }
     return select;

@@ -152,9 +152,12 @@ export class HTMLExtentElement extends HTMLElement {
           break;
         case 'label':
           if (oldValue !== newValue) {
+            // textContent (not innerHTML) so that a malicious
+            // `label` attribute cannot inject markup into the
+            // layer control.
             this._layerControlHTML.querySelector(
               '.mapml-extent-item-name'
-            ).innerHTML = newValue || this.getMapEl().locale.dfExtent;
+            ).textContent = newValue || this.getMapEl().locale.dfExtent;
           }
           break;
         case 'checked':
