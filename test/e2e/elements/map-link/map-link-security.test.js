@@ -34,7 +34,7 @@ test.describe('map-link security: XSS via <map-link rel=license|legend>', () => 
     page =
       context.pages().find((p) => p.url() === 'about:blank') ||
       (await context.newPage());
-    await page.goto('map-link-security.html');
+    await page.goto('map-link-security.html', { waitUntil: "networkidle" });
     // Give the viewer a beat to attach the malicious layers to the
     // attribution / layer control before we probe.
     await page.waitForSelector('mapml-viewer');
@@ -102,6 +102,21 @@ test.describe('map-link security: XSS via <map-link rel=license|legend>', () => 
   test('legitimate https license still renders as an anchor', async () => {
     // The `good_license` layer must produce a proper anchor in the
     // attribution control, with the sanitised href and escaped title.
+    // The good_license layer is initialised asynchronously; on slower
+    // CI runners the anchor may not have been added to the attribution
+    // control by the time the earlier tests finish, so wait for it
+    // explicitly before probing.
+    await page.waitForFunction(() => {
+      const viewer = document.querySelector('mapml-viewer');
+      const container =
+        viewer && viewer._map && viewer._map.attributionControl
+          ? viewer._map.attributionControl._container
+          : null;
+      if (!container) return false;
+      return Array.from(container.querySelectorAll('a')).some(
+        (a) => a.textContent && a.textContent.includes('Terms of service')
+      );
+    });
     const legit = await page.evaluate(() => {
       const container =
         document.querySelector('mapml-viewer')._map.attributionControl
