@@ -106,7 +106,13 @@ export var LayerControl = Control.Layers.extend({
       this.addOverlay(layer, name);
     }
     if (this._layers.length > 0) {
-      this._container.removeAttribute('hidden');
+      // Respect the viewer's controls attribute and controlslist: adding a
+      // layer to a map whose controls are off (or that has "nolayer") must
+      // not bring the layer control back.
+      const mapEl = this.options.mapEl;
+      if (mapEl.controls && !mapEl.controlsList.contains('nolayer')) {
+        this._container.removeAttribute('hidden');
+      }
       this._map._showControls = true;
     }
     return this._map ? this._update() : this;
