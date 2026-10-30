@@ -13,6 +13,7 @@ export var SearchButton = Control.extend({
     let locale = this._getLocale(map);
     this._locale = locale;
     let container = DomUtil.create('div', 'mapml-search-control leaflet-bar');
+    container.dataset.testid = 'search-control';
 
     let button = DomUtil.create(
       'button',

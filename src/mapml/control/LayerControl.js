@@ -29,6 +29,7 @@ export var LayerControl = Control.Layers.extend({
   },
   onAdd: function () {
     this._initLayout();
+    this._container.dataset.testid = 'layer-control';
     // Adding event on layer control button
     DomEvent.on(
       this._container.getElementsByTagName('a')[0],

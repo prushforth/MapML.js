@@ -503,6 +503,9 @@ export class HTMLMapmlViewerElement extends HTMLElement {
           zoomOutTitle: this.locale.btnZoomOut
         })
         .addTo(this._map);
+      this._zoomControl._container.dataset.testid = 'zoom-control';
+      this._zoomControl._zoomInButton.dataset.testid = 'zoom-in-button';
+      this._zoomControl._zoomOutButton.dataset.testid = 'zoom-out-button';
     }
     if (!this._searchButton) {
       // Note: search is opt-in (default hidden) so it occupies no

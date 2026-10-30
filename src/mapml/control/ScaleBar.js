@@ -15,6 +15,7 @@ export var ScaleBar = Control.Scale.extend({
 
     // initialize _container
     this._container = DomUtil.create('div', 'mapml-control-scale');
+    this._container.dataset.testid = 'scale-control';
     let scaleControl = Control.Scale.prototype.onAdd.call(this, map);
     this._container.appendChild(scaleControl);
     this._container.setAttribute('tabindex', 0);

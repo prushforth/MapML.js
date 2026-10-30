@@ -25,6 +25,7 @@ export var StaticButton = Control.extend({
     this._mapEl = map.options.mapEl;
     this._locale = this._getLocale(map);
     let container = DomUtil.create('div', 'mapml-static-control leaflet-bar');
+    container.dataset.testid = 'static-control';
 
     let button = DomUtil.create(
       'button',

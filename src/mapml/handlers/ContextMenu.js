@@ -64,21 +64,25 @@ export var ContextMenu = Handler.extend({
     this._items = [
       {
         // 0
+        id: 'back',
         text: locale.cmBack + ' (<kbd>Alt+Left Arrow</kbd>)',
         callback: this._goBack
       },
       {
         // 1
+        id: 'forward',
         text: locale.cmForward + ' (<kbd>Alt+Right Arrow</kbd>)',
         callback: this._goForward
       },
       {
         // 2
+        id: 'reload',
         text: locale.cmReload + ' (<kbd>Ctrl+R</kbd>)',
         callback: this._reload
       },
       {
         // 3
+        id: 'fullscreen',
         text: locale.btnFullScreen + ' (<kbd>F</kbd>)',
         callback: this._toggleFullScreen
       },
@@ -88,6 +92,7 @@ export var ContextMenu = Handler.extend({
       },
       {
         // 5
+        id: 'copy',
         text: locale.cmCopyCoords + ' (<kbd>C</kbd>)<span></span>',
         callback: this._copyCoords,
         hideOnSelect: false,
@@ -95,16 +100,19 @@ export var ContextMenu = Handler.extend({
         submenu: [
           {
             // 5.0
+            id: 'copy-map',
             text: locale.cmCopyMapML,
             callback: this._copyMapML
           },
           {
             // 5.1
+            id: 'copy-extent',
             text: locale.cmCopyExtent,
             callback: this._copyExtent
           },
           {
             // 5.2
+            id: 'copy-location',
             text: locale.cmCopyLocation,
             callback: this._copyLocation
           }
@@ -112,6 +120,7 @@ export var ContextMenu = Handler.extend({
       },
       {
         // 6
+        id: 'paste',
         text: locale.cmPasteLayer + ' (<kbd>P</kbd>)',
         callback: this._paste
       },
@@ -121,16 +130,19 @@ export var ContextMenu = Handler.extend({
       },
       {
         // 8
+        id: 'toggle-controls',
         text: locale.cmToggleControls + ' (<kbd>T</kbd>)',
         callback: this._toggleControls
       },
       {
         // 9
+        id: 'toggle-debug',
         text: locale.cmToggleDebug + ' (<kbd>D</kbd>)',
         callback: this._toggleDebug
       },
       {
         // 10
+        id: 'view-source',
         text: locale.cmViewSource + ' (<kbd>V</kbd>)',
         callback: this._viewSource
       }
@@ -150,11 +162,13 @@ export var ContextMenu = Handler.extend({
     this._layerItems = [
       {
         // 0
+        id: 'zoom-to-layer',
         text: locale.lmZoomToLayer + ' (<kbd>Z</kbd>)',
         callback: this._zoomToLayer
       },
       {
         // 1
+        id: 'copy-layer',
         text: locale.lmCopyLayer + ' (<kbd>L</kbd>)',
         callback: this._copyLayer
       }
@@ -163,11 +177,13 @@ export var ContextMenu = Handler.extend({
     this._extentLayerItems = [
       {
         // 0
+        id: 'zoom-to-extent',
         text: locale.lmZoomToExtent + ' (<kbd>Z</kbd>)',
         callback: this._zoomToMapExtent
       },
       {
         // 1
+        id: 'copy-extent',
         text: locale.lmCopyExtent + ' (<kbd>L</kbd>)',
         callback: this._copyMapExtent
       }
@@ -748,6 +764,7 @@ export var ContextMenu = Handler.extend({
     el.innerHTML = html + options.text;
     el.setAttribute('type', 'button');
     el.classList.add('mapml-button');
+    if (options.id) el.dataset.id = options.id;
     if (options.popup) {
       el.setAttribute('aria-haspopup', 'true');
       el.setAttribute('aria-expanded', 'false');

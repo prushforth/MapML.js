@@ -12,6 +12,7 @@ export var ReloadButton = Control.extend({
   onAdd: function (map) {
     let locale = this._getLocale(map);
     let container = DomUtil.create('div', 'mapml-reload-button leaflet-bar');
+    container.dataset.testid = 'reload-control';
 
     let link = DomUtil.create('button', 'mapml-reload-button', container);
     link.innerHTML = "<span aria-hidden='true'>&#x021BA</span>";

@@ -9,6 +9,7 @@ export var AttributionButton = Control.Attribution.extend({
   onAdd: function (map) {
     map.attributionControl = this;
     this._container = DomUtil.create('details', 'leaflet-control-attribution');
+    this._container.dataset.testid = 'attribution-control';
     DomEvent.disableClickPropagation(this._container);
 
     for (var i in map._layers) {

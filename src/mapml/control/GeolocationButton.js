@@ -37,6 +37,7 @@ export var GeolocationButton = Control.extend({
     }).addTo(map);
 
     var container = this.locateControl._container;
+    container.dataset.testid = 'locate-control';
     var button = this.locateControl;
     var observer = new MutationObserver(function (mutations) {
       if (

@@ -24,6 +24,7 @@ export var FullscreenButton = Control.extend({
       'div',
       'leaflet-control-fullscreen leaflet-bar leaflet-control'
     );
+    container.dataset.testid = 'fullscreen-control';
 
     this.link = DomUtil.create(
       'a',
