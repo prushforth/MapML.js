@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/api/domApi-web-map.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('web-map DOM API Tests', () => {
