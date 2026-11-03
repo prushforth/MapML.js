@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/api/events/map-change-event.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('Map-change event are only fired when layers/extents are checked or unchecked in the layer menu ', () => {
