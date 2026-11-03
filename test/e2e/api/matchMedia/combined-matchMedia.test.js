@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/api/matchMedia/combined-matchMedia.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('MatchMedia Query Tests', () => {
