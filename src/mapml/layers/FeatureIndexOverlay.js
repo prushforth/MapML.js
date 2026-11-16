@@ -27,10 +27,52 @@ export var FeatureIndexOverlay = Layer.extend({
     );
     this._body.index = 0;
     this._output.initialFocus = false;
+    this._addOrRemoveFeatureIndex();
+  },
+
+  onRemove: function (map) {
+    this.disable();
+    DomUtil.remove(this._container);
+    DomUtil.remove(this._output);
+  },
+
+  // The overlay stays on the map, hidden, while disabled, so that it can be
+  // switched on and off (the viewer's featureIndex property / featureindex
+  // attribute, and its feature index control) without being rebuilt.
+  enable: function () {
+    if (this._enabled) return this;
+    this._enabled = true;
+    let map = this._map;
     map.on('focus blur popupclose', this._addOrRemoveFeatureIndex, this);
     map.on('moveend focus templatedfeatureslayeradd', this._checkOverlap, this);
     map.on('keydown', this._onKeyDown, this);
+    // Switched on while the map has focus (e.g. by the feature index control,
+    // which hands focus back to the map): show the overlay now.
+    if (map.getContainer().matches(':focus')) {
+      this._checkOverlap({ type: 'focus' });
+      this._addOrRemoveFeatureIndex({ type: 'focus' });
+    }
+    return this;
+  },
+
+  disable: function () {
+    if (!this._enabled) return this;
+    this._enabled = false;
+    let map = this._map;
+    map.off('focus blur popupclose', this._addOrRemoveFeatureIndex, this);
+    map.off(
+      'moveend focus templatedfeatureslayeradd',
+      this._checkOverlap,
+      this
+    );
+    map.off('keydown', this._onKeyDown, this);
+    this._output.initialFocus = false;
+    this._output.popupClosed = false;
+    this._body.innerHTML = '';
+    this._body.index = 0;
+    this._body.allFeatures = [];
     this._addOrRemoveFeatureIndex();
+    return this;
   },
 
   _calculateReticleBounds: function () {
@@ -233,6 +275,18 @@ export var FeatureIndexOverlay = Layer.extend({
     }
   }
 });
+
+// The user's (or user agent's) feature index preference, from
+// M.options.featureIndexOverlayOption: 'on' or 'off' force the overlay's state,
+// which the map can't then change; undefined (the default, false) leaves it to
+// the viewer's featureindex attribute and featureIndex property. The
+// mapml-extension sets the legacy boolean true, which means 'on'.
+export function featureIndexPreference() {
+  const option = M.options.featureIndexOverlayOption;
+  if (option === true || option === 'on') return 'on';
+  if (option === 'off') return 'off';
+  return undefined;
+}
 
 export var featureIndexOverlay = function (options) {
   return new FeatureIndexOverlay(options);

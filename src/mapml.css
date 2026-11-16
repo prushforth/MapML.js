@@ -1106,3 +1106,33 @@ button.mapml-static-button {
 button.mapml-static-button:hover {
   background: #f4f4f4;
 }
+
+/* Feature index control */
+.mapml-feature-index-control.leaflet-control {
+  margin-right: 5px;
+}
+button.mapml-feature-index-button {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0;
+  color: #000;
+}
+button.mapml-feature-index-button:hover {
+  background: #f4f4f4;
+}
+/* Greyed (.mapml-button[aria-disabled="true"]) on the reload button's
+   disabled background. Disabled only when the user's preference sets the
+   index, which the map can't change. */
+button.mapml-feature-index-button[aria-disabled="true"],
+button.mapml-feature-index-button[aria-disabled="true"]:hover {
+  cursor: not-allowed;
+  background: #f4f4f4;
+}

@@ -31,9 +31,13 @@ import { fullscreenButton } from './mapml/control/FullscreenButton.js';
 import { geolocationButton } from './mapml/control/GeolocationButton.js';
 import { searchButton } from './mapml/control/SearchButton.js';
 import { staticButton } from './mapml/control/StaticButton.js';
+import { featureIndexControl } from './mapml/control/FeatureIndexControl.js';
 import { debugOverlay } from './mapml/layers/DebugOverlay.js';
 import { crosshair } from './mapml/layers/Crosshair.js';
-import { featureIndexOverlay } from './mapml/layers/FeatureIndexOverlay.js';
+import {
+  featureIndexOverlay,
+  featureIndexPreference
+} from './mapml/layers/FeatureIndexOverlay.js';
 
 export class HTMLMapmlViewerElement extends HTMLElement {
   static get observedAttributes() {
@@ -46,7 +50,8 @@ export class HTMLMapmlViewerElement extends HTMLElement {
       'height',
       'controls',
       'static',
-      'controlslist'
+      'controlslist',
+      'featureindex'
     ];
   }
   // see comments below regarding attributeChangedCallback vs. getter/setter
@@ -71,6 +76,21 @@ export class HTMLMapmlViewerElement extends HTMLElement {
   set controlsList(value) {
     this._controlsList.value = value;
     this.setAttribute('controlslist', value);
+  }
+  // Whether the feature index overlay is on. The featureindex attribute turns
+  // it on; setting this property doesn't add the attribute, but setting it to
+  // false removes it. A user's M.options.featureIndexOverlayOption wins over
+  // both.
+  get featureIndex() {
+    return Boolean(this._featureIndexActive);
+  }
+  set featureIndex(value) {
+    if (featureIndexPreference() !== undefined) return;
+    const on = Boolean(value);
+    this._setFeatureIndex(on);
+    if (!on && this.hasAttribute('featureindex')) {
+      this.removeAttribute('featureindex');
+    }
   }
   get width() {
     return +window.getComputedStyle(this).width.replace('px', '');
@@ -197,7 +217,8 @@ export class HTMLMapmlViewerElement extends HTMLElement {
             'noscale',
             'geolocation',
             'search',
-            'static'
+            'static',
+            'featureindex'
           ]
         );
 
@@ -332,12 +353,17 @@ export class HTMLMapmlViewerElement extends HTMLElement {
       });
       this._addToHistory();
 
+      const preference = featureIndexPreference();
+      this._featureIndexActive =
+        preference === 'on' ||
+        (preference === undefined && this.hasAttribute('featureindex'));
+
       this._createControls();
       this._toggleControls();
       this._crosshair = crosshair().addTo(this._map);
 
-      if (M.options.featureIndexOverlayOption)
-        this._featureIndexOverlay = featureIndexOverlay().addTo(this._map);
+      this._featureIndexOverlay = featureIndexOverlay().addTo(this._map);
+      if (this._featureIndexActive) this._featureIndexOverlay.enable();
 
       this._setUpEvents();
     }
@@ -348,6 +374,7 @@ export class HTMLMapmlViewerElement extends HTMLElement {
       this.shadowRoot.removeChild(this.shadowRoot.firstChild);
     }
     delete this._map;
+    delete this._featureIndexOverlay;
     this._deleteControls();
   }
   adoptedCallback() {
@@ -400,6 +427,11 @@ export class HTMLMapmlViewerElement extends HTMLElement {
         break;
       case 'static':
         this._toggleStatic();
+        break;
+      case 'featureindex':
+        if (this._map && featureIndexPreference() === undefined) {
+          this._setFeatureIndex(newValue !== null);
+        }
         break;
       case 'projection':
         const reconnectLayers = () => {
@@ -529,6 +561,21 @@ export class HTMLMapmlViewerElement extends HTMLElement {
     if (!this._staticButton) {
       this._staticButton = staticButton().addTo(this._map);
     }
+
+    if (!this._featureIndexControl) {
+      this._featureIndexControl = featureIndexControl().addTo(this._map);
+    }
+  }
+
+  // Switch the feature index overlay on or off, and tell its control.
+  _setFeatureIndex(on) {
+    if (on === this.featureIndex) return;
+    this._featureIndexActive = on;
+    if (this._featureIndexOverlay) {
+      if (on) this._featureIndexOverlay.enable();
+      else this._featureIndexOverlay.disable();
+    }
+    this.dispatchEvent(new CustomEvent('mapml:featureindexchanged'));
   }
 
   // Sets controls by hiding/unhiding them based on the map attribute
@@ -551,6 +598,7 @@ export class HTMLMapmlViewerElement extends HTMLElement {
     this._setControlsVisibility('geolocation', true);
     this._setControlsVisibility('scale', true);
     this._setControlsVisibility('static', true);
+    this._setControlsVisibility('featureindex', true);
   }
   _showControls() {
     this._setControlsVisibility('search', true);
@@ -561,6 +609,7 @@ export class HTMLMapmlViewerElement extends HTMLElement {
     this._setControlsVisibility('geolocation', true);
     this._setControlsVisibility('scale', false);
     this._setControlsVisibility('static', true);
+    this._setControlsVisibility('featureindex', true);
 
     // prune the controls shown if necessary
     // this logic could be embedded in _showControls
@@ -593,6 +642,9 @@ export class HTMLMapmlViewerElement extends HTMLElement {
           case 'static':
             this._setControlsVisibility('static', false);
             break;
+          case 'featureindex':
+            this._setControlsVisibility('featureindex', false);
+            break;
         }
       });
     }
@@ -611,6 +663,7 @@ export class HTMLMapmlViewerElement extends HTMLElement {
     delete this._geolocationButton;
     delete this._scaleBar;
     delete this._staticButton;
+    delete this._featureIndexControl;
   }
   // Sets the control's visibility AND all its childrens visibility,
   // for the control element based on the Boolean hide parameter
@@ -657,6 +710,11 @@ export class HTMLMapmlViewerElement extends HTMLElement {
           container = this._staticButton._container;
         }
         break;
+      case 'featureindex':
+        if (this._featureIndexControl) {
+          container = this._featureIndexControl._container;
+        }
+        break;
     }
     if (container) {
       if (hide) {
@@ -677,6 +735,16 @@ export class HTMLMapmlViewerElement extends HTMLElement {
   _toggleStatic() {
     const isStatic = this.hasAttribute('static');
     if (this._map) {
+      // Leaflet's keyboard handler is what fires the map's focus and blur
+      // events, so while it is off, fire them here: a static map can't be
+      // moved, but what happens on focus (the feature index) still should.
+      this._relayMapFocus =
+        this._relayMapFocus ?? ((e) => this._map?.fire(e.type));
+      const container = this._map.getContainer();
+      for (const type of ['focus', 'blur']) {
+        if (isStatic) container.addEventListener(type, this._relayMapFocus);
+        else container.removeEventListener(type, this._relayMapFocus);
+      }
       if (isStatic) {
         this._map.dragging.disable();
         this._map.touchZoom.disable();

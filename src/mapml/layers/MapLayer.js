@@ -489,7 +489,7 @@ export var MapLayer = LayerGroup.extend({
 
     content.focus();
 
-    if (group && !M.options.featureIndexOverlayOption) {
+    if (group && !map.options.mapEl.featureIndex) {
       // e.target = this._map
       // Looks for keydown, more specifically tab and shift tab
       group.setAttribute('aria-expanded', 'true');
