@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/core/mapContextMenu.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 //
 //expected topLeft values in the different cs, at the different
