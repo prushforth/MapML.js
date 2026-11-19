@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/core/mapFeature.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 const data = require('./mapFeature.data.js');
 
