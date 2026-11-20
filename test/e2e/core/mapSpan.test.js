@@ -1,3 +1,6 @@
+// MOVED to mapml-test: test/e2e/core/mapSpan.test.js (see mapml-test docs/PLAN.md)
+// Extensively rewritten there: it compares bitmaps of what the viewers paint
+// instead of testing the SVG markup Leaflet generates in the shadow root.
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('<map-span> test ', () => {
