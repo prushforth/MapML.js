@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/core/metaDefault.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 // gcrs values go through proj4's inverse projection, whose transcendental math
@@ -10,8 +11,8 @@ const expectGcrsCloseTo = (received, expected) => {
 
 let expectedPCRSFirstLayer = {
     topLeft: {
-      horizontal: -11940075.314370813,
-      vertical: 10941501.97685327
+      horizontal: -3263369.215138428,
+      vertical: 4046262.80585894
     },
     bottomRight: {
       horizontal: 3823752.959105924,
@@ -20,12 +21,12 @@ let expectedPCRSFirstLayer = {
   },
   expectedGCRSFirstLayer = {
     topLeft: {
-      horizontal: -164.41282251334343,
-      vertical: 26.149380076712948
+      horizontal: -125.78104358919225,
+      vertical: 56.11474703973131
     },
     bottomRight: {
-      horizontal: 70.06993143106092,
-      vertical: -11.45750001286738
+      horizontal: -5.116088318047697,
+      vertical: 28.87016583287855
     }
   };
 

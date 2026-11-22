@@ -508,7 +508,10 @@ export const Util = {
       map.options.mapEl.zoom = +zoomTo.z;
     }
   },
-  getBoundsFromMeta: function (mapml) {
+  // fallbackProjection: the projection of the element whose map-meta this is
+  // (a map-extent's units, a layer's projection), for when there's no
+  // map-meta[name=projection] beside it
+  getBoundsFromMeta: function (mapml, fallbackProjection) {
     if (!mapml) return null;
     let cs,
       pseudo = mapml instanceof ShadowRoot ? ':host' : ':scope',
@@ -519,6 +522,7 @@ export const Util = {
               .querySelector(pseudo + ' > map-meta[name=projection]')
               .getAttribute('content')
           ).content.toUpperCase()) ||
+        fallbackProjection ||
         M.FALLBACK_PROJECTION;
     try {
       let meta =

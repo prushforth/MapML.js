@@ -103,9 +103,12 @@ export var MapLayer = LayerGroup.extend({
       this._layerEl.shadowRoot.querySelector(
         ':host > map-meta[name=extent][content]'
       )
-        ? Util.getBoundsFromMeta(this._layerEl.shadowRoot)
+        ? Util.getBoundsFromMeta(
+            this._layerEl.shadowRoot,
+            this._layerEl.getProjection()
+          )
         : this._layerEl.querySelector(':scope > map-meta[name=extent][content]')
-        ? Util.getBoundsFromMeta(this._layerEl)
+        ? Util.getBoundsFromMeta(this._layerEl, this._layerEl.getProjection())
         : undefined;
     zoomBounds =
       this._layerEl.src &&

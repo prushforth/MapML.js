@@ -496,7 +496,7 @@ export class HTMLExtentElement extends HTMLElement {
 
     // initialize bounds from this.scope > map-meta
     let bounds = this.querySelector(':scope > map-meta[name=extent][content]')
-      ? Util.getBoundsFromMeta(this) // TODO rewrite this pile of doo doo
+      ? Util.getBoundsFromMeta(this, this.units) // TODO rewrite this pile of doo doo
       : undefined;
 
     // initialize zoom bounds from this.scope > map-meta
