@@ -479,7 +479,15 @@ export var MapLayer = LayerGroup.extend({
         ]?.path.setAttribute('tabindex', 0);
         DomEvent.stop(e);
         map.closePopup();
-        map._controlContainer.querySelector('A:not([hidden])').focus();
+        // the controls' first focus stop, where Tab from the features goes:
+        // zoom in, or with the controls off, the attribution's toggle
+        [
+          ...map._controlContainer.querySelectorAll(
+            'a[href], button, summary, input, select, [tabindex]'
+          )
+        ]
+          .find((el) => el.tabIndex >= 0 && el.checkVisibility())
+          ?.focus();
       },
       popup
     );

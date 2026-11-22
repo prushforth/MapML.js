@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/core/popupTabNavigation.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('Playwright Keyboard Navigation + Query Layer Tests', () => {
@@ -258,7 +259,13 @@ test.describe('Playwright Keyboard Navigation + Query Layer Tests', () => {
       await page.keyboard.press('Enter');
       for (let i = 0; i < 6; i++) await page.keyboard.press('Tab');
       await page.keyboard.press('Enter');
-      const focusedElement = page.getByText('Maps for HTML Community Group');
+      // the controls' first focus stop: with the controls off, the
+      // attribution's toggle
+      const focusedElement = page
+        .getByRole('group', {
+          name: 'Map data attribution'
+        })
+        .locator('summary');
       await expect(focusedElement).toBeFocused();
     });
 
