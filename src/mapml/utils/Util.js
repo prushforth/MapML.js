@@ -474,31 +474,40 @@ export const Util = {
       // link traversal, e.g. BC link here https://maps4html.org/experiments/linking/features/
       if (!link.inPlace && zoomTo) updateMapZoomTo(zoomTo);
 
-      // Only _parent target can trigger projection change (replaces all layers)
-      // For other targets, just wait for layer.whenReady()
-      const promises = [layer.whenReady()];
-      if (link.target === '_parent') {
-        const projectionChangePromise = new Promise((resolve) => {
-          const timeout = setTimeout(resolve, 5000);
-          map.options.mapEl.addEventListener(
-            'map-projectionchange',
-            () => {
-              clearTimeout(timeout);
-              resolve();
-            },
-            { once: true }
-          );
+      // The map's projection changes when the new layer is left alone on it
+      // in another projection (selectAlternateOrChangeProjection): after a
+      // _parent link, or a _self link from the map's only layer. Listen from
+      // now on, so the event can't be missed, and once the layer is ready wait
+      // for it if the projection has changed, so that the zoom below comes
+      // after the change has restored the view instead of being undone by it.
+      const mapEl = map.options.mapEl,
+        projection = mapEl.projection;
+      let onProjectionChange;
+      const projectionChanged = new Promise((resolve) => {
+        const timeout = setTimeout(resolve, 5000);
+        onProjectionChange = () => {
+          clearTimeout(timeout);
+          resolve();
+        };
+        mapEl.addEventListener('map-projectionchange', onProjectionChange, {
+          once: true
         });
-        promises.push(projectionChangePromise);
-      }
-
-      Promise.all(promises).then(() => {
-        if (!link.inPlace && zoomTo)
-          layer.parentElement.zoomTo(+zoomTo.lat, +zoomTo.lng, +zoomTo.z);
-        else if (!link.inPlace) layer.zoomTo();
-        if (opacity) layer.opacity = opacity;
-        map.getContainer().focus();
       });
+
+      layer
+        .whenReady()
+        .then(() => {
+          if (mapEl.projection !== projection) return projectionChanged;
+          mapEl.removeEventListener('map-projectionchange', onProjectionChange);
+          onProjectionChange();
+        })
+        .then(() => {
+          if (!link.inPlace && zoomTo)
+            layer.parentElement.zoomTo(+zoomTo.lat, +zoomTo.lng, +zoomTo.z);
+          else if (!link.inPlace) layer.zoomTo();
+          if (opacity) layer.opacity = opacity;
+          map.getContainer().focus();
+        });
     }
 
     function updateMapZoomTo(zoomTo) {
