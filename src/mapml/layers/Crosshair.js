@@ -23,6 +23,20 @@ export var Crosshair = Layer.extend({
       this._isMapFocused,
       this
     );
+    // Focus that a mouse press didn't cause (Tab, or a script) shows the
+    // crosshair too. The press is noted in the capture phase, before
+    // anything focuses the container in response to it.
+    this._mousePressed = false;
+    this._onMouseDownCapture = () => {
+      this._mousePressed = true;
+      setTimeout(() => (this._mousePressed = false), 0);
+    };
+    map._container.addEventListener(
+      'mousedown',
+      this._onMouseDownCapture,
+      true
+    );
+    DomEvent.on(map._container, 'focus', this._onFocus, this);
 
     this._addOrRemoveCrosshair();
   },
@@ -34,6 +48,12 @@ export var Crosshair = Layer.extend({
     );
     map.off('popupopen', this._isMapFocused);
     DomEvent.off(map._container, 'keydown keyup mousedown', this._isMapFocused);
+    map._container.removeEventListener(
+      'mousedown',
+      this._onMouseDownCapture,
+      true
+    );
+    DomEvent.off(map._container, 'focus', this._onFocus, this);
   },
 
   _toggleEvents: function () {
@@ -73,6 +93,13 @@ export var Crosshair = Layer.extend({
       }
     }
     return false;
+  },
+
+  // Only the crosshair: the map's outline still waits for a key.
+  _onFocus: function () {
+    if (this._mousePressed) return;
+    this._map.isFocused = true;
+    this._addOrRemoveCrosshair();
   },
 
   // TODO: should be merged with the 'mapfocused' event emitted by mapml-viewer and map, not trivial
