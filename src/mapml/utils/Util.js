@@ -1563,6 +1563,33 @@ export const Util = {
     return json;
   },
 
+  // The zoom level of `toCrs` whose scale is nearest that of `fromCrs` at
+  // `zoom`, so that a projection change keeps the scale rather than the zoom
+  // number (which means a different scale in each CRS). Nearest is by ratio
+  // of the resolutions in metres per pixel (scale is multiplicative), the
+  // coarser level on a tie; a degree of a geographic CRS counts as
+  // 2π·6378137/360 m, as OpenLayers' EPSG:4326 does.
+  nearestScaleZoom: function (fromCrs, zoom, toCrs) {
+    const metresPerUnit = (crs) =>
+      ['longlat', 'latlong', 'lonlat', 'latlon'].includes(
+        crs.projection?._proj?.oProj?.projName
+      )
+        ? (2 * Math.PI * 6378137) / 360
+        : 1;
+    const from = fromCrs?.options?.resolutions,
+      to = toCrs?.options?.resolutions;
+    if (!from || !to) return zoom;
+    const target =
+      from[Math.max(0, Math.min(from.length - 1, Math.round(zoom)))] *
+      metresPerUnit(fromCrs);
+    const distance = (i) =>
+      Math.abs(Math.log((to[i] * metresPerUnit(toCrs)) / target));
+    let best = 0;
+    for (let i = 1; i < to.length; i++) {
+      if (distance(i) < distance(best)) best = i;
+    }
+    return best;
+  },
   // Takes leaflet bound, leaflet map and min and max zoom limit,
   // return the maximum zoom level that can show the bound completely
   // getMaxZoom: Bound, Map, Number, Number -> Number

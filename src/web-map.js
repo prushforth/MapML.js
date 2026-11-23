@@ -475,10 +475,15 @@ export class HTMLWebMapElement extends HTMLMapElement {
       case 'projection':
         const reconnectLayers = () => {
           if (this._map && this._map.options.projection !== newValue) {
-            // save map location and zoom
+            // save map location, and the zoom in the new CRS that keeps the
+            // scale
             let lat = this.lat;
             let lon = this.lon;
-            let zoom = this.zoom;
+            let zoom = Util.nearestScaleZoom(
+              this._map.options.crs,
+              this.zoom,
+              M[newValue]
+            );
             // saving the lat, lon and zoom is necessary because Leaflet seems
             // to try to compensate for the change in the scales for each zoom
             // level in the crs by changing the zoom level of the map when
