@@ -1,3 +1,6 @@
+// MOVED to mapml-test: test/e2e/core/touchDevice.test.js (see mapml-test docs/PLAN.md)
+// Rewritten there: open is judged by the layer control's visible layers, not
+// Leaflet's _isExpanded, and a long press is a real one (tap() has no delay).
 import { test, expect, chromium, devices } from '@playwright/test';
 const device = devices['Pixel 5'];
 
