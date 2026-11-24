@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/elements/map-a/map-a-inline-or-remote-templated.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('map-a loaded inline or remote, directly or via templated map-link tests', () => {
