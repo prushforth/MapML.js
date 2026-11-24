@@ -1,3 +1,6 @@
+// MOVED to mapml-test: test/e2e/core/tms.test.js (see mapml-test docs/PLAN.md)
+// Rewritten there: it compares what the viewers paint, in WGS84 and OSMTILE,
+// on tiles vendored in data/tiles/tms, instead of Leaflet's tile <img> order.
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('Playwright Map Element Tests', () => {
