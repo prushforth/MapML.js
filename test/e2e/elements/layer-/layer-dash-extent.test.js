@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/elements/layer-/layer-dash-extent.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('layer- local/inline extent source tests', () => {
