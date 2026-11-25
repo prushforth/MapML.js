@@ -1187,7 +1187,7 @@ export class HTMLWebMapElement extends HTMLMapElement {
   _changeWidth(width) {
     if (this._container) {
       this._container.style.width = width + 'px';
-      document.querySelector('[is="web-map"]').style.width = width + 'px';
+      this.style.width = width + 'px';
     }
     if (this._map) {
       this._map.invalidateSize(false);
@@ -1196,7 +1196,7 @@ export class HTMLWebMapElement extends HTMLMapElement {
   _changeHeight(height) {
     if (this._container) {
       this._container.style.height = height + 'px';
-      document.querySelector('[is="web-map"]').style.height = height + 'px';
+      this.style.height = height + 'px';
     }
     if (this._map) {
       this._map.invalidateSize(false);
