@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/core/dragDropMap.test.js (see mapml-test docs/PLAN.md)
 //Duplicate of dragDrop.html, uses web-map instead
 import { test, expect, chromium } from '@playwright/test';
 

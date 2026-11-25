@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/core/drag.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('UI Drag&Drop Test', () => {
