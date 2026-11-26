@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/elements/map-input/map-input-in-shadow-root.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('map-input can be inside a shadow root or other custom element', () => {
