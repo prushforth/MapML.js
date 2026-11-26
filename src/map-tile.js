@@ -135,6 +135,7 @@ export class HTMLTileElement extends HTMLElement {
   }
 
   disconnectedCallback() {
+    delete this._renderedInto;
     // Decrement layer registry count
     const entry = this._parentEl?._layerRegistry?.get(this.position);
     if (entry) {
@@ -248,6 +249,13 @@ export class HTMLTileElement extends HTMLElement {
   async _createOrGetTileLayer() {
     await this._parentEl.whenReady();
     const parentElement = this._parentEl;
+    const parentLayer = parentElement._templatedLayer?.addLayer
+      ? parentElement._templatedLayer
+      : parentElement._layer;
+    // already rendered into it: the parent layer asks again whenever it is
+    // (re)built (see layer.js _onAdd)
+    if (parentLayer && this._renderedInto === parentLayer) return;
+    this._renderedInto = parentLayer;
     if (this.isFirst()) {
       // Create a new MapTileLayer
       this._tileLayer = mapTileLayer({

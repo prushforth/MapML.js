@@ -221,6 +221,7 @@ export class HTMLFeatureElement extends HTMLElement {
     )
       return;
     this._observer.disconnect();
+    delete this._renderedInto;
     // Decrement layer registry count
     const entry = this._parentEl?._layerRegistry?.get(this.position);
     if (entry) {
@@ -319,6 +320,10 @@ export class HTMLFeatureElement extends HTMLElement {
         const parentLayer = isMapLink
           ? this._parentEl._templatedLayer
           : this._parentEl._layer;
+        // already rendered into it: the parent layer asks again whenever it
+        // is (re)built (see layer.js _onAdd)
+        if (parentLayer && this._renderedInto === parentLayer) return;
+        this._renderedInto = parentLayer;
 
         if (this.isFirst() && parentLayer) {
           const parentElement = this._parentEl;

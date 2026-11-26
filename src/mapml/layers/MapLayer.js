@@ -215,21 +215,29 @@ export var MapLayer = LayerGroup.extend({
             }
 
             if (layer.zoomBounds) {
-              // Extend zoomBounds with layer zoomBounds
-              zoomMax = Math.max(zoomMax, layer.zoomBounds.maxZoom);
-              zoomMin = Math.min(zoomMin, layer.zoomBounds.minZoom);
-              maxNativeZoom = Math.max(
-                maxNativeZoom,
-                layer.zoomBounds.maxNativeZoom
-              );
-              minNativeZoom = Math.min(
-                minNativeZoom,
-                layer.zoomBounds.minNativeZoom
-              );
-              zoomBounds.minZoom = zoomMin;
-              zoomBounds.maxZoom = zoomMax;
-              zoomBounds.minNativeZoom = minNativeZoom;
-              zoomBounds.maxNativeZoom = maxNativeZoom;
+              if (!zoomBounds) {
+                zoomBounds = { ...layer.zoomBounds };
+                zoomMax = zoomBounds.maxZoom;
+                zoomMin = zoomBounds.minZoom;
+                maxNativeZoom = zoomBounds.maxNativeZoom;
+                minNativeZoom = zoomBounds.minNativeZoom;
+              } else {
+                // Extend zoomBounds with layer zoomBounds
+                zoomMax = Math.max(zoomMax, layer.zoomBounds.maxZoom);
+                zoomMin = Math.min(zoomMin, layer.zoomBounds.minZoom);
+                maxNativeZoom = Math.max(
+                  maxNativeZoom,
+                  layer.zoomBounds.maxNativeZoom
+                );
+                minNativeZoom = Math.min(
+                  minNativeZoom,
+                  layer.zoomBounds.minNativeZoom
+                );
+                zoomBounds.minZoom = zoomMin;
+                zoomBounds.maxZoom = zoomMax;
+                zoomBounds.minNativeZoom = minNativeZoom;
+                zoomBounds.maxNativeZoom = maxNativeZoom;
+              }
             }
           }
         });

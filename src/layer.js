@@ -359,6 +359,21 @@ export class BaseLayerElement extends HTMLElement {
             this._createLayerControlHTML();
             this._setLocalizedDefaultLabel();
             this._attachedToMap();
+            // Inline <map-feature>s and <map-tile>s render themselves into
+            // this._layer when they connect, but a media query that stops
+            // and starts matching replaces this._layer without reconnecting
+            // them, and one that doesn't match when they connect leaves them
+            // nothing to render into. Rendering is idempotent, so it is safe
+            // to ask here as well.
+            for (const el of this.querySelectorAll(
+              ':scope > map-feature, :scope > map-tile'
+            )) {
+              if (el.nodeName === 'MAP-FEATURE') {
+                el._createOrGetFeatureLayer();
+              } else {
+                el._createOrGetTileLayer();
+              }
+            }
             // initializing map-features that previously exist
             this._runMutationObserver(this.children);
             this._bindMutationObserver();
