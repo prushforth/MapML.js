@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/elements/map-feature/map-feature-extent.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('map-feature extent functionality and API', () => {
