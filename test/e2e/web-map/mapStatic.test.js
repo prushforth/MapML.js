@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/web-map/mapStatic.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('Adding Static Attribute to map', () => {
