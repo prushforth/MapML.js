@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/elements/map-layer/layer-extent.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('map-layer local/inline extent source tests', () => {
@@ -211,9 +212,9 @@ test.describe('map-layer local/inline extent source tests', () => {
     expect(bounds.ymin).toEqual(-5601788);
     expect(bounds.xmax).toEqual(5915489);
     expect(bounds.ymax).toEqual(5643026);
-    // the "display" zoom min is not changed by map-meta name=zoom content="min=5,max=21"
-    expect(bounds.zmin).toEqual(3);
-    // the display zoom max is changed...
+    // map-meta name=zoom content="min=5,max=21" is the fallback for the
+    // extent's link, so it sets the display zooms
+    expect(bounds.zmin).toEqual(5);
     expect(bounds.zmax).toEqual(21);
     // native zoom are the values specified on the inputs' min/max
     expect(bounds.zmaxNative).toEqual(17);

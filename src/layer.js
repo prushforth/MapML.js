@@ -512,6 +512,11 @@ export class BaseLayerElement extends HTMLElement {
       pseudo = root instanceof ShadowRoot ? ':host' : ':scope';
     const _addMetaElement = (mapMeta) => {
       this.whenReady().then(() => {
+        // a layer's map-meta is the fallback for its map-extents' links, so
+        // their cached bounds are stale too, and the layer unions them
+        root.querySelectorAll(`${pseudo} > map-extent`).forEach((extent) => {
+          if (extent._extentLayer) extent._calculateBounds();
+        });
         this._layer._calculateBounds();
         this._validateDisabled();
       });
