@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/elements/map-link/map-link-security.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 /**
