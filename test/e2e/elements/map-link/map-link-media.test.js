@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/elements/map-link/map-link-media.test.js (see mapml-test docs/PLAN.md)
 /* to do: test that map-link rel=features is re-enabled when the media attribute
  * is removed
  */
