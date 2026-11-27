@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/elements/map-link/pmtiles/map-link-pmtiles-styles.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('pmtiles map-link with associated style can be in a remote mapml document', () => {
