@@ -1,3 +1,4 @@
+// MOVED to mapml-test: test/e2e/elements/map-tile/map-tile-row-col-zoom-immutable.test.js (see mapml-test docs/PLAN.md)
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('Map Tile Immutable Attributes Tests', () => {
